@@ -155,6 +155,7 @@
                      * @memberof INTF_BLK_manualTriggerBlock
                      * @instance
                      * @type {string|Drawable}
+                     * @default "?"
                      */
                     manualTriggerIcon: "?",
                     /**
@@ -162,6 +163,7 @@
                      * @memberof INTF_BLK_manualTriggerBlock
                      * @instance
                      * @type {number}
+                     * @default 72.0
                      */
                     manualTriggerBtnSize: 72.0,
                     /**
@@ -169,6 +171,7 @@
                      * @memberof INTF_BLK_manualTriggerBlock
                      * @instance
                      * @type {number}
+                     * @default 0.0
                      */
                     manualTriggerCooldown: 0.0,
                     /**
@@ -176,6 +179,7 @@
                      * @memberof INTF_BLK_manualTriggerBlock
                      * @instance
                      * @type {number}
+                     * @default 0.0
                      */
                     manualTriggerCooldownInit: 0.0,
 

@@ -232,6 +232,7 @@
              * @memberof BLK_multiFilterGate
              * @instance
              * @type {Boolf4<Building, Building, Item, Array<Item>>}
+             * @default boolf4(function(b, b_f, item, rsTargets) {return rsTargets.includes(item)})
              */
             filterScr: boolf4(function(b, b_f, item, rsTargets) {return rsTargets.includes(item)}),
 

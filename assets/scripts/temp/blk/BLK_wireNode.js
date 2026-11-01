@@ -191,6 +191,7 @@
              * @memberof BLK_wireNode
              * @instance
              * @type {string}
+             * @default "any"
              */
             linkMode: "any",
             /**
@@ -198,6 +199,7 @@
              * @memberof BLK_wireNode
              * @instance
              * @type {number}
+             * @default 0.0
              */
             minRadFrac: 0.0,
 

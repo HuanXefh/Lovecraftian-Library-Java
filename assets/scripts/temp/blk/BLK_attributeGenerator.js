@@ -129,6 +129,7 @@
              * @memberof BLK_attributeGenerator
              * @instance
              * @type {number}
+             * @default 0.008
              */
             warmupRate: 0.008,
             /**
@@ -136,6 +137,7 @@
              * @memberof BLK_attributeGenerator
              * @instance
              * @type {number}
+             * @default 120.0
              */
             attrGenItemDur: 120.0,
             /**
@@ -144,13 +146,15 @@
              * @memberof BLK_attributeGenerator
              * @instance
              * @type {TDynamic<Boolf2<Block, Block>>}
+             * @default boolf2(function(blk, oblk) {return true})
              */
-            attrFilter: tprov(() => boolf2(function(blk, oblk) {return true})),
+            attrFilter: boolf2(function(blk, oblk) {return true}),
             /**
              * `PARAM`: Effect created when item is consumed.
              * @memberof BLK_attributeGenerator
              * @instance
              * @type {Effect}
+             * @default Fx.none
              */
             consEff: Fx.none,
 

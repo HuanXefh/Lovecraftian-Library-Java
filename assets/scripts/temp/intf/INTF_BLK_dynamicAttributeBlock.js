@@ -337,6 +337,7 @@
                      * @memberof INTF_BLK_dynamicAttributeBlock
                      * @instance
                      * @type {ENumber}
+                     * @default ENumber
                      */
                     attrMode: AttrModes.FLOOR,
                     /**
@@ -344,13 +345,16 @@
                      * @memberof INTF_BLK_dynamicAttributeBlock
                      * @instance
                      * @type {ENumber}
+                     * @default ENumber
                      */
                     attrRcType: AttrRecipeTypes.FLOOR,
                     /**
                      * `PARAM`: Attribute-resource map used to determine output. See {@link DB_item.db.map.attr}.
+                     * <br> `REQUIRED`
                      * @memberof INTF_BLK_dynamicAttributeBlock
                      * @instance
                      * @type {F2Array<string, ResourceGn>}
+                     * @default null
                      */
                     attrRsArr: null,
                     /**
@@ -358,6 +362,7 @@
                      * @memberof INTF_BLK_dynamicAttributeBlock
                      * @instance
                      * @type {TDynamic<ObjectMap<string, number>>}
+                     * @default new ObjectMap()
                      */
                     dynaAttrRsEffcMap: tprov(() => new ObjectMap()),
                     /**
@@ -365,6 +370,7 @@
                      * @memberof INTF_BLK_dynamicAttributeBlock
                      * @instance
                      * @type {boolean}
+                     * @default true
                      */
                     shouldDrawDynaAttrText: true,
                     /**
@@ -372,6 +378,7 @@
                      * @memberof INTF_BLK_dynamicAttributeBlock
                      * @instance
                      * @type {number}
+                     * @default 0
                      */
                     dynaAttrTextOffTy: 0,
 

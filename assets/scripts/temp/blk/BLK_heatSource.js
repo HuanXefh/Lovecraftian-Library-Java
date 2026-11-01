@@ -115,6 +115,7 @@
              * @memberof BLK_heatSource
              * @instance
              * @type {number}
+             * @default 0.0
              */
             tempMin: 0.0,
             /**
@@ -122,13 +123,15 @@
              * @memberof BLK_heatSource
              * @instance
              * @type {number}
+             * @default 5000.0
              */
-            tempMax: 3000.0,
+            tempMax: 5000.0,
             /**
-             * @inheritdoc
+             * @override
              * @memberof BLK_heatSource
              * @instance
              * @type {number}
+             * @default 0.008
              */
             heatWarmupRate: 0.008,
 

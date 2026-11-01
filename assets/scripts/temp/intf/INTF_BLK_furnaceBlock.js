@@ -310,6 +310,7 @@
                      * @memberof INTF_BLK_furnaceBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     noFuelInput: false,
                     /**
@@ -317,6 +318,7 @@
                      * @memberof INTF_BLK_furnaceBlock
                      * @instance
                      * @type {ENumber}
+                     * @default FuelTypes.ITEM
                      */
                     fuelType: FuelTypes.ITEM,
                     /**
@@ -324,6 +326,7 @@
                      * @memberof INTF_BLK_furnaceBlock
                      * @instance
                      * @type {TDynamic<Array<Resource>>}
+                     * @default []
                      */
                     blockedFuels: tprov(() => []),
                     /**
@@ -331,6 +334,7 @@
                      * @memberof INTF_BLK_furnaceBlock
                      * @instance
                      * @type {TDynamic<Array<Resource>>|null}
+                     * @default null
                      */
                     allowedFuels: null,
                     /**
@@ -338,6 +342,7 @@
                      * @memberof INTF_BLK_furnaceBlock
                      * @instance
                      * @type {number}
+                     * @default -1
                      */
                     fuelReserveAmt: -1,
                     /**
@@ -345,6 +350,7 @@
                      * @memberof INTF_BLK_furnaceBlock
                      * @instance
                      * @type {number}
+                     * @default 1.0
                      */
                     fuelConsMtp: 1.0,
                     /**
@@ -352,18 +358,23 @@
                      * @memberof INTF_BLK_furnaceBlock
                      * @instance
                      * @type {number}
+                     * @default 1.0
                      */
                     fuelLvlMtp: 1.0,
                     /**
-                     * @inheritdoc
+                     * @override
                      * @memberof INTF_BLK_furnaceBlock
                      * @instance
+                     * @type {number}
+                     * @default 0.0001
                      */
                     heatWarmupRate: 0.0001,
                     /**
-                     * @inheritdoc
+                     * @override
                      * @memberof INTF_BLK_furnaceBlock
                      * @instance
+                     * @type {number}
+                     * @default 40.0
                      */
                     heatLightRad: 40.0,
 

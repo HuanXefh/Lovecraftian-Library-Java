@@ -39,6 +39,7 @@
                  * @memberof INTF_BUL_trailHandler
                  * @instance
                  * @type {number}
+                 * @default 0
                  */
                 trailLen: 0,
                 /**
@@ -46,6 +47,7 @@
                  * @memberof INTF_BUL_trailHandler
                  * @instance
                  * @type {number}
+                 * @default 2.0
                  */
                 trailW: 2.0,
                 /**
@@ -53,6 +55,7 @@
                  * @memberof INTF_BUL_trailHandler
                  * @instance
                  * @type {Color}
+                 * @default GLB_color.accent
                  */
                 trailColor: GLB_color.accent,
                 /**
@@ -60,6 +63,7 @@
                  * @memberof INTF_BUL_trailHandler
                  * @instance
                  * @type {Interp}
+                 * @default Interp.linear
                  */
                 trailInterp: Interp.linear,
                 /**
@@ -67,6 +71,7 @@
                  * @memberof INTF_BUL_trailHandler
                  * @instance
                  * @type {number}
+                 * @default 0.0
                  */
                 trailSinMag: 0.0,
                 /**
@@ -74,6 +79,7 @@
                  * @memberof INTF_BUL_trailHandler
                  * @instance
                  * @type {number}
+                 * @default 1.0
                  */
                 trailSinScl: 1.0,
 

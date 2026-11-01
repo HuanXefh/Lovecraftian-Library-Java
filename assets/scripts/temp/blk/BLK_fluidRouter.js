@@ -140,6 +140,7 @@
              * @memberof BLK_fluidRouter
              * @instance
              * @type {boolean}
+             * @default false
              */
             noPresExplode: false,
 

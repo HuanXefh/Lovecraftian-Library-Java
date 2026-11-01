@@ -195,6 +195,7 @@
              * @memberof BLK_boiler
              * @instance
              * @type {number}
+             * @default 40.0
              */
             exploRad: 40.0,
             /**
@@ -202,6 +203,7 @@
              * @memberof BLK_boiler
              * @instance
              * @type {number}
+             * @default 3000.0
              */
             exploDmg: 3000.0,
             /**
@@ -209,6 +211,7 @@
              * @memberof BLK_boiler
              * @instance
              * @type {number}
+             * @default 12.0
              */
             exploShake: 12.0,
             /**
@@ -216,6 +219,7 @@
              * @memberof BLK_boiler
              * @instance
              * @type {number}
+             * @default 0.3
              */
             hitExploMinInstab: 0.3,
             /**
@@ -223,6 +227,7 @@
              * @memberof BLK_boiler
              * @instance
              * @type {LiquidGn}
+             * @default "lovveclab-gas0int-steam-hp"
              */
             exploFldTarget: "loveclab-gas0int-steam-hp",
             /**
@@ -230,6 +235,7 @@
              * @memberof BLK_boiler
              * @instance
              * @type {LiquidGn}
+             * @default "loveclab-liq0ore-water"
              */
             dryHeatFldTarget: "loveclab-liq0ore-water",
             /**
@@ -237,6 +243,7 @@
              * @memberof BLK_boiler
              * @instance
              * @type {number}
+             * @default 100.0
              */
             dryHeatThr: 100.0,
             /**
@@ -244,6 +251,7 @@
              * @memberof BLK_boiler
              * @instance
              * @type {number}
+             * @default -1.0
              */
             dryHeatCancelThr: -1.0,
             /**
@@ -251,6 +259,7 @@
              * @memberof BLK_boiler
              * @instance
              * @type {number}
+             * @default 0.001
              */
             boilerInstabIncRate: 0.001,
             /**
@@ -259,6 +268,7 @@
              * @memberof BLK_boiler
              * @instance
              * @type {boolean}
+             * @default true
              */
             noFuelInput: true,
 

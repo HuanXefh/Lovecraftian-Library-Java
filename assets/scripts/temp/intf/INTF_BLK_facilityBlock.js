@@ -144,6 +144,7 @@
                      * @memberof INTF_BLK_facilityBlock
                      * @instance
                      * @type {boolean}
+                     * @default true
                      */
                     shouldCapAux: true,
                     /**
@@ -151,6 +152,7 @@
                      * @memberof INTF_BLK_facilityBlock
                      * @instance
                      * @type {boolean}
+                     * @default true
                      */
                     shouldClearAuxOnStop: true,
                     /**
@@ -158,6 +160,7 @@
                      * @memberof INTF_BLK_facilityBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     skipFacilityMethod: false,
 

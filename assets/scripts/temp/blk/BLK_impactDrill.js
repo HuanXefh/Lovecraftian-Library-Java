@@ -101,6 +101,7 @@
              * @memberof BLK_impactDrill
              * @instance
              * @type {boolean}
+             * @default true
              */
             canMineDepthOre: true,
 

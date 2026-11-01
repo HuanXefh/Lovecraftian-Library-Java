@@ -98,6 +98,7 @@
          * @memberof BUL_baseBullet
          * @instance
          * @type {TDynamic<F2Array<string, number>>}
+         * @default []
          */
         typeMtpArr: tprov(() => []),
 
@@ -123,6 +124,7 @@
          * @instance
          * @name healPerc
          * @type {number}
+         * @default 0.0
          */
         "healPerc", "healPercent", 0.0,
         /**
@@ -131,6 +133,7 @@
          * @instance
          * @name healAmt
          * @type {number}
+         * @default 0.0
          */
         "healAmt", "healAmount", 0.0,
         /**
@@ -139,6 +142,7 @@
          * @instance
          * @name circleShooterRad
          * @type {number}
+         * @default 13.0
          */
         "circleShooterRad", "circleShooterRadius", 13.0,
     ])

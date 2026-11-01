@@ -230,6 +230,7 @@
          * @memberof RS_baseResource
          * @instance
          * @type {boolean}
+         * @default false
          */
         skipColorAssign: false,
         /**
@@ -237,6 +238,7 @@
          * @memberof RS_baseResource
          * @instance
          * @type {boolean}
+         * @default false
          */
         skipIconTagGen: false,
         /**
@@ -244,6 +246,7 @@
          * @memberof RS_baseResource
          * @instance
          * @type {boolean}
+         * @default false
          */
         skipReactionAssign: false,
         /**
@@ -251,6 +254,7 @@
          * @memberof RS_baseResource
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaStat: true,
         /**
@@ -258,6 +262,7 @@
          * @memberof RS_baseResource
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaProp: true,
 

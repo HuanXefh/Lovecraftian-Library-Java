@@ -154,6 +154,7 @@
              * @memberof BLK_windGenerator
              * @instance
              * @type {number}
+             * @default 1.0
              */
             windScl: 1.0,
             /**
@@ -161,6 +162,7 @@
              * @memberof BLK_windGenerator
              * @instance
              * @type {number}
+             * @default 0.3
              */
             minProdEffc: 0.3,
             /**
@@ -168,6 +170,7 @@
              * @memberof BLK_windGenerator
              * @instance
              * @type {number}
+             * @default 0.15
              */
             posVari: 0.15,
             /**
@@ -175,6 +178,7 @@
              * @memberof BLK_windGenerator
              * @instance
              * @type {number}
+             * @default -1.0
              */
             bladeTouchRad: -1.0,
             /**
@@ -182,6 +186,7 @@
              * @memberof BLK_windGenerator
              * @instance
              * @type {number}
+             * @default 0.7
              */
             bladeTouchWarmupThr: 0.7,
             /**
@@ -189,6 +194,7 @@
              * @memberof BLK_windGenerator
              * @instance
              * @type {number}
+             * @default 200.0
              */
             bladeTouchDmg: 200.0,
             /**
@@ -196,6 +202,7 @@
              * @memberof BLK_windGenerator
              * @instance
              * @type {number}
+             * @default 40.0
              */
             bladeTouchSelfDmg: 40.0,
             /**
@@ -203,6 +210,7 @@
              * @memberof BLK_windGenerator
              * @instance
              * @type {number}
+             * @default 0.0
              */
             bladeVisualSpd: 0.0,
             /**
@@ -210,13 +218,15 @@
              * @memberof BLK_windGenerator
              * @instance
              * @type {SoundGn}
+             * @default "SOUNDS: blockExplode2Alt"
              */
             bladeHitSe: "SOUNDS: blockExplode2Alt",
             /**
-             * @inheritdoc
+             * @override
              * @memberof BLK_windGenerator
              * @instance
              * @type {boolean}
+             * @default false
              */
             overwriteExploParam: false,
 

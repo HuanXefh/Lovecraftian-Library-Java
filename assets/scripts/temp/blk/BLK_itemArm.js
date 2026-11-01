@@ -510,6 +510,7 @@
              * @memberof BLK_itemArm
              * @instance
              * @type {number}
+             * @default 60.0
              */
             moveTime: 60.0,
             /**
@@ -517,6 +518,7 @@
              * @memberof BLK_itemArm
              * @instance
              * @type {number}
+             * @default 0.0
              */
             pickCooldown: 0.0,
             /**
@@ -524,6 +526,7 @@
              * @memberof BLK_itemArm
              * @instance
              * @type {number}
+             * @default 1
              */
             moveR: 1,
             /**
@@ -531,6 +534,7 @@
              * @memberof BLK_itemArm
              * @instance
              * @type {number}
+             * @default 5
              */
             moveStackAmt: 5,
             /**
@@ -538,6 +542,7 @@
              * @memberof BLK_itemArm
              * @instance
              * @type {number}
+             * @default 8.0
              */
             itemDrawOff: 8.0,
             /**
@@ -545,6 +550,7 @@
              * @memberof BLK_itemArm
              * @instance
              * @type {number}
+             * @default 69.1
              */
             armZ: 69.1,
 

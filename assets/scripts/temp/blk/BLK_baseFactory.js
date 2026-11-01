@@ -172,6 +172,7 @@
              * @memberof BLK_baseFactory
              * @instance
              * @type {TDynamic<Array<number>>}
+             * @default []
              */
             inputDirs: tprov(() => []),
             /**
@@ -179,6 +180,7 @@
              * @memberof BLK_baseFactory
              * @instance
              * @type {TDynamic<Array<number>>}
+             * @default []
              */
             fldInputDirs: tprov(() => []),
             /**
@@ -186,6 +188,7 @@
              * @memberof BLK_baseFactory
              * @instance
              * @type {TDynamic<Array<number>>}
+             * @default []
              */
             outputDirs: tprov(() => []),
             /**
@@ -193,6 +196,7 @@
              * @memberof BLK_baseFactory
              * @instance
              * @type {UnlockableContent|null}
+             * @default null
              */
             rcMajorIo: null,
             /**
@@ -200,6 +204,7 @@
              * @memberof BLK_baseFactory
              * @instance
              * @type {SoundGn}
+             * @default Sounds.unset
              */
             craftSe: Sounds.unset,
 
@@ -212,6 +217,7 @@
              * @instance
              * @name craftEff
              * @type {Effect}
+             * @default Fx.none
              */
             "craftEff", "craftEffect", Fx.none,
             /**
@@ -220,6 +226,7 @@
              * @instance
              * @name updateEff
              * @type {Effect}
+             * @default Fx.none
              */
             "updateEff", "updateEffect", Fx.none,
             /**
@@ -228,6 +235,7 @@
              * @instance
              * @name updateEffP
              * @type {number}
+             * @default 0.02
              */
             "updateEffP", "updateEffectChance", 0.02,
         ])

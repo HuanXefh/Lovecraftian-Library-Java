@@ -164,6 +164,7 @@
                      * @memberof INTF_BLK_manualTimerBlock
                      * @instance
                      * @type {string}
+                     * @default "boolean"
                      */
                     manualTimerCfgType: "boolean",
                     /**
@@ -171,6 +172,7 @@
                      * @memberof INTF_BLK_manualTimerBlock
                      * @instance
                      * @type {number}
+                     * @default Number.n8
                      */
                     manualTimerCap: Number.n8,
                     /**
@@ -178,6 +180,7 @@
                      * @memberof INTF_BLK_manualTimerBlock
                      * @instance
                      * @type {number}
+                     * @default 60.0
                      */
                     manualTimerClickInc: 60.0,
                     /**
@@ -185,6 +188,7 @@
                      * @memberof INTF_BLK_manualTimerBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     skipTapConfig: false,
 

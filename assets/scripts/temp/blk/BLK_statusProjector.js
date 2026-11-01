@@ -148,6 +148,7 @@
              * @memberof BLK_statusProjector
              * @instance
              * @type {StatusGn}
+             * @default StatusEffects.none
              */
             staTarget: StatusEffects.none,
             /**
@@ -155,6 +156,7 @@
              * @memberof BLK_statusProjector
              * @instance
              * @type {number}
+             * @default 0.0
              */
             staDur: 0.0,
             /**
@@ -163,6 +165,7 @@
              * @memberof BLK_statusProjector
              * @instance
              * @type {Boolf2<Building, Unit>}
+             * @default boolf2(function(b, ounit) {return true})
              */
             filterScr: boolf2(function(b, ounit) {return true}),
 

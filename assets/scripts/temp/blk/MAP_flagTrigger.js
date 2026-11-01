@@ -70,6 +70,7 @@
              * @memberof MAP_flagTrigger
              * @instance
              * @type {boolean}
+             * @default false
              */
             triggerOnlyOnce: false,
 

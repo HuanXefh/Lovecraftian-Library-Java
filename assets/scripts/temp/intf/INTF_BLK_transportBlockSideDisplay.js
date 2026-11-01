@@ -100,6 +100,7 @@
                      * @memberof INTF_BLK_transportBlockSideDisplay
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     noTransSideReg: false,
                     /**
@@ -107,6 +108,7 @@
                      * @memberof INTF_BLK_transportBlockSideDisplay
                      * @instance
                      * @type {number}
+                     * @default -1
                      */
                     transSideRegZ: -1,
 

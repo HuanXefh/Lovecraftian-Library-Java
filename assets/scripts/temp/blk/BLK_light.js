@@ -137,6 +137,7 @@
              * @memberof BLK_light
              * @instance
              * @type {number}
+             * @default 200.0
              */
             lightRad: 200.0,
             /**
@@ -144,6 +145,7 @@
              * @memberof BLK_light
              * @instance
              * @type {number}
+             * @default 0.65
              */
             lightA: 0.65,
             /**
@@ -151,6 +153,7 @@
              * @memberof BLK_light
              * @instance
              * @type {number}
+             * @default 0.0
              */
             fogRadFrac: 0.0,
 

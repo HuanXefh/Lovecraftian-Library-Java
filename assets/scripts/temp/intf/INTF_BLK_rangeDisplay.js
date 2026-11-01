@@ -91,13 +91,15 @@
                      * @memberof INTF_BLK_rangeDisplay
                      * @instance
                      * @type {number}
+                     * @default 5
                      */
                     blkR: 5,
                     /**
                      * `PARAM`: See {@link INTF_BLK_radiusDisplay#useP3dRange}.
                      * @memberof INTF_BLK_rangeDisplay
                      * @instance
-                     * @param {boolean}
+                     * @type {boolean}
+                     * @default true
                      */
                     useP3dRange: true,
 

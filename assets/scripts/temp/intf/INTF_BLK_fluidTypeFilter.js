@@ -66,6 +66,7 @@
                      * @memberof INTF_BLK_fluidTypeFilter
                      * @instance
                      * @type {string}
+                     * @default "any"
                      */
                     fldType: "any",
 

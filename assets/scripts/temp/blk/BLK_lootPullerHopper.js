@@ -142,6 +142,7 @@
              * @memberof BLK_lootPullerHopper
              * @instance
              * @type {number}
+             * @default 8.0
              */
             powPull: 8.0,
             /**
@@ -149,6 +150,7 @@
              * @memberof BLK_lootPullerHopper
              * @instance
              * @type {number}
+             * @default 240.0
              */
             durPull: 240.0,
             /**
@@ -156,6 +158,7 @@
              * @memberof BLK_lootPullerHopper
              * @instance
              * @type {number}
+             * @default 240.0
              */
             intvPull: 240.0,
             /**
@@ -163,6 +166,7 @@
              * @memberof BLK_lootPullerHopper
              * @instance
              * @type {SoundGn}
+             * @default "SOUNDS: beamParallax"
              */
             pullSe: "SOUNDS: beamParallax",
 
@@ -187,8 +191,9 @@
              * @instance
              * @name pullRad
              * @type {number}
+             * @default 40.0
              */
-            "pullRad", "blkRad", 5 * 8.0,
+            "pullRad", "blkRad", 40.0,
         ])
         .setMethod({
 

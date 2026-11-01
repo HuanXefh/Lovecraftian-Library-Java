@@ -44,6 +44,7 @@
          * @memberof WEA_baseWeather
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaStat: true,
         /**
@@ -51,6 +52,7 @@
          * @memberof WEA_baseWeather
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaProp: true,
 

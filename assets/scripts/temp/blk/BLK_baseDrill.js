@@ -228,6 +228,7 @@
              * @memberof BLK_baseDrill
              * @instance
              * @type {number}
+             * @default 1.0
              */
             drillAmtMtp: 1.0,
             /**
@@ -235,6 +236,7 @@
              * @memberof BLK_baseDrill
              * @instance
              * @type {boolean}
+             * @default true
              */
             noSandOutput: true,
             /**
@@ -242,6 +244,7 @@
              * @memberof BLK_baseDrill
              * @instance
              * @type {TDynamic<Array<string|UnlockableContent>>}
+             * @default []
              */
             itemWhitelist: tprov(() => []),
             /**
@@ -249,6 +252,7 @@
              * @memberof BLK_baseDrill
              * @instance
              * @type {number}
+             * @default -1.0
              */
             drillItemDur: -1.0,
             /**
@@ -256,6 +260,7 @@
              * @memberof BLK_baseDrill
              * @instance
              * @type {boolean}
+             * @default false
              */
             shouldDropPay: false,
             /**
@@ -264,6 +269,7 @@
              * @memberof BLK_baseDrill
              * @instance
              * @type {number}
+             * @default 4
              */
             payAmtCap: 4,
             /**
@@ -271,6 +277,7 @@
              * @memberof BLK_baseDrill
              * @instance
              * @type {Effect}
+             * @default Fx.none
              */
             consEff: Fx.none,
 

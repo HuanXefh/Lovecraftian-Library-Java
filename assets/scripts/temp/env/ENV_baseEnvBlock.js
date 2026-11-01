@@ -76,6 +76,7 @@
          * @memberof ENV_baseEnvBlock
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaStat: true,
         /**
@@ -83,6 +84,7 @@
          * @memberof ENV_baseEnvBlock
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaProp: true,
         /**
@@ -90,6 +92,7 @@
          * @memberof ENV_baseEnvBlock
          * @instance
          * @type {number}
+         * @default -1.0
          */
         dropHardness: -1.0,
 

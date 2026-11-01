@@ -225,6 +225,7 @@
              * @memberof BLK_fluidPackager
              * @instance
              * @type {boolean}
+             * @default false
              */
             isUnpacker: false,
             /**
@@ -232,6 +233,7 @@
              * @memberof BLK_fluidPackager
              * @instance
              * @type {number}
+             * @default 1
              */
             packageAmt: 1,
             /**
@@ -239,6 +241,7 @@
              * @memberof BLK_fluidPackager
              * @instance
              * @type {number}
+             * @default 6.0
              */
             liqPerCellItem: 6.0,
 

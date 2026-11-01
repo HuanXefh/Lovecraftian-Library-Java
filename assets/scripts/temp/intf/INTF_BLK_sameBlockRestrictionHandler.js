@@ -151,6 +151,7 @@
                      * @memberof INTF_BLK_sameBlockRestrictionHandler
                      * @instance
                      * @type {number}
+                     * @default 5
                      */
                     placeRestrictR: 5,
                     /**
@@ -158,6 +159,7 @@
                      * @memberof INTF_BLK_sameBlockRestrictionHandler
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     useCircularPlaceRestrict: false,
                     /**
@@ -165,9 +167,10 @@
                      * <br> `ARGS`: blk, oblk.
                      * @memberof INTF_BLK_sameBlockRestrictionHandler
                      * @instance
-                     * @type {TDynamic<Boolf2<Block, Block>>}
+                     * @type {Boolf2<Block, Block>}
+                     * @default boolf2(function(blk, oblk) {return blk.id === oblk.id})
                      */
-                    sameTypeFilter: tprov(() => boolf2(function(blk, oblk) {return blk.id === oblk.id})),
+                    sameTypeFilter: boolf2(function(blk, oblk) {return blk.id === oblk.id}),
 
 
                     /* <------------------------------ internal ------------------------------> */

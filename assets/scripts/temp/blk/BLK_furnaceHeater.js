@@ -82,6 +82,7 @@
             * @memberof BLK_furnaceHeater
             * @instance
             * @type {number}
+            * @default 100.0
             */
             heatProd: 100.0,
 

@@ -76,6 +76,7 @@
              * @memberof BLK_baseFluidBlock
              * @instance
              * @type {boolean}
+             * @default false
              */
             allowAux: false,
 

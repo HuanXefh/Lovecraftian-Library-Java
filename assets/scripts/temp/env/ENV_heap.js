@@ -66,6 +66,7 @@
          * @memberof ENV_heap
          * @instance
          * @type {string|Floor|null}
+         * @default null
          */
         flrParent: null,
 

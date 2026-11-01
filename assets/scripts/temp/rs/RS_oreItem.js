@@ -69,6 +69,7 @@
          * @memberof RS_oreItem
          * @instance
          * @type {number}
+         * @default -1.0
          */
         sintTemp: -1.0,
 

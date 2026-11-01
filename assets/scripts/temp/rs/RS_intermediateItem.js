@@ -81,6 +81,7 @@
          * @memberof RS_intermediateItem
          * @instance
          * @type {ResourceGn}
+         * @default null
          */
         intmdParent: null,
         /**
@@ -89,6 +90,7 @@
          * @memberof RS_intermediateItem
          * @instance
          * @type {TDynamic<Array<string>>}
+         * @default []
          */
         extraIntmdParents: tprov(() => []),
         /**
@@ -97,6 +99,7 @@
          * @memberof RS_intermediateItem
          * @instance
          * @type {boolean}
+         * @default true
          */
         useParentReg: true,
         /**
@@ -105,6 +108,7 @@
          * @memberof RS_intermediateItem
          * @instance
          * @type {String|null}
+         * @default null
          */
         recolorRegStr: null,
 

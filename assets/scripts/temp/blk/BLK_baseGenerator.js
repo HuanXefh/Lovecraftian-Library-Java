@@ -147,6 +147,7 @@
              * @memberof BLK_baseGenerator
              * @instance
              * @type {boolean}
+             * @default true
              */
             setupExploParam: true,
 
@@ -159,6 +160,7 @@
              * @instance
              * @name genEff
              * @type {Effect}
+             * @default Fx.none
              */
             "genEff", "generateEffect", Fx.none,
             /**
@@ -167,6 +169,7 @@
              * @instance
              * @name genEffP
              * @type {number}
+             * @default 0.02
              */
             "genEffP", "effectChance", 0.02,
             /**
@@ -175,6 +178,7 @@
              * @instance
              * @name genEffRad
              * @type {number}
+             * @default 3.0
              */
             "genEffRad", "generateEffectRange", 3.0,
             /**
@@ -183,6 +187,7 @@
              * @instance
              * @name exploEff
              * @type {Effect}
+             * @default Fx.none
              */
             "exploEff", "explodeEffect", Fx.none,
         ])

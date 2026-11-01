@@ -57,6 +57,7 @@
          * @memberof UNIT_mech
          * @instance
          * @type {number}
+         * @default 0.0
          */
         jetTrailVelThr: 0.0,
 

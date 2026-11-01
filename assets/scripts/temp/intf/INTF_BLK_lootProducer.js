@@ -179,6 +179,7 @@
                      * `INTERNAL`: Increased by one when this building crafts. Loot is dumped when full item by default.
                      * @memberof INTF_B_lootProducer
                      * @instance
+                     * @type {number}
                      */
                     lootCharge: 0,
 

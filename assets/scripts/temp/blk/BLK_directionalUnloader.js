@@ -100,7 +100,9 @@
          * @class B_directionalUnloader
          * @extends B_baseItemGate
          */
-        newClass().extendClass(PARENT[1], "B_directionalUnloader").initClass()
+        newClass()
+        .extendClass(PARENT[1], "B_directionalUnloader")
+        .initTemplate()
         .setParent("DirectionalUnloader.DirectionalUnloaderBuild")
         .setParam({})
         .setMethod({

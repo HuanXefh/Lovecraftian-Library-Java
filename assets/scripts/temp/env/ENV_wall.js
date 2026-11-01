@@ -78,6 +78,7 @@
          * @memberof ENV_wall
          * @instance
          * @type {string|Floor|null}
+         * @default null
          */
         flrParent: null,
 

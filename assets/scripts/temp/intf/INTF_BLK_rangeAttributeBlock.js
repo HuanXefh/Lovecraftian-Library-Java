@@ -79,6 +79,7 @@
                      * @memberof INTF_BLK_rangeAttributeBlock
                      * @instance
                      * @type {number}
+                     * @default 5
                      */
                     attrR: 5,
                     /**
@@ -86,6 +87,7 @@
                      * @memberof INTF_BLK_rangeAttributeBlock
                      * @instance
                      * @type {ENumber}
+                     * @default AttrModes.FLOOR
                      */
                     attrMode: AttrModes.FLOOR,
                     /**
@@ -93,6 +95,7 @@
                      * @memberof INTF_BLK_rangeAttributeBlock
                      * @instance
                      * @type {ENumber}
+                     * @default AttrRecipeTypes.FLOOR
                      */
                     attrRcType: AttrRecipeTypes.FLOOR,
 

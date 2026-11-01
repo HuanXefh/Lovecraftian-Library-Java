@@ -743,16 +743,20 @@
 
                     /**
                      * `PARAM`: Recipe module (.js file) for this block (as string), usually the block name without mod name. The file should be located at `scripts/auxFi/rc`. Converted to actual object later.
+                     * <br> `REQUIRED`
                      * @memberof INTF_BLK_recipeHandler
                      * @instance
                      * @type {string|RecipeModule}
+                     * @default null
                      */
                     rcMdl: null,
                     /**
                      * `PARAM`: Mod (as string) to search module from.
+                     * <br> `REQUIRED`
                      * @memberof INTF_BLK_recipeHandler
                      * @instance
                      * @type {String}
+                     * @default null
                      */
                     rcSourceMod: null,
                     /**
@@ -760,6 +764,7 @@
                      * @memberof INTF_BLK_recipeHandler
                      * @instance
                      * @type {number}
+                     * @default 0.05
                      */
                     erekirHeatWarmupRate: 0.05,
                     /**
@@ -767,6 +772,7 @@
                      * @memberof INTF_BLK_recipeHandler
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     useAutoSelection: false,
                     /**
@@ -774,6 +780,7 @@
                      * @memberof INTF_BLK_recipeHandler
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     disableDump: false,
                     /**
@@ -781,6 +788,7 @@
                      * @memberof INTF_BLK_recipeHandler
                      * @instance
                      * @type {Effect}
+                     * @default GLB_eff.smogFail
                      */
                     failEff: GLB_eff.smogFail,
 

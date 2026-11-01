@@ -141,6 +141,7 @@
              * @memberof BLK_pipePump
              * @instance
              * @type {number}
+             * @default 2
              */
             pumpSize: 2,
 
@@ -172,6 +173,11 @@
 
             init: function() {
                 comp_init(this);
+            },
+
+
+            setStats: function(stats) {
+                this.multiBlockUpdater.setStats(getCtStats(this, stats));
             },
 
 

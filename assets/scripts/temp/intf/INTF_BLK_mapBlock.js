@@ -66,6 +66,7 @@
                      * @memberof INTF_BLK_mapBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     isWorldBlock: false,
 

@@ -126,6 +126,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {number}
+             * @default 40.0
              */
             bulDmg: 40.0,
             /**
@@ -133,6 +134,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {boolean}
+             * @default true
              */
             bulCollidesTerrain: true,
             /**
@@ -140,6 +142,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {boolean}
+             * @default false
              */
             bulCollidesTerrainCaveOnly: false,
             /**
@@ -147,6 +150,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {boolean}
+             * @default true
              */
             bulCollidesGround: true,
             /**
@@ -154,6 +158,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {boolean}
+             * @default false
              */
             bulCollidesAir: false,
             /**
@@ -161,6 +166,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {string}
+             * @default "shell"
              */
             bulSpr: "shell",
             /**
@@ -168,6 +174,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {number}
+             * @default 9.0
              */
             bulW: 9.0,
             /**
@@ -175,6 +182,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {number}
+             * @default 12.0
              */
             bulH: 12.0,
             /**
@@ -182,6 +190,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {number}
+             * @default 0.0
              */
             bulShrinkX: 0.0,
             /**
@@ -189,6 +198,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {number}
+             * @default 0.5
              */
             bulShrinkY: 0.5,
             /**
@@ -196,6 +206,7 @@
              * @memberof BLK_massDriver
              * @instance
              * @type {ExtendParamObject|null}
+             * @default null
              */
             bulParamObj: null,
 
@@ -214,6 +225,7 @@
              * @instance
              * @name shootEff
              * @type {Effect}
+             * @default Fx.shootBig2
              */
             "shootEff", "shootEffect", Fx.shootBig2,
             /**
@@ -222,6 +234,7 @@
              * @instance
              * @name smokeEff
              * @type {Effect}
+             * @default Fx.none
              */
             "smokeEff", "smokeEffect", Fx.none,
             /**
@@ -230,6 +243,7 @@
              * @instance
              * @name receiveEff
              * @type {Effect}
+             * @default Fx.mineBig
              */
             "receiveEff", "receiveEffect", Fx.mineBig,
         ])

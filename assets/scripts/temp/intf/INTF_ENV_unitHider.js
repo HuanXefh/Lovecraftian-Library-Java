@@ -39,6 +39,7 @@
                  * @memberof INTF_ENV_unitHider
                  * @instance
                  * @type {boolean}
+                 * @default false
                  */
                 hidable: false,
 

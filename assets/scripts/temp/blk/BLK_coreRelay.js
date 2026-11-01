@@ -139,6 +139,7 @@
              * @memberof BLK_coreRelay
              * @instance
              * @type {number}
+             * @default 300.0
              */
             itemSendCooldown: 300.0,
             /**
@@ -146,6 +147,7 @@
              * @memberof BLK_coreRelay
              * @instance
              * @type {SoundGn}
+             * @default "se-shot-core-relay"
              */
             shootSe: "se-shot-core-relay",
 

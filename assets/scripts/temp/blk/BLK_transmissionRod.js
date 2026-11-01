@@ -141,6 +141,7 @@
              * @memberof BLK_transmissionRod
              * @instance
              * @type {number}
+             * @default 8
              */
             rodFrameAmt: 8,
 

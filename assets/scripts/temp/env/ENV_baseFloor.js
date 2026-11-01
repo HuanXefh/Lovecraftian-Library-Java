@@ -44,6 +44,7 @@
          * @instance
          * @name cacheLay
          * @type {CacheLayer}
+         * @default CacheLayer.normal
          */
         "cacheLay", "cacheLayer", CacheLayer.normal,
     ])

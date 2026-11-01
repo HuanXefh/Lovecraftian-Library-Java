@@ -67,6 +67,7 @@
              * @memberof BLK_furnaceFactory
              * @instance
              * @type {number}
+             * @default 100.0
              */
             tempReq: 100.0,
 

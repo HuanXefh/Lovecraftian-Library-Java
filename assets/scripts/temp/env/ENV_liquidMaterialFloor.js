@@ -136,6 +136,7 @@
          * @memberof ENV_liquidMaterialFloor
          * @instance
          * @type {string}
+         * @default "none"
          */
         matGrp: "none",
         /**
@@ -143,6 +144,7 @@
          * @memberof ENV_liquidMaterialFloor
          * @instance
          * @type {Effect}
+         * @default Fx.none
          */
         updateEff: Fx.none,
         /**
@@ -150,6 +152,7 @@
          * @memberof ENV_liquidMaterialFloor
          * @instance
          * @type {number}
+         * @default 0.02
          */
         updateEffP: 0.02,
         /**
@@ -157,6 +160,7 @@
          * @memberof ENV_liquidMaterialFloor
          * @instance
          * @type {number}
+         * @default 3.0
          */
         updateEffSpread: 3.0,
         /**
@@ -164,6 +168,7 @@
          * @memberof ENV_liquidMaterialFloor
          * @instance
          * @type {number}
+         * @default 0.4
          */
         updateEffThr: 0.4,
 

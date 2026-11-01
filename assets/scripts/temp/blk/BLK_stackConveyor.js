@@ -69,6 +69,7 @@
              * @memberof BLK_stackConveyor
              * @instance
              * @type {boolean}
+             * @default true
              */
             isMainBus: true,
 
@@ -88,6 +89,7 @@
              * @instance
              * @name loadEff
              * @type {Effect}
+             * @default Fx.conveyorPoof
              */
             "loadEff", "loadEffect", Fx.conveyorPoof,
             /**
@@ -96,6 +98,7 @@
              * @instance
              * @name unloadEff
              * @type {Effect}
+             * @default Fx.conveyorPoof
              */
             "unloadEff", "unloadEffect", Fx.conveyorPoof,
         ])

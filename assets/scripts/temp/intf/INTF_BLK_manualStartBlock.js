@@ -175,6 +175,7 @@
                      * @memberof INTF_BLK_manualStartBlock
                      * @instance
                      * @type {string}
+                     * @default "boolean"
                      */
                     manualStartCfgType: "boolean",
                     /**
@@ -182,6 +183,7 @@
                      * @memberof INTF_BLK_manualStartBlock
                      * @instance
                      * @type {number}
+                     * @default 0.001
                      */
                     manualStartIncRate: 0.001,
                     /**
@@ -189,6 +191,7 @@
                      * @memberof INTF_BLK_manualStartBlock
                      * @instance
                      * @type {number}
+                     * @default 0.008
                      */
                     manualStartDecRate: 0.008,
                     /**
@@ -196,6 +199,7 @@
                      * @memberof INTF_BLK_manualStartBlock
                      * @instance
                      * @number {boolean}
+                     * @default false
                      */
                     skipTapConfig: false,
 

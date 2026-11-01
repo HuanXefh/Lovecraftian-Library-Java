@@ -48,6 +48,7 @@
                      * @memberof INTF_BLK_buildingRecacheHandler
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     recacheForItem: false,
                     /**
@@ -55,6 +56,7 @@
                      * @memberof INTF_BLK_buildingRecacheHandler
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     recacheForFld: false,
 

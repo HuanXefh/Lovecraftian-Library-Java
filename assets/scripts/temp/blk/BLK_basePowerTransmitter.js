@@ -180,6 +180,7 @@
              * @memberof BLK_basePowerTransmitter
              * @instance
              * @type {boolean}
+             * @default false
              */
             ignoreShortCircuitPlacement: false,
             /**
@@ -187,6 +188,7 @@
              * @memberof BLK_basePowerTransmitter
              * @instance
              * @type {number}
+             * @default Infinity
              */
             maxPowProdAllowed: Infinity,
             /**
@@ -194,6 +196,7 @@
              * @memberof BLK_basePowerTransmitter
              * @instance
              * @type {number}
+             * @default 1.0
              */
             transmitterOverloadDmgScl: 1.0,
 

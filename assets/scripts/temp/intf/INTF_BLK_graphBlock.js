@@ -177,6 +177,7 @@
                      * @memberof INTF_BLK_graphBlock
                      * @instance
                      * @type {string}
+                     * @default "test"
                      */
                     graphType: "test",
                     /**
@@ -184,6 +185,7 @@
                      * @memberof INTF_BLK_graphBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     isNoRotGraph: false,
 

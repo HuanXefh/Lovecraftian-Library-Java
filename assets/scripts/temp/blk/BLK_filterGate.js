@@ -176,6 +176,7 @@
              * @memberof BLK_filterGate
              * @instance
              * @type {Boolf3<BFilterGate, Building, Item>}
+             * @default boolf3(function(b, b_f, item) {return item === b.sortItem})
              */
             filterScr: boolf3(function(b, b_f, item) {return item === b.sortItem}),
             /**
@@ -183,6 +184,7 @@
              * @memberof BLK_filterGate
              * @instance
              * @type {boolean}
+             * @default false
              */
             hideSelection: false,
 

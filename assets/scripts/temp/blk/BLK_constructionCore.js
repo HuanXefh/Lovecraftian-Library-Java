@@ -710,13 +710,16 @@
              * @memberof BLK_constructionCore
              * @instance
              * @type {TDynamic<ConstructionRawData>}
+             * @default [[]]
              */
             constructionData: tprov(() => [[]]),
             /**
              * `PARAM`: Target block that is built upon structure completion.
+             * <br> `REQUIRED`
              * @memberof BLK_constructionCore
              * @instance
              * @type {Block}
+             * @default null
              */
             placeBlk: null,
             /**
@@ -724,6 +727,7 @@
              * @memberof BLK_constructionCore
              * @instance
              * @type {Number|null}
+             * @default null
              */
             placeDataX: null,
             /**
@@ -731,6 +735,7 @@
              * @memberof BLK_constructionCore
              * @instance
              * @type {Number|null}
+             * @default null
              */
             placeDataY: null,
             /**
@@ -738,6 +743,7 @@
              * @memberof BLK_constructionCore
              * @instance
              * @type {number}
+             * @default 0
              */
             placeOffRot: 0,
             /**
@@ -745,6 +751,7 @@
              * @memberof BLK_constructionCore
              * @instance
              * @type {number}
+             * @default 3600.0
              */
             constructionTimeReq: 3600.0,
             /**
@@ -752,6 +759,7 @@
              * @memberof BLK_constructionCore
              * @instance
              * @type {boolean}
+             * @default false
              */
             skipTargetSetup: false,
 

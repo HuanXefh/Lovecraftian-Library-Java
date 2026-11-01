@@ -67,6 +67,7 @@
              * @memberof BLK_baseStorageBlock
              * @instance
              * @type {boolean}
+             * @default false
              */
             singleTypeOnly: false,
 

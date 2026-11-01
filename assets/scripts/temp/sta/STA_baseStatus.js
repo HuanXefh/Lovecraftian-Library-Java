@@ -84,6 +84,7 @@
          * @memberof STA_baseStatus
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaStat: true,
         /**
@@ -91,6 +92,7 @@
          * @memberof STA_baseStatus
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaProp: true,
 
@@ -121,6 +123,7 @@
          * @instance
          * @name eff
          * @type {Effect}
+         * @default Fx.none
          */
         "eff", "effect", Fx.none,
         /**
@@ -129,6 +132,7 @@
          * @instance
          * @name effP
          * @type {number}
+         * @default 0.02
          */
         "effP", "effectChance", 0.02,
     ])

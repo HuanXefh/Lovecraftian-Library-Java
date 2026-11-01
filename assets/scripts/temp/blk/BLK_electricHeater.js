@@ -62,10 +62,11 @@
 
 
             /**
-             * @inheritdoc
+             * @override
              * @memberof BLK_electricHeater
              * @instance
              * @type {number}
+             * @default 100.0
              */
             heatProd: 100.0,
 

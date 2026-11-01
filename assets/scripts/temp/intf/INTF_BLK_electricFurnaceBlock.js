@@ -169,6 +169,7 @@
                      * @memberof INTF_BLK_electricFurnaceBlock
                      * @instance
                      * @type {number}
+                     * @default 1.0
                      */
                     powConsBase: 1.0,
                     /**
@@ -176,6 +177,7 @@
                      * @memberof INTF_BLK_electricFurnaceBlock
                      * @instance
                      * @type {number}
+                     * @default 1.0
                      */
                     powConsPerFuelLvl: 1.0,
                     /**
@@ -183,18 +185,23 @@
                      * @memberof INTF_BLK_electricFurnaceBlock
                      * @instance
                      * @type {number}
+                     * @default 1.5
                      */
                     maxOverheatScl: 1.5,
                     /**
-                     * @inheritdoc
+                     * @override
                      * @memberof INTF_BLK_electricFurnaceBlock
                      * @instance
+                     * @type {number}
+                     * @default 0.0001
                      */
                     heatWarmupRate: 0.0001,
                     /**
-                     * @inheritdoc
+                     * @override
                      * @memberof INTF_BLK_electricFurnaceBlock
                      * @instance
+                     * @type {number}
+                     * @default 40.0
                      */
                     heatLightRad: 40.0,
 

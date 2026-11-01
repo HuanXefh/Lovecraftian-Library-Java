@@ -105,6 +105,7 @@
                      * @memberof INTF_BLK_lootHandler
                      * @instance
                      * @type {number}
+                     * @default 0.0
                      */
                     lootCallCooldown: 0.0,
                     /**
@@ -112,6 +113,7 @@
                      * @memberof INTF_BLK_lootHandler
                      * @instance
                      * @type {number}
+                     * @default 0
                      */
                     lootCallAmt: 0,
 

@@ -108,6 +108,7 @@
          * @memberof ENV_vent
          * @instance
          * @type {string}
+         * @default "none"
          */
         ventRs: "none",
 

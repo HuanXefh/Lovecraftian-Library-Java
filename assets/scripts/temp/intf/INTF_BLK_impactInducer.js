@@ -135,6 +135,7 @@
                      * @memberof INTF_BLK_impactInducer
                      * @instance
                      * @type {number}
+                     * @default 40.0
                      */
                     impactRad: 40.0,
 

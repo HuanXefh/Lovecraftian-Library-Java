@@ -198,9 +198,11 @@
 
         /**
          * `PARAM`: Parent floor block.
+         * <br> `REQUIRED`
          * @memberof ENV_geyser
          * @instance
          * @type {Floor}
+         * @default null
          */
         parent: null,
 

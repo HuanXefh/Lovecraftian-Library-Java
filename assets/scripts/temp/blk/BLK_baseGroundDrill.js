@@ -197,6 +197,7 @@
              * @memberof BLK_baseGroundDrill
              * @instance
              * @type {boolean}
+             * @default false
              */
             canMineDepthOre: false,
             /**
@@ -204,6 +205,7 @@
              * @memberof BLK_baseGroundDrill
              * @instance
              * @type {number}
+             * @default 0.5
              */
             depthTierMtp: 0.5,
             /**
@@ -211,6 +213,7 @@
              * @memberof BLK_baseGroundDrill
              * @instance
              * @type {number}
+             * @default 0
              */
             maxDepthLvl: 0,
 
@@ -223,6 +226,7 @@
              * @instance
              * @name drillEff
              * @type {Effect}
+             * @default Fx.none
              */
             "drillEff", "drillEffect", Fx.none,
             /**
@@ -231,6 +235,7 @@
              * @instance
              * @name drillEffP
              * @type {number}
+             * @default 1.0
              */
             "drillEffP", "drillEffectChance", 1.0,
             /**
@@ -239,6 +244,7 @@
              * @instance
              * @name drillEffRad
              * @type {number}
+             * @default 0.0
              */
             "drillEffRad", "drillEffectRnd", 0.0,
             /**
@@ -247,6 +253,7 @@
              * @instance
              * @name updateEff
              * @type {Effect}
+             * @default Fx.none
              */
             "updateEff", "updateEffect", Fx.none,
             /**
@@ -255,6 +262,7 @@
              * @instance
              * @name updateEffP
              * @type {number}
+             * @default 0.02
              */
             "updateEffP", "updateEffectChance", 0.02,
         ])

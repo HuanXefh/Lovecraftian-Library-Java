@@ -230,6 +230,7 @@
              * @memberof BLK_oreScanner
              * @instance
              * @type {number}
+             * @default 0
              */
             scanTier: 0,
             /**
@@ -237,6 +238,7 @@
              * @memberof BLK_oreScanner
              * @instance
              * @type {Color}
+             * @default GLB_color.techBlue
              */
             scanColor: GLB_color.techBlue,
             /**
@@ -244,13 +246,15 @@
              * @memberof BLK_oreScanner
              * @instance
              * @type {SoundGn}
+             * @default Sounds.unset
              */
             craftSe: Sounds.unset,
             /**
-             * @inheritdoc
+             * @override
              * @memberof BLK_oreScanner
              * @instance
              * @type {boolean}
+             * @default true
              */
             useP3dRange: true,
 
@@ -276,6 +280,7 @@
              * @instance
              * @name scanRad
              * @type {number}
+             * @default 40.0
              */
             "scanRad", "blkRad", 40.0,
             /**
@@ -284,6 +289,7 @@
              * @instance
              * @name craftEff
              * @type {Effect}
+             * @default Fx.none
              */
             "craftEff", "craftEffect", Fx.none,
             /**
@@ -292,6 +298,7 @@
              * @instance
              * @name updateEff
              * @type {Effect}
+             * @default Fx.none
              */
             "updateEff", "updateEffect", Fx.none,
             /**
@@ -300,6 +307,7 @@
              * @instance
              * @name updateEffP
              * @type {number}
+             * @default 0.02
              */
             "updateEffP", "updateEffectChance", 0.02,
         ])

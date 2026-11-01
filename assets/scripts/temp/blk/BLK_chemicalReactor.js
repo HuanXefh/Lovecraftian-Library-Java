@@ -55,10 +55,11 @@
 
 
             /**
-             * @inheritdoc
+             * @override
              * @memberof BLK_chemicalReactor
              * @instance
              * @type {number}
+             * @default 0.3
              */
             furnHeatA: 0.3,
 

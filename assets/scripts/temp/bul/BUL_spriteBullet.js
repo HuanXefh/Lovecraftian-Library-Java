@@ -108,6 +108,7 @@
          * @memberof BUL_spriteBullet
          * @instance
          * @type {number}
+         * @default 0.0
          */
         offH: 0.0,
         /**
@@ -115,6 +116,7 @@
          * @memberof BUL_spriteBullet
          * @instance
          * @type {boolean}
+         * @default true
          */
         shouldDrawShadow: true,
         /**
@@ -122,6 +124,7 @@
          * @memberof BUL_spriteBullet
          * @instance
          * @type {number}
+         * @default 79.9
          */
         shaZ: 79.9,
         /**
@@ -129,6 +132,7 @@
          * @memberof BUL_spriteBullet
          * @instance
          * @type {number}
+         * @default -8.0
          */
         offSha: -8.0,
 

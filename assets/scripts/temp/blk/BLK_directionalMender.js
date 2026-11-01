@@ -185,6 +185,7 @@
              * @memberof BLK_directionalMender
              * @instance
              * @type {number}
+             * @default 0.0
              */
             bHealAmt: 0.0,
             /**
@@ -192,6 +193,7 @@
              * @memberof BLK_directionalMender
              * @instance
              * @type {number}
+             * @default 0.0
              */
             bHealPerc: 0.0,
 

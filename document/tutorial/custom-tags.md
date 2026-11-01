@@ -18,6 +18,7 @@ Apart from JSDoc tags, there are comment tags to describe fields and methods in 
 | Tag          | Target          | Description                                                                   | Value                         |
 |--------------|-----------------|-------------------------------------------------------------------------------|-------------------------------|
 | `PARAM`      | Field           | This field is a parameter.                                                    | description                   |
+| `REQUIRED`   | Field           | This field is required to be set, otherwise an error may be thrown.           |
 | `INTERNAL`   | Field           | This field is an internal parameter.                                          | description                   |
 | `ALIAS`      | Field           | This field is an alias of another field.                                      | realField                     |
 | `VALS`       | Field           | Possible values for this field.                                               | value1, value2, value3, ...   |

@@ -33,7 +33,7 @@ type Letter = string|java.lang.Character
 /** Number used in enum. */
 type ENumber = number;
 /** Used to fetch localized text from `Core.bundle`. */
-type BundlePiece = string;
+type BundlePiece = String;
 
 
 type ContentTypeGn = Class<Object>|string|Array<Class<Object>|string>|null;

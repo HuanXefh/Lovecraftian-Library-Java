@@ -318,6 +318,7 @@
              * @memberof BLK_baseBlock
              * @instance
              * @type {boolean}
+             * @default true
              */
             setupVanillaStat: true,
             /**
@@ -325,6 +326,7 @@
              * @memberof BLK_baseBlock
              * @instance
              * @type {boolean}
+             * @default true
              */
             setupVanillaProp: true,
             /**
@@ -332,6 +334,7 @@
              * @memberof BLK_baseBlock
              * @instance
              * @type {boolean}
+             * @default false
              */
             forceUseDrawer: false,
             /**
@@ -339,6 +342,7 @@
              * @memberof BLK_baseBlock
              * @instance
              * @type {boolean}
+             * @default false
              */
             skipOutlineSetup: false,
             /**
@@ -346,6 +350,7 @@
              * @memberof BLK_baseBlock
              * @instance
              * @type {boolean}
+             * @default false
              */
             useConfigStr: false,
             /**
@@ -353,12 +358,15 @@
              * @memberof BLK_baseBlock
              * @instance
              * @type {boolean}
+             * @default false
              */
             isWaterborne: false,
             /**
              * `PARAM`: If true, this block cannot be built directly and is expected to be produced as payload.
              * @memberof BLK_baseBlock
              * @instance
+             * @type {boolean}
+             * @default false
              */
             payBuiltOnly: false,
             /**
@@ -366,6 +374,7 @@
              * @memberof BLK_baseBlock
              * @instance
              * @type {boolean}
+             * @default false
              */
             noLoot: false,
             /**
@@ -373,6 +382,7 @@
              * @memberof BLK_baseBlock
              * @instance
              * @type {boolean}
+             * @default false
              */
             noReac: false,
             /**
@@ -380,6 +390,7 @@
              * @memberof BLK_baseBlock
              * @instance
              * @type {boolean}
+             * @default false
              */
             canShortCircuit: false,
 

@@ -78,6 +78,7 @@
              * @memberof BLK_infoFactory
              * @instance
              * @type {Func<Building, String|null>}
+             * @default null
              */
             infoF: null,
             /**
@@ -85,6 +86,7 @@
              * @memberof BLK_infoFactory
              * @instance
              * @type {number}
+             * @default 0
              */
             infoOffTy: 0,
 

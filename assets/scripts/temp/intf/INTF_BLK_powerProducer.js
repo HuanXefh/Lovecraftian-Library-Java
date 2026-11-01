@@ -118,6 +118,7 @@
                      * @memberof INTF_BLK_powerProducer
                      * @instance
                      * @type {number}
+                     * @default 0.0
                      */
                     powProd: 0.0,
                     /**
@@ -125,6 +126,7 @@
                      * @memberof INTF_BLK_powerProducer
                      * @instance
                      * @type {boolean}
+                     * @default true
                      */
                     showPowProdBar: true,
                     /**
@@ -132,6 +134,7 @@
                      * @memberof INTF_BLK_powerProducer
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     showPowBalanceBar: false,
 

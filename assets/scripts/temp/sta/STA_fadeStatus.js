@@ -73,6 +73,7 @@
          * @memberof STA_fadeStatus
          * @instance
          * @type {Color}
+         * @default Color.white
          */
         fadeColor: Color.white,
 

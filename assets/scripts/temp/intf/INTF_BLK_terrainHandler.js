@@ -113,6 +113,7 @@
                      * @memberof INTF_BLK_terrainHandler
                      * @instance
                      * @type {TDynamic<Array<string>>}
+                     * @default []
                      */
                     ters: tprov(() => []),
                     /**
@@ -120,6 +121,7 @@
                      * @memberof INTF_BLK_terrainHandler
                      * @instance
                      * @type {string}
+                     * @default "enable"
                      */
                     terMode: "enable",
                     /**
@@ -127,6 +129,7 @@
                      * @memberof INTF_BLK_terrainHandler
                      * @instance
                      * @type {number}
+                     * @default 0
                      */
                     terTextOffTy: 0,
 

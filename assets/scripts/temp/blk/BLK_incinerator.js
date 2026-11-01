@@ -251,6 +251,7 @@
              * @memberof BLK_incinerator
              * @instance
              * @type {boolean}
+             * @default true
              */
             hasExploIncineration: true,
             /**
@@ -259,6 +260,7 @@
              * @memberof BLK_incinerator
              * @instance
              * @type {Boolf<Item>}
+             * @default boolf(function(item) {return true})
              */
             itemTargetFilter: boolf(function(item) {return true}),
             /**
@@ -267,6 +269,7 @@
              * @memberof BLK_incinerator
              * @instance
              * @type {Boolf<Liquid>}
+             * @default boolf(function(liq) {return true})
              */
             liqTargetFilter: boolf(function(liq) {return true}),
             /**
@@ -274,6 +277,7 @@
              * @memberof BLK_incinerator
              * @instance
              * @type {SoundGn}
+             * @default Sounds.unset
              */
             craftSe: Sounds.unset,
 
@@ -286,6 +290,7 @@
              * @instance
              * @name craftEff
              * @type {Effect}
+             * @default Fx.none
              */
             "craftEff", "craftEffect", Fx.none,
             /**
@@ -294,6 +299,7 @@
              * @instance
              * @name updateEff
              * @type {Effect}
+             * @default Fx.none
              */
             "updateEff", "updateEffect", Fx.none,
             /**
@@ -302,6 +308,7 @@
              * @instance
              * @name updateEffP
              * @type {number}
+             * @default 0.02
              */
             "updateEffP", "updateEffectChance", 0.02,
         ])

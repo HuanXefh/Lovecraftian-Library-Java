@@ -88,10 +88,12 @@
 
         /**
          * `PARAM`: Name of the dialog flow used, see {@link newDialogFlow}.
-         * <br> <BUNDLE - name>: `dial.<nameDialFlow>`.
+         * <br> `REQUIRED`
+         * <br> `BUNDLE - name`: `dial.<nameDialFlow>`.
          * @memberof DBCT_dialFlowContent
          * @instance
          * @type {BundlePiece}
+         * @default null
          */
         nameDialFlow: null,
 

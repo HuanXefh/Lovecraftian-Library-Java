@@ -109,6 +109,7 @@
              * @memberof BLK_groundDrill
              * @instance
              * @type {boolean}
+             * @default true
              */
             useAccel: true,
 

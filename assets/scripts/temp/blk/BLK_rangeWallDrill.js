@@ -312,6 +312,7 @@
              * @memberof BLK_rangeWallDrill
              * @instance
              * @type {string}
+             * @default "wall"
              */
             mineMode: "wall",
 
@@ -364,6 +365,7 @@
              * @instance
              * @name mineR
              * @type {number}
+             * @default 5
              */
             "mineR", "range", 5,
         ])

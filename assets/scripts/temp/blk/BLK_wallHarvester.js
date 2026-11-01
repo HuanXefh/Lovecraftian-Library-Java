@@ -110,6 +110,7 @@
              * @memberof BLK_wallHarvester
              * @instance
              * @type {boolean}
+             * @default true
              */
             shouldDropLoot: true,
 
@@ -122,6 +123,7 @@
              * @instance
              * @name updateEff
              * @type {Effect}
+             * @default Fx.none
              */
             "updateEff", "updateEffect", Fx.none,
             /**
@@ -130,6 +132,7 @@
              * @instance
              * @name updateEffP
              * @type {number}
+             * @default 0.02
              */
             "updateEffP", "updateEffectChance", 0.02,
         ])

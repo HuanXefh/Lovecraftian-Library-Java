@@ -297,6 +297,7 @@
                      * @memberof INTF_BLK_pressureBlock
                      * @instance
                      * @type {number}
+                     * @default 0.0
                      */
                     presThr: 0.0,
                     /**
@@ -304,6 +305,7 @@
                      * @memberof INTF_BLK_pressureBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     skipPresSupply: false,
                     /**
@@ -311,6 +313,7 @@
                      * @memberof INTF_BLK_pressureBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     isPresRouter: false,
 

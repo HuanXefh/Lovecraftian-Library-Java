@@ -134,6 +134,7 @@
              * @memberof BLK_radiusMender
              * @instance
              * @type {number}
+             * @default 0.0
              */
             bHealAmt: 0.0,
             /**
@@ -141,6 +142,7 @@
              * @memberof BLK_radiusMender
              * @instance
              * @type {number}
+             * @default 0.0
              */
             bHealPerc: 0.0,
             /**
@@ -148,6 +150,7 @@
              * @memberof BLK_radiusMender
              * @instance
              * @type {number}
+             * @default 0.0
              */
             unitHealAmt: 0.0,
             /**
@@ -155,6 +158,7 @@
              * @memberof BLK_radiusMender
              * @instance
              * @type {number}
+             * @default 0.0
              */
             unitHealPerc: 0.0,
 

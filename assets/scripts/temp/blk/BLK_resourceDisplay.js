@@ -98,6 +98,7 @@
              * @memberof BLK_resourceDisplay
              * @instance
              * @type {number}
+             * @default 2.0
              */
             ctRegPad: 2.0,
 

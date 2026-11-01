@@ -86,6 +86,7 @@
              * @memberof BLK_auxiliaryCable
              * @instance
              * @type {number}
+             * @default Number.n8
              */
             maxPowProdAllowed: Number.n8,
 

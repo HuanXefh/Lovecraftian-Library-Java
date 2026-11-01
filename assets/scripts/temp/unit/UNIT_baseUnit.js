@@ -193,6 +193,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaStat: true,
         /**
@@ -200,6 +201,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaProp: true,
         /**
@@ -207,6 +209,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {boolean}
+         * @default false
          */
         skipOutlineSetup: false,
         /**
@@ -214,6 +217,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {boolean}
+         * @default true
          */
         useLovecDamagePenalty: true,
         /**
@@ -221,6 +225,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {boolean}
+         * @default false
          */
         immuneToAll: false,
         /**
@@ -228,6 +233,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {TDynamic<Array<string>>}
+         * @default []
          */
         itemBlacklist: tprov(() => []),
         /**
@@ -235,6 +241,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {number}
+         * @default 0.0
          */
         baseShieldA: 0.0,
         /**
@@ -242,6 +249,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {number}
+         * @default 1.0
          */
         shieldRadScl: 1.0,
         /**
@@ -249,6 +257,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {number}
+         * @default 0.75
          */
         shieldRadHitInc: 0.75,
         /**
@@ -256,6 +265,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {boolean}
+         * @default true
          */
         useConicalLight: true,
         /**
@@ -263,6 +273,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {number}
+         * @default 0.4
          */
         lightConeScl: 0.4,
         /**
@@ -270,6 +281,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {number}
+         * @default -1.0
          */
         unitDurabCap: -1.0,
         /**
@@ -277,6 +289,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {boolean}
+         * @default false
          */
         isTetheredUnit: false,
         /**
@@ -284,6 +297,7 @@
          * @memberof UNIT_baseUnit
          * @instance
          * @type {number}
+         * @default 180.0
          */
         noTetherDespawnTime: 180.0,
 

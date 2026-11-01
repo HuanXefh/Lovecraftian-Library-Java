@@ -357,20 +357,24 @@
             * @memberof BLK_crop
             * @instance
             * @type {ItemGn}
+            * @default null
             */
             cropParent: null,
             /**
              * `PARAM`: Crop stage data as an array.
+             * <br> `REQUIRED`
              * @memberof BLK_crop
              * @instance
              * @type {TDynamic<Array<CropData>>|null}
+             * @default null
              */
             cropData: null,
             /**
-             * @inheritdoc
+             * @override
              * @memberof BLK_crop
              * @instance
              * @type {number}
+             * @default 1
              */
             placeRestrictR: 1,
 

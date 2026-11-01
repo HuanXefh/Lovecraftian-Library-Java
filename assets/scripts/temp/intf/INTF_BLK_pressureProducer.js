@@ -184,6 +184,7 @@
                      * @memberof INTF_BLK_pressureProducer
                      * @instance
                      * @type {number}
+                     * @default 0.0
                      */
                     presProd: 0.0,
                     /**
@@ -191,6 +192,7 @@
                      * @memberof INTF_BLK_pressureProducer
                      * @instance
                      * @type {string}
+                     * @default "any"
                      */
                     presFldType: "any",
                     /**
@@ -198,6 +200,7 @@
                      * @memberof INTF_BLK_pressureProducer
                      * @instance
                      * @type {TDynamic<Array<Point2>>}
+                     * @default []
                      */
                     presDumpPons: tprov(() => []),
 

@@ -72,6 +72,7 @@
              * @memberof BLK_core
              * @instance
              * @type {Effect}
+             * @default GLB_eff.sparkPower
              */
             cepOutageEff: GLB_eff.sparkPower,
             /**
@@ -79,6 +80,7 @@
              * @memberof BLK_core
              * @instance
              * @type {number}
+             * @default 0.04
              */
             cepOutageEffP: 0.04,
 

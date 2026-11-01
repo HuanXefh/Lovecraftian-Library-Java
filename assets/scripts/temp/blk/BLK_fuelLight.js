@@ -82,13 +82,15 @@
              * @memberof BLK_fuelLight
              * @instance
              * @type {number}
+             * @default 1000.0
              */
             maxLightTemp: 1000.0,
             /**
-             * @inheritdoc
+             * @override
              * @memberof BLK_fuelLight
              * @instance
              * @type {boolean}
+             * @default false
              */
             shouldDrawHeatLight: false,
 

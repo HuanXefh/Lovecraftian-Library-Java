@@ -95,6 +95,7 @@
                      * @memberof INTF_BLK_wireDamageInducer
                      * @instance
                      * @type {string}
+                     * @default "copper"
                      */
                     wireMat: "copper",
                     /**
@@ -102,6 +103,7 @@
                      * @memberof INTF_BLK_wireDamageInducer
                      * @instance
                      * @type {number}
+                     * @default 0.0
                      */
                     wireTouchDmg: 0.0,
                     /**
@@ -109,6 +111,7 @@
                      * @memberof INTF_BLK_wireDamageInducer
                      * @instance
                      * @type {Color}
+                     * @default GLB_color.accent
                      */
                     wireArcColor: GLB_color.accent,
 

@@ -93,6 +93,7 @@
              * @memberof BLK_generatorRecipeFactory
              * @instance
              * @type {number}
+             * @default Infinity
              */
             exploMinWarmup: Infinity,
 

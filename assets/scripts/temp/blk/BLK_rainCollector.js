@@ -153,8 +153,9 @@
              * @memberof BLK_rainCollector
              * @instance
              * @type {number}
+             * @default 0.0
              */
-            liqProdRate: 0.1,
+            liqProdRate: 0.0,
 
 
         })

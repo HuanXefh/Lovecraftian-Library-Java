@@ -44,6 +44,7 @@
          * @memberof WP_baseWeapon
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaStat: true,
         /**
@@ -51,6 +52,7 @@
          * @memberof WP_baseWeapon
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaProp: true,
 

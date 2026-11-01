@@ -114,6 +114,7 @@
              * @memberof BLK_consumeGenerator
              * @instance
              * @type {number}
+             * @default -1.0
              */
             genWarmupRate: -1.0,
 
@@ -126,6 +127,7 @@
              * @instance
              * @name consEff
              * @type {Effect}
+             * @default Fx.none
              */
             "consEff", "consumeEffect", Fx.none,
         ])

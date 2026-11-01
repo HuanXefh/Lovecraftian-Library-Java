@@ -148,6 +148,7 @@
                    * @memberof INTF_BLK_durabilityBlock
                    * @instance
                    * @type {number}
+                   * @default Infinity
                    */
                   durabCap: Infinity,
                   /**
@@ -155,6 +156,7 @@
                    * @memberof INTF_BLK_durabilityBlock
                    * @instance
                    * @type {number}
+                   * @default 1.0
                    */
                   durabDecMtp: 1.0,
                   /**
@@ -162,6 +164,7 @@
                    * @memberof INTF_BLK_durabilityBlock
                    * @instance
                    * @type {number}
+                   * @default 0.75
                    */
                   durabDmgFrac: 0.75,
                   /**
@@ -169,6 +172,7 @@
                    * @memberof INTF_BLK_durabilityBlock
                    * @instance
                    * @type {boolean}
+                   * @default true
                    */
                   noDurabDmgKill: true,
                   /**
@@ -176,6 +180,7 @@
                    * @memberof INTF_BLK_durabilityBlock
                    * @instance
                    * @type {number}
+                   * @default 0.5
                    */
                   durabRegenFracMin: 0.5,
                   /**
@@ -183,6 +188,7 @@
                    * @memberof INTF_BLK_durabilityBlock
                    * @instance
                    * @type {number}
+                   * @default 1.0
                    */
                   durabRegenFracMax: 1.0,
                   /**
@@ -190,6 +196,7 @@
                    * @memberof INTF_BLK_durabilityBlock
                    * @instance
                    * @number {number}
+                   * @default 0
                    */
                   durabTextOffTy: 0,
 

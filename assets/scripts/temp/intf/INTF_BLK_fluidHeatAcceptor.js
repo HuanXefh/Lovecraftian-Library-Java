@@ -164,6 +164,7 @@
                      * @memberof INTF_BLK_fluidHeatAcceptor
                      * @instance
                      * @type {number}
+                     * @default 0.004
                      */
                     fHeatWarmupRate: 0.004,
                     /**
@@ -171,6 +172,7 @@
                      * @memberof INTF_BLK_fluidHeatAcceptor
                      * @instance
                      * @type {number}
+                     * @default 160.0
                      */
                     visualFullFHeatThr: 160.0,
                     /**
@@ -178,6 +180,7 @@
                      * @memberof INTF_BLK_fluidHeatAcceptor
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     shouldRotFHeatReg: false,
 

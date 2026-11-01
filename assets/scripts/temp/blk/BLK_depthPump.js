@@ -172,6 +172,7 @@
              * @memberof BLK_depthPump
              * @instance
              * @type {number}
+             * @default 0.0
              */
             liqProdRate: 0.0,
             /**
@@ -179,6 +180,7 @@
              * @memberof BLK_depthPump
              * @instance
              * @type {number}
+             * @default 0
              */
             maxDepthLvl: 0,
 

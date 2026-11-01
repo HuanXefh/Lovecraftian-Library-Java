@@ -73,6 +73,7 @@
          * @memberof ENV_grassHeap
          * @instance
          * @type {number}
+         * @default 76.0
          */
         layGrass: 76.0,
         /**
@@ -80,6 +81,7 @@
          * @memberof ENV_grassHeap
          * @instance
          * @type {number}
+         * @default -1.0
          */
         grassRad: -1.0,
 

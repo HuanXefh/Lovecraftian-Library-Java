@@ -181,6 +181,7 @@
              * @memberof BLK_payloadConveyor
              * @instance
              * @type {boolean}
+             * @default false
              */
             isRouter: false,
 

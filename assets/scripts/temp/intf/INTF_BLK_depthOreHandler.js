@@ -130,6 +130,7 @@
                      * @memberof INTF_BLK_depthOreHandler
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     skipDepthOreMethod: false,
 

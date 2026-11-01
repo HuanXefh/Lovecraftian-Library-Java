@@ -63,6 +63,7 @@
              * @memberof BLK_heatProducer
              * @instance
              * @type {number}
+             * @default 0.0
              */
             heatProd: 0.0,
 

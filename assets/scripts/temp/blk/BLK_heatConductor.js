@@ -92,6 +92,7 @@
              * @memberof BLK_heatConductor
              * @instance
              * @type {number}
+             * @default 100.0
              */
             visualFullHeatThr: 100.0,
 

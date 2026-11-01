@@ -65,6 +65,7 @@
          * @memberof STA_burstStatus
          * @instance
          * @type {Floatf2<Unit, number>}
+         * @default function(unit, time) {return 300.0}
          */
         timeF: floatf2(function(unit, time) {return 300.0}),
 

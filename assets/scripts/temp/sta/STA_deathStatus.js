@@ -44,7 +44,8 @@
          * <br> `ARGS`: unit.
          * @memberof STA_deathStatus
          * @instance
-         * @type {Cons<Unit>}
+         * @type {Cons<Unit>|null}
+         * @default null
          */
         killedScr: null,
 

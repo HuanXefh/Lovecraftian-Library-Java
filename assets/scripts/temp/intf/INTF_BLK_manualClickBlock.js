@@ -156,6 +156,7 @@
                      * @memberof INTF_BLK_manualClickBlock
                      * @instance
                      * @type {string}
+                     * @default "boolean"
                      */
                     manualClickCfgType: "boolean",
                     /**
@@ -163,6 +164,7 @@
                      * @memberof INTF_BLK_manualClickBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     skipTapConfig: false,
 

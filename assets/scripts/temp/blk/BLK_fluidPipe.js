@@ -175,6 +175,7 @@
              * @memberof BLK_fluidPipe
              * @instance
              * @type {boolean}
+             * @default false
              */
             isShortCircuitPipe: false,
 

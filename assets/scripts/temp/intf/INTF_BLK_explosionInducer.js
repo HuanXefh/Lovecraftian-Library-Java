@@ -107,6 +107,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {boolean}
+                     * @default true
                      */
                     hasImpactOnExplosion: true,
                     /**
@@ -114,6 +115,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {number}
+                     * @default 0.0
                      */
                     exploDmg: 0.0,
                     /**
@@ -121,6 +123,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {number}
+                     * @default 40.0
                      */
                     exploRad: 40.0,
                     /**
@@ -128,6 +131,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {Liquid|null}
+                     * @default null
                      */
                     exploLiq: null,
                     /**
@@ -135,6 +139,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {number}
+                     * @default 10
                      */
                     exploPuddleAmt: 10,
                     /**
@@ -142,6 +147,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {number}
+                     * @default 20.0
                      */
                     exploPuddleRad: 20.0,
                     /**
@@ -149,6 +155,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {number}
+                     * @default 100.0
                      */
                     exploPuddleLiqAmt: 100.0,
                     /**
@@ -156,6 +163,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {number}
+                     * @default 0.0
                      */
                     exploShake: 0.0,
                     /**
@@ -163,6 +171,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {number}
+                     * @default 60.0
                      */
                     exploShakeDur: 60.0,
                     /**
@@ -170,6 +179,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {Effect}
+                     * @default GLB_eff.explosion
                      */
                     exploEff: GLB_eff.explosion,
                     /**
@@ -177,6 +187,7 @@
                      * @memberof INTF_BLK_explosionInducer
                      * @instance
                      * @type {SoundGn}
+                     * @default "se-shot-explosion"
                      */
                     exploSe: "se-shot-explosion",
 

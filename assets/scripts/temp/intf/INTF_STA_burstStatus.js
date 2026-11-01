@@ -76,6 +76,7 @@
                  * @memberof INTF_STA_burstStatus
                  * @instance
                  * @type {number}
+                 * @default 0.0
                  */
                 burstTime: 0.0,
                 /**
@@ -83,6 +84,7 @@
                  * @memberof INTF_STA_burstStatus
                  * @instance
                  * @type {number}
+                 * @default 0.0
                  */
                 burstDamage: 0.0,
                 /**
@@ -90,6 +92,7 @@
                  * @memberof INTF_STA_burstStatus
                  * @instance
                  * @type {number}
+                 * @default 0.0
                  */
                 burstDamagePerc: 0.0,
                 /**
@@ -97,6 +100,7 @@
                  * @memberof INTF_STA_burstStatus
                  * @instance
                  * @type {boolean}
+                 * @default true
                  */
                 burstDamageIgnoreShield: true,
                 /**
@@ -104,6 +108,7 @@
                  * @memberof INTF_STA_burstStatus
                  * @instance
                  * @type {Effect}
+                 * @default Fx.none
                  */
                 burstEff: Fx.none,
                 /**
@@ -111,6 +116,7 @@
                  * @memberof INTF_STA_burstStatus
                  * @instance
                  * @type {Color}
+                 * @default Color.white
                  */
                 burstEffColor: Color.white,
                 /**
@@ -118,6 +124,7 @@
                  * @memberof INTF_STA_burstStatus
                  * @instance
                  * @type {CFunction<Unit>|null}
+                 * @default null
                  */
                 burstScr: null,
 

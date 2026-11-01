@@ -85,11 +85,13 @@
 
         /**
          * `PARAM`: Name for information, don't include mod name here. The title will be used as content name.
+         * <br> `REQUIRED`
          * <br> `BUNDLE - title`: `info.<nameMod>-info-content-<nameInfo>.name`.
          * <br> `BUNDLE - text`: `info.<nameMod>-info-content-<nameInfo>.description`.
          * @memberof DBCT_infoContent
          * @instance
          * @type {BundlePiece}
+         * @default null
          */
         nameInfo: null,
 

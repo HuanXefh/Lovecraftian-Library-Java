@@ -91,6 +91,7 @@
                      * @memberof INTF_BLK_radiusDisplay
                      * @instance
                      * @type {number}
+                     * @default 40.0
                      */
                     blkRad: 40.0,
                     /**
@@ -98,6 +99,7 @@
                      * @memberof INTF_BLK_radiusDisplay
                      * @instance
                      * @param {boolean}
+                     * @default true
                      */
                     useP3dRange: true,
 

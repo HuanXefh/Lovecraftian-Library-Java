@@ -65,8 +65,12 @@
 
         // Just in case
         MDL_event.onDelayRun(5.0, () => {
-            if(isNaN(b.delegee.torCur)) b.delegee.torCur = 0.0;
-            if(isNaN(b.delegee.rpmCur)) b.delegee.rpmCur = 0.0;
+            if(isNaN(b.delegee.torCur)) {
+                b.delegee.torCur = 0.0;
+            };
+            if(isNaN(b.delegee.rpmCur)) {
+                b.delegee.rpmCur = 0.0;
+            };
         });
     };
 
@@ -229,6 +233,7 @@
                      * @memberof INTF_BLK_torqueBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     skipTorFetch: false,
                     /**
@@ -236,6 +241,7 @@
                      * @memberof INTF_BLK_torqueBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     skipTorSupply: false,
                     /**
@@ -243,6 +249,7 @@
                      * @memberof INTF_BLK_torqueBlock
                      * @instance
                      * @type {number}
+                     * @default 0.002
                      */
                     rpmDropRate: 0.002,
 

@@ -91,6 +91,7 @@
          * @memberof PLA_asteroid
          * @instance
          * @type {Block}
+         * @default Blocks.stoneWall
          */
         blkBase: Blocks.stoneWall,
         /**
@@ -98,6 +99,7 @@
          * @memberof PLA_asteroid
          * @instance
          * @type {Block}
+         * @default Blocks.iceWall
          */
         blkTint: Blocks.iceWall,
         /**
@@ -105,6 +107,7 @@
          * @memberof PLA_asteroid
          * @instance
          * @type {number}
+         * @default -1
          */
         astSeed: -1,
         /**
@@ -112,6 +115,7 @@
          * @memberof PLA_asteroid
          * @instance
          * @type {number}
+         * @default 0.5
          */
         tintThr: 0.5,
         /**
@@ -119,6 +123,7 @@
          * @memberof PLA_asteroid
          * @instance
          * @type {number}
+         * @default 12
          */
         astAmt: 12,
         /**
@@ -126,6 +131,7 @@
          * @memberof PLA_asteroid
          * @instance
          * @type {number}
+         * @default 1.0
          */
         astScl: 1.0,
 

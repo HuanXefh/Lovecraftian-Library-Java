@@ -112,6 +112,7 @@
          * @memberof ENV_baseTree
          * @instance
          * @type {number}
+         * @default 76.0
          */
         layTree: 76.0,
         /**
@@ -119,6 +120,7 @@
          * @memberof ENV_baseTree
          * @instance
          * @type {number}
+         * @default 0.0
          */
         treeRad: 0.0,
 

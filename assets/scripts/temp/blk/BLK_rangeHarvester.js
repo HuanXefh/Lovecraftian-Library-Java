@@ -154,6 +154,7 @@
              * @memberof BLK_rangeHarvester
              * @instance
              * @type {boolean}
+             * @default true
              */
             shouldDropLoot: true,
             /**
@@ -161,6 +162,7 @@
              * @memberof BLK_rangeHarvester
              * @instance
              * @type {UnlockableContent|null}
+             * @default null
              */
             rcMajorIo: null,
             /**
@@ -168,6 +170,7 @@
              * @memberof BLK_rangeHarvester
              * @instance
              * @type {SoundGn}
+             * @default Sounds.unset
              */
             craftSe: Sounds.unset,
 
@@ -186,6 +189,7 @@
              * @instance
              * @name craftEff
              * @type {Effect}
+             * @default Fx.none
              */
             "craftEff", "craftEffect", Fx.none,
             /**
@@ -194,6 +198,7 @@
              * @instance
              * @name updateEff
              * @type {Effect}
+             * @default Fx.none
              */
             "updateEff", "updateEffect", Fx.none,
             /**
@@ -202,6 +207,7 @@
              * @instance
              * @name updateEffP
              * @type {number}
+             * @default 0.02
              */
             "updateEffP", "updateEffectChance", 0.02,
         ])

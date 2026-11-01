@@ -82,10 +82,11 @@
 
 
             /**
-             * @inheritdoc
+             * @override
              * @memberof BLK_directionalFluidRouter
              * @instance
              * @type {boolean}
+             * @default true
              */
             noPresExplode: true,
 

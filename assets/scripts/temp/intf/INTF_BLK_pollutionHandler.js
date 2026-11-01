@@ -127,6 +127,7 @@
                      * @memberof INTF_BLK_pollutionHandler
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     revertedPolEffc: false,
 

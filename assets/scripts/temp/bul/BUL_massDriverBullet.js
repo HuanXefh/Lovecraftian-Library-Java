@@ -75,17 +75,19 @@
 
 
         /**
-         * @inheritdoc
+         * @override
          * @memberof BUL_massDriverBullet
          * @instance
          * @type {number}
+         * @default 4.0
          */
         offH: 4.0,
         /**
-         * @inheritdoc
+         * @override
          * @memberof BUL_massDriverBullet
          * @instance
          * @type {number}
+         * @default -14.0
          */
         offSha: -14.0,
 

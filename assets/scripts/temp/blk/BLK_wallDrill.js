@@ -215,6 +215,7 @@
              * @instance
              * @name mineR
              * @type {number}
+             * @default 1
              */
             "mineR", "range", 1,
         ])

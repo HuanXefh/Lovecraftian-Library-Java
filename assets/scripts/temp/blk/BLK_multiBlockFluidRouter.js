@@ -66,6 +66,11 @@
             },
 
 
+            setStats: function(stats) {
+                this.multiBlockUpdater.setStats(getCtStats(this, stats));
+            },
+
+
         }),
 
 

@@ -216,6 +216,7 @@
                      * @memberof INTF_BLK_payloadBlock
                      * @instance
                      * @type {number}
+                     * @default -1.0
                      */
                     payAmtCap: -1.0,
                     /**
@@ -223,6 +224,7 @@
                      * @memberof INTF_BLK_payloadBlock
                      * @instance
                      * @type {ENumber}
+                     * @default SideFracModes.FRONT
                      */
                     payInputSideFracMode: SideFracModes.FRONT,
                     /**
@@ -230,6 +232,7 @@
                      * @memberof INTF_BLK_payloadBlock
                      * @instance
                      * @type {ENumber}
+                     * @default SideFracModes.FRONT
                      */
                     payOutputSideFracMode: SideFracModes.FRONT,
 

@@ -45,6 +45,7 @@
          * @memberof PLA_basePlanet
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaStat: true,
         /**
@@ -52,6 +53,7 @@
          * @memberof PLA_basePlanet
          * @instance
          * @type {boolean}
+         * @default true
          */
         setupVanillaProp: true,
         /**
@@ -59,6 +61,7 @@
          * @memberof PLA_basePlanet
          * @instance
          * @type {boolean}
+         * @default false
          */
         skipMeshParse: false,
         /**
@@ -66,6 +69,7 @@
          * @memberof PLA_basePlanet
          * @instance
          * @type {boolean}
+         * @default false
          */
         skipCloudMeshParse: false,
         /**
@@ -73,6 +77,7 @@
          * @memberof PLA_basePlanet
          * @instance
          * @type {boolean}
+         * @default false
          */
         skipGeneratorParse: false,
 

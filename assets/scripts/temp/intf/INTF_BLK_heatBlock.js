@@ -382,6 +382,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {number}
+                     * @default 0.0008
                      */
                     heatWarmupRate: 0.0008,
                     /**
@@ -389,6 +390,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {number}
+                     * @default -1.0
                      */
                     heatCooldownRate: -1.0,
                     /**
@@ -396,6 +398,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {number}
+                     * @default 1.0
                      */
                     tempExtMtp: 1.0,
                     /**
@@ -403,6 +406,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     skipHeatFetch: false,
                     /**
@@ -410,6 +414,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     skipHeatTrans: false,
                     /**
@@ -417,6 +422,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     skipHeatSupply: false,
                     /**
@@ -424,6 +430,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {boolean}
+                     * @default false
                      */
                     isHeatRouter: false,
                     /**
@@ -431,6 +438,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {number}
+                     * @default 1.0
                      */
                     heatA: 1.0,
                     /**
@@ -438,6 +446,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {boolean}
+                     * @default true
                      */
                     shouldDrawDoubleHeat: true,
                     /**
@@ -445,6 +454,7 @@
                     * @memberof INTF_BLK_heatBlock
                     * @instance
                     * @type {boolean}
+                    * @default true
                     */
                     shouldDrawHeatLight: true,
                     /**
@@ -452,6 +462,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {number}
+                     * @default 1000.0
                      */
                     heatLightTempReq: 1000.0,
                     /**
@@ -459,6 +470,7 @@
                      * @memberof INTF_BLK_heatBlock
                      * @instance
                      * @type {number}
+                     * @default -1.0
                      */
                     heatLightRad: -1.0,
 

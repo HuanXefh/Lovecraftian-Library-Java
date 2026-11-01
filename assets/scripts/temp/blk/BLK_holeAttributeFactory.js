@@ -248,6 +248,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {TDynamic<Point2>}
+             * @default new Point2(1, 1)
              */
             holeOffPon: tprov(() => new Point2(1, 1)),
             /**
@@ -255,13 +256,16 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {number}
+             * @default 1
              */
             holeSize: 1,
             /**
              * `PARAM`: Target attribute.
+             * <br> `REQUIRED`
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {Attribute}
+             * @default null
              */
             attribute: null,
             /**
@@ -269,6 +273,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {ENumber}
+             * @default AttrModes.BLOCK
              */
             attrMode: AttrModes.BLOCK,
             /**
@@ -276,6 +281,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {ENumber}
+             * @default AttrRecipeTypes.WALL
              */
             attrRcType: AttrRecipeTypes.WALL,
             /**
@@ -283,6 +289,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {number}
+             * @default 0.0
              */
             attrMin: 0.0,
             /**
@@ -290,6 +297,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {number}
+             * @default 1.0
              */
             attrMax: 1.0,
             /**
@@ -297,6 +305,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {number}
+             * @default 1.0
              */
             attrBoostScl: 1.0,
             /**
@@ -304,6 +313,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {number}
+             * @default Number.n8
              */
             attrBoostCap: Number.n8,
             /**
@@ -311,6 +321,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {boolean}
+             * @default true
              */
             shouldDrawAttrText: true,
             /**
@@ -318,6 +329,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {number}
+             * @default 0
              */
             attrTextOffTy: 0,
             /**
@@ -325,6 +337,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {Effect}
+             * @default Fx.none
              */
             holeUpdateEff: Fx.none,
             /**
@@ -332,6 +345,7 @@
              * @memberof BLK_holeAttributeFactory
              * @instance
              * @type {number}
+             * @default 0.02
              */
             holeUpdateEffP: 0.02,
 

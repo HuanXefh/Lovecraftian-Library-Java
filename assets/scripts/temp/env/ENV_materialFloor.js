@@ -107,6 +107,7 @@
          * @memberof ENV_materialFloor
          * @instance
          * @type {string}
+         * @default "none"
          */
         matGrp: "none",
         /**
@@ -114,6 +115,7 @@
          * @memberof ENV_materialFloor
          * @instance
          * @type {TDynamic<Array<string>|D2Array<TextureRegion>>}
+         * @default []
          */
         randRegs: tprov(() => []),
         /**
@@ -121,6 +123,7 @@
          * @memberof ENV_materialFloor
          * @instance
          * @type {TDynamic<Array<number>>}
+         * @default [80]
          */
         randRegDenoms: tprov(() => [80]),
         /**
@@ -128,6 +131,7 @@
          * @memberof ENV_materialFloor
          * @instance
          * @type {TDynamic<Tup2<number, number>>}
+         * @default [0, 0]
          */
         randRegOffs: tprov(() => [0, 0]),
 

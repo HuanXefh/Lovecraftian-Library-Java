@@ -99,6 +99,7 @@
                      * @memberof INTF_BLK_oreScannerHandler
                      * @instance
                      * @type {number}
+                     * @default 0
                      */
                     noScannerTextOffTy: 0,
 

@@ -25,7 +25,7 @@
         blk.useColor = false;
 
         BOX_trigger.mapExit.addGlobalListener(() => {
-            blk.delegee.drawnMap.clear();
+            blk.delegee.depthDrawnMap.clear();
         });
 
         MDL_event.onDraw(() => {
@@ -33,7 +33,7 @@
 
             processZ(GLB_var.layer.dporeRevealed, 4);
             Draw.alpha(0.65);
-            blk.delegee.drawnMap.each((t, cond) => {
+            blk.delegee.depthDrawnMap.each((t, cond) => {
                 if(!cond || !SLCCheck.checkPosVisible(t.worldx(), t.worldy(), 8.0)) return;
                 Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx(), t.worldy());
             });
@@ -114,8 +114,8 @@
      */
     function comp_ex_accRevealed(blk, t, param) {
         return param === "SPEC: read" ?
-            blk.delegee.drawnMap.get(t, false) :
-            blk.delegee.drawnMap.put(t, param);
+            blk.delegee.depthDrawnMap.get(t, false) :
+            blk.delegee.depthDrawnMap.put(t, param);
     };
 
 
@@ -142,6 +142,7 @@
                  * @memberof INTF_ENV_depthOverlay
                  * @instance
                  * @type {number}
+                 * @default 0
                  */
                 depthLvl: 0,
 
@@ -155,7 +156,7 @@
                  * @instance
                  * @type {TDynamic<ObjectMap<Tile, boolean>>}
                  */
-                drawnMap: tprov(() => new ObjectMap()),
+                depthDrawnMap: tprov(() => new ObjectMap()),
 
 
                 /* <------------------------------ vanilla ------------------------------> */

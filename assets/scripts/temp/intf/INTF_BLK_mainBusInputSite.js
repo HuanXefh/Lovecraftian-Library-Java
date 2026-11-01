@@ -48,6 +48,7 @@
                      * @memberof INTF_BLK_mainBusInputSite
                      * @instance
                      * @type {boolean}
+                     * @default true
                      */
                     isMainBusInputSite: true,
 

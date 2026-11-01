@@ -92,8 +92,9 @@
          * @instance
          * @name layGrass
          * @type {number}
+         * @default 58.8
          */
-        "layGrass", "layer", Layer.groundUnit - 1.2,
+        "layGrass", "layer", 58.8,
     ])
     .setMethod({
 

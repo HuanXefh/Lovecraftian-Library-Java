@@ -225,6 +225,7 @@
              * @memberof BLK_terrainDynamicDrill
              * @instance
              * @type {TDynamic<ObjectMap<string, ObjectMap<string, string>>>}
+             * @default new ObjectMap()
              * @example
              * ObjectMap.of(
              *     "sand", ObjectMap.of(

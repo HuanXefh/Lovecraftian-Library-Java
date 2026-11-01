@@ -174,6 +174,7 @@
                  * @memberof INTF_ENV_dynamicSizeVent
                  * @instance
                  * @type {number}
+                 * @default 3
                  */
                 ventSize: 3,
 

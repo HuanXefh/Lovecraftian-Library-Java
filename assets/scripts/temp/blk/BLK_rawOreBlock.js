@@ -110,6 +110,7 @@
              * @memberof BLK_rawOreBlock
              * @instance
              * @type {ContentGn}
+             * @default null
              */
             oreParent: null,
             /**
@@ -117,6 +118,7 @@
              * @memberof BLK_rawOreBlock
              * @instance
              * @type {String|null}
+             * @default "lovec-gen-raw-ore-1"
              */
             recolorRegStr: "lovec-gen-raw-ore-1",
 

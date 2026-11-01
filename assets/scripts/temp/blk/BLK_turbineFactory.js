@@ -53,7 +53,7 @@
          */
         newClass()
         .extendClass(PARENT[0], "BLK_turbineFactory")
-        .initClass()
+        .initTemplate()
         .setParent("GenericCrafter")
         .setTags("blk-non-fac")
         .setParam({})
