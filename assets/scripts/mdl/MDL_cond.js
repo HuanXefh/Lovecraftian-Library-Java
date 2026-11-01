@@ -1028,7 +1028,7 @@
     })
     .setAnno("init", function() {
         MDL_event.onLoad(() => {
-            this.injuredStas.inSituMap(nameSta => MDL_content.getCt(nameSta, ContentGetModes.STA)).compact();
+            this.injuredStas.inSituMap(nameSta => MDL_content.getCt(nameSta, ContentGetModes.STA, true)).compact();
         });
     });
     exports.isUnitInjured = isUnitInjured;
@@ -1054,7 +1054,7 @@
     })
     .setAnno("init", function() {
         MDL_event.onLoad(() => {
-            this.damagedStas.inSituMap(nameSta => MDL_content.getCt(nameSta, ContentGetModes.STA)).compact();
+            this.damagedStas.inSituMap(nameSta => MDL_content.getCt(nameSta, ContentGetModes.STA, true)).compact();
         });
     });
     exports.isUnitDamaged = isUnitDamaged;

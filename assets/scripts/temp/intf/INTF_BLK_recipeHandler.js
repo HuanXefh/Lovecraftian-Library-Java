@@ -154,7 +154,7 @@
             };
 
             if(!SLCVersionResolver.isV8 && blk.delegee.isErekirHeatConsumer) {
-                let consHeat = extend(eval("ConsumeHeat"), 0.0, {
+                let consHeat = extend(ConsumeHeat, 0.0, {
                     fraction(b) {
                         return b.heatFrac();
                     },

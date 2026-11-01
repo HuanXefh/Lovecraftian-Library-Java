@@ -135,7 +135,7 @@
                 packer.get(parent),
             );
             SLCVersionResolver.isV8 ?
-                packer.add(eval("MultiPacker.PageType.main"), rs.name + "-recolor", pix) :
+                packer.add(MultiPacker.PageType.main, rs.name + "-recolor", pix) :
                 packer.add(rs.name + "-recolor", pix);
             pix.dispose();
             pixBase = packer.get(rs.name + "-recolor");
@@ -154,7 +154,7 @@
             if(rs.delegee.recolorRegStr == null) {
                 // No base sprite used for this intermediate, free unused space in atlas
                 SLCVersionResolver.isV8 ?
-                    packer.add(eval("MultiPacker.PageType.main"), rs.name, SLCAirObjects.pixmap) :
+                    packer.add(MultiPacker.PageType.main, rs.name, SLCAirObjects.pixmap) :
                     packer.add(rs.name, SLCAirObjects.pixmap);
                 rs.delegee.parentRegStr = parent;
             } else {
@@ -167,7 +167,7 @@
             // For recolored sprites, always use parent as the icon tag
             pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, parent);
             SLCVersionResolver.isV8 ?
-                packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t1", pixCombine) :
+                packer.add(MultiPacker.PageType.main, rs.name + "-t1", pixCombine) :
                 packer.add(rs.name + "-t1", pixCombine);
             pixCombine.dispose();
             alts++;
@@ -183,7 +183,7 @@
                 pixTag = packer.get(nameMod + "-rs0tag-" + tag);
                 pixCombine = MDL_texture.stackPix(pixBase, pixTag);
                 SLCVersionResolver.isV8 ?
-                    packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t" + (alts + 1), pixCombine) :
+                    packer.add(MultiPacker.PageType.main, rs.name + "-t" + (alts + 1), pixCombine) :
                     packer.add(rs.name + "-t" + (alts + 1), pixCombine);
                 pixCombine.dispose();
                 alts++;
@@ -194,7 +194,7 @@
         rs.delegee.extraIntmdParents.forEachFast(nameRs => {
             pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, nameRs);
             SLCVersionResolver.isV8 ?
-                packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t" + (alts + 1), pixCombine) :
+                packer.add(MultiPacker.PageType.main, rs.name + "-t" + (alts + 1), pixCombine) :
                 packer.add(rs.name + "-t" + (alts + 1), pixCombine);
             pixCombine.dispose();
             alts++;

@@ -271,7 +271,7 @@
         if(suffix == null) suffix = "";
         let pix = pixF();
         SLCVersionResolver.isV8 ?
-            packer.add(eval("MultiPacker.PageType.main"), ct.name + suffix, pix) :
+            packer.add(MultiPacker.PageType.main, ct.name + suffix, pix) :
             packer.add(ct.name + suffix, pix);
         pix.dispose();
     };

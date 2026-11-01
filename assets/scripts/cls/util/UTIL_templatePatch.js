@@ -159,7 +159,7 @@
                 callback(ct, jval.remove(name));
             };
         });
-        Reflect.invoke(ContentParser, GLB_var.ctParser, "readFields", [ct, jval], JAVA.object, SLCVersionResolver.isV8 ? eval("JsonValue") : Jval);
+        Reflect.invoke(ContentParser, GLB_var.ctParser, "readFields", [ct, jval], JAVA.object, SLCVersionResolver.isV8 ? JsonValue : Jval);
     };
 
 
@@ -338,7 +338,7 @@
         let consumes = jval.remove("consumes");
         if(consumes == null) return;
         if(!consumes.isObject()) throw new Error("`consumes` must be an object: " + blk.name);
-        Reflect.invoke(ContentParser, GLB_var.ctParser, "readBlockConsumers", [blk, consumes], Block, SLCVersionResolver.isV8 ? eval("JsonValue") : Jval);
+        Reflect.invoke(ContentParser, GLB_var.ctParser, "readBlockConsumers", [blk, consumes], Block, SLCVersionResolver.isV8 ? JsonValue : Jval);
     };
 
 
@@ -378,7 +378,7 @@
                 pla.meshLoader = prov(() => {
                     let mesh_fi;
                     try {
-                        mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, SLCVersionResolver.isV8 ? eval("JsonValue") : Jval);
+                        mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, SLCVersionResolver.isV8 ? JsonValue : Jval);
                     } catch(err) {
                         console.err(err);
                         mesh_fi = new ShaderSphereMesh(pla, Shaders.unlit, 2);
@@ -398,7 +398,7 @@
                 pla.cloudMeshLoader = prov(() => {
                     let mesh_fi;
                     try {
-                        mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, SLCVersionResolver.isV8 ? eval("JsonValue") : Jval);
+                        mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, SLCVersionResolver.isV8 ? JsonValue : Jval);
                     } catch(err) {
                         console.err(err);
                         mesh_fi = null;
@@ -542,7 +542,7 @@
         let jval = jsonToJval(fi);
         // Convert `Jval` to `JsonValue` in v8
         if(SLCVersionResolver.isV8) {
-            jval = eval("GLB_var.jsonParser.fromJson(null, jval.toString(Jval.Jformat.plain))");
+            jval = GLB_var.jsonParser.fromJson(null, jval.toString(Jval.Jformat.plain));
         };
         if(jval.isString()) {
             jval = null;

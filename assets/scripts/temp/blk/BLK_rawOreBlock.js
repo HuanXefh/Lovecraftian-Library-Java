@@ -53,7 +53,7 @@
             packer.get(parent),
         );
         SLCVersionResolver.isV8 ?
-            packer.add(eval("MultiPacker.PageType.main"), blk.name, pix) :
+            packer.add(MultiPacker.PageType.main, blk.name, pix) :
             packer.add(blk.name, pix);
         pix.dispose();
     };

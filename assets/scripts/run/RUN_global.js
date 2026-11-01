@@ -69,7 +69,7 @@
              * @return {number}
              */
             getTime() {
-                return SLCVersionResolver.isV8 ? eval("Time.time") : eval("Vars.state.time");
+                return SLCVersionResolver.isV8 ? Time.time : Vars.state.time;
             },
 
 

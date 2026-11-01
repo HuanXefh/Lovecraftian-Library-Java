@@ -188,10 +188,10 @@
         tmpIntfs.clear();
         if(SLCVersionResolver.isV8) {
             if(obj.blk$isErekirHeatConsumer) {
-                tmpIntfs.push(eval("HeatConsumer"));
+                tmpIntfs.push(HeatConsumer);
             };
             if(obj.blk$isErekirHeatProducer) {
-                tmpIntfs.push(eval("HeatBlock"));
+                tmpIntfs.push(HeatBlock);
             };
         };
         return tmpIntfs;

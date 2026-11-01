@@ -100,83 +100,95 @@
 
 
     if(SLCVersionResolver.isV8) {
-        PlayerJoinEvent = eval(EventType.PlayerJoin);
-        PlayerConnectEvent = eval(EventType.PlayerConnect);
-        PlayerLeaveEvent = eval(EventType.PlayerLeave);
+        PlayerJoinEvent = EventType.PlayerJoin;
+        PlayerConnectEvent = EventType.PlayerConnect;
+        PlayerLeaveEvent = EventType.PlayerLeave;
 
-        LoadShader = eval("Shaders.LoadShader");
-        DarknessShader = eval("Shaders.DarknessShader");
-        LightShader = eval("Shaders.LightShader");
-        FogShader = eval("Shaders.FogShader");
+        PackContext = null;
+
+        LoadShader = Shaders.LoadShader;
+        DarknessShader = Shaders.DarknessShader;
+        LightShader = Shaders.LightShader;
+        FogShader = Shaders.FogShader;
         DepthScreenspaceShader = null;
-        MeshShader = eval("Shaders.MeshShader");
-        PlanetShader = eval("Shaders.PlanetShader");
-        AtmosphereShader = eval("Shaders.AtmosphereShader");
-        CloudShader = eval("Shaders.CloudShader");
-        PlanetGridShader = eval("Shaders.PlanetGridShader");
-        SpaceShader = eval("Shaders.SpaceShader");
-        SurfaceShader = eval("Shaders.SurfaceShader");
-        BlockBuildShader = eval("Shaders.BlockBuildShader");
-        UnitBuildShader = eval("Shaders.UnitBuildShader");
-        BuildBeamShader = eval("Shaders.BuildBeamShader");
-        ShieldShader = eval("Shaders.ShieldShader");
-        UnitArmorShader = eval("Shaders.UnitArmorShader");
-        ShockwaveShader = eval("Shaders.ShockwaveShader");
+        MeshShader = Shaders.MeshShader;
+        PlanetShader = Shaders.PlanetShader;
+        AtmosphereShader = Shaders.AtmosphereShader;
+        CloudShader = Shaders.CloudShader;
+        PlanetGridShader = Shaders.PlanetGridShader;
+        SpaceShader = Shaders.SpaceShader;
+        SurfaceShader = Shaders.SurfaceShader;
+        BlockBuildShader = Shaders.BlockBuildShader;
+        UnitBuildShader = Shaders.UnitBuildShader;
+        BuildBeamShader = Shaders.BuildBeamShader;
+        ShieldShader = Shaders.ShieldShader;
+        UnitArmorShader = Shaders.UnitArmorShader;
+        ShockwaveShader = Shaders.ShockwaveShader;
 
-        UnlockCondition = eval("Objectives.Objective");
-        Research = eval("Objectives.Research");
-        Produce = eval("Objectives.Research");
-        OnPlanet = eval("Objectives.OnPlanet");
-        OnSector = eval("Objectives.OnSector");
-        SectorComplete = eval("Objectives.SectorComplete");
+        UnlockCondition = Objectives.Objective;
+        Research = Objectives.Research;
+        Produce = Objectives.Research;
+        OnPlanet = Objectives.OnPlanet;
+        OnSector = Objectives.OnSector;
+        SectorComplete = Objectives.SectorComplete;
 
-        MapObjective = eval("MapObjectives.MapObjective");
-        ResearchObjective = eval("MapObjectives.ResearchObjective");
-        ProduceObjective = eval("MapObjectives.ProduceObjective");
-        ItemObjective = eval("MapObjectives.ItemObjective");
-        CoreItemObjective = eval("MapObjectives.CoreItemObjective");
-        BuildCountObjective = eval("MapObjectives.BuildCountObjective");
-        UnitCountObjective = eval("MapObjectives.UnitCountObjective");
-        DestroyUnitsObjective = eval("MapObjectives.DestroyUnitsObjective");
-        TimerObjective = eval("MapObjectives.TimerObjective");
-        DestroyBlockObjective = eval("MapObjectives.DestroyBlockObjective");
-        DestroyBlocksObjective = eval("MapObjectives.DestroyBlocksObjective");
-        CommandModeObjective = eval("MapObjectives.CommandModeObjective");
-        FlagObjective = eval("MapObjectives.FlagObjective");
-        DestroyCoreObjective = eval("MapObjectives.DestroyCoreObjective");
-        ObjectiveMarker = eval("MapObjectives.ObjectiveMarker");
-        PosMarker = eval("MapObjectives.PosMarker");
-        ShapeTextMarker = eval("MapObjectives.ShapeTextMarker");
-        PointMarker = eval("MapObjectives.PointMarker");
-        ShapeMarker = eval("MapObjectives.ShapeMarker");
-        TextMarker = eval("MapObjectives.TextMarker");
-        LineMarker = eval("MapObjectives.LineMarker");
-        TextureMarker = eval("MapObjectives.TextureMarker");
-        QuadMarker = eval("MapObjectives.QuadMarker");
-        LightMarker = eval("MapObjectives.LightMarker");
-        TextureHolder = eval("MapObjectives.TextureHolder");
+        MapObjective = MapObjectives.MapObjective;
+        ResearchObjective = MapObjectives.ResearchObjective;
+        ProduceObjective = MapObjectives.ProduceObjective;
+        ItemObjective = MapObjectives.ItemObjective;
+        CoreItemObjective = MapObjectives.CoreItemObjective;
+        BuildCountObjective = MapObjectives.BuildCountObjective;
+        UnitCountObjective = MapObjectives.UnitCountObjective;
+        DestroyUnitsObjective = MapObjectives.DestroyUnitsObjective;
+        TimerObjective = MapObjectives.TimerObjective;
+        DestroyBlockObjective = MapObjectives.DestroyBlockObjective;
+        DestroyBlocksObjective = MapObjectives.DestroyBlocksObjective;
+        CommandModeObjective = MapObjectives.CommandModeObjective;
+        FlagObjective = MapObjectives.FlagObjective;
+        DestroyCoreObjective = MapObjectives.DestroyCoreObjective;
+        ObjectiveMarker = MapObjectives.ObjectiveMarker;
+        PosMarker = MapObjectives.PosMarker;
+        ShapeTextMarker = MapObjectives.ShapeTextMarker;
+        PointMarker = MapObjectives.PointMarker;
+        ShapeMarker = MapObjectives.ShapeMarker;
+        TextMarker = MapObjectives.TextMarker;
+        LineMarker = MapObjectives.LineMarker;
+        TextureMarker = MapObjectives.TextureMarker;
+        QuadMarker = MapObjectives.QuadMarker;
+        LightMarker = MapObjectives.LightMarker;
+        TextureHolder = MapObjectives.TextureHolder;
 
-        LogicSenseable = eval("Senseable");
-        LogicSettable = eval("Settable");
-        LogicControllable = eval("Controllable");
-        LogicProp = eval("LAccess");
-        LogicCategory = eval("LCategory");
-        LogicUnitControl = eval("LUnitControl");
-        LogicLocate = eval("LLocate");
-        LogicDrawable = eval("LDrawable");
-        LogicCanvas = eval("LCanvas");
-        LogicPrintable = eval("LPrintable");
-        LogicReadable = eval("LReadable");
-        LogicWritable = eval("LWritable");
-        LogicVar = eval("LVar");
-        LogicParser = eval("LParser");
-        LogicStatement = eval("LStatement");
-        LogicAssembler = eval("LAssembler");
-        LogicExecutor = eval("LExecutor");
-        LogicMarkerControl = eval("LMarkerControl");
+        LogicSenseable = Senseable;
+        LogicSettable = Settable;
+        LogicControllable = Controllable;
+        LogicProp = LAccess;
+        LogicCategory = LCategory;
+        LogicUnitControl = LUnitControl;
+        LogicLocate = LLocate;
+        LogicDrawable = LDrawable;
+        LogicCanvas = LCanvas;
+        LogicPrintable = LPrintable;
+        LogicReadable = LReadable;
+        LogicWritable = LWritable;
+        LogicVar = LVar;
+        LogicParser = LParser;
+        LogicStatement = LStatement;
+        LogicAssembler = LAssembler;
+        LogicExecutor = LExecutor;
+        LogicMarkerControl = LMarkerControl;
 
         Environments = null;
+
+        ConsumeHeat = null;
     } else {
+        JsonValue = null;
+
+        MultiPacker = null;
+
+        Objectives = null;
+
+        Groups = null;
+
         HeatBlock = null;
         HeatConsumer = null;
         HeatProducer = null;
