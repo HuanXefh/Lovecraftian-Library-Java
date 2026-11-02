@@ -13,7 +13,7 @@
      */
 
 
-    const PARENT = require("lovec/temp/env/ENV_baseOverlay");
+    const PARENT = require("lovec/temp/env/ENV_oreOverlay");
 
 
     /* <------------------------------ component ------------------------------> */
@@ -44,7 +44,7 @@
     /**
      * Vanilla ore overlay, for wall ores only.
      * @class ENV_wallOre
-     * @extends ENV_baseOverlay
+     * @extends ENV_oreOverlay
      */
     module.exports = newClass()
     .extendClass(PARENT, "ENV_wallOre")

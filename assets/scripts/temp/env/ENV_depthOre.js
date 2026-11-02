@@ -13,7 +13,7 @@
      */
 
 
-    const PARENT = require("lovec/temp/env/ENV_baseOverlay");
+    const PARENT = require("lovec/temp/env/ENV_oreOverlay");
     const INTF_ENV_depthOverlay = require("lovec/temp/intf/INTF_ENV_depthOverlay");
 
 
@@ -47,7 +47,7 @@
      * Underground ore that is only mineable by certain drills, and requires scanning.
      * <br> `NAMEGEN`
      * @class ENV_depthOre
-     * @extends ENV_baseOverlay
+     * @extends ENV_oreOverlay
      * @extends INTF_ENV_depthOverlay
      */
     module.exports = newClass()

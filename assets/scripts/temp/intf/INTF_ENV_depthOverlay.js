@@ -61,11 +61,13 @@
      * @return {void}
      */
     function comp_drawBase(blk, t) {
-        if(!Vars.state.isGame() && t instanceof EditorTile) {
-            blk.super$drawBase(t);
-        } else {
-            blk.self.ex_accRevealed(t, t instanceof EditorTile);
+        if(checkSubInsOfTemp(blk, "INTF_ENV_largeBlock")) {
+            if(!blk.self.ex_drawLarge(t.x, t.y)) {
+                blk.self.ex_drawDepth(t);
+            };
+            return;
         };
+        blk.self.ex_drawDepth(t);
     };
 
 
@@ -116,6 +118,21 @@
         return param === "SPEC: read" ?
             blk.delegee.depthDrawnMap.get(t, false) :
             blk.delegee.depthDrawnMap.put(t, param);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFENVDepthOverlay} blk
+     * @param {Tile} t
+     * @return {void}
+     */
+    function comp_ex_drawDepth(blk, t) {
+        if(!Vars.state.isGame() && t instanceof EditorTile) {
+            blk.super$drawBase(t);
+        } else {
+            blk.self.ex_accRevealed(t, t instanceof EditorTile);
+        };
     };
 
 
@@ -233,6 +250,22 @@
         .setProp({
             noSuper: true,
             argLen: 2,
+        }),
+
+
+        /**
+         * @memberof INTF_ENV_depthOverlay
+         * @instance
+         * @func
+         * @param {Tile} t
+         * @return {void}
+         */
+        ex_drawDepth: function(t) {
+            comp_ex_drawDepth(this, t);
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
         }),
 
 

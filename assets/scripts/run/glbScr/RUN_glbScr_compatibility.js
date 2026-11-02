@@ -37,6 +37,30 @@
 
 
     /**
+     * Gets world width.
+     * @global
+     * @return {number}
+     */
+    getWorldWidth = function() {
+        return SLCVersionResolver.isV8 ?
+            GLB_var.world.width() :
+            GLB_var.world.width;
+    };
+
+
+    /**
+     * Gets world height.
+     * @global
+     * @return {number}
+     */
+    getWorldHeight = function() {
+        return SLCVersionResolver.isV8 ?
+            GLB_var.world.height() :
+            GLB_var.world.height;
+    };
+
+
+    /**
      * Handles `Env` for v8 compatibility.
      * <br> `ARGS`: envName1, envName2, envName3, ...
      * @global

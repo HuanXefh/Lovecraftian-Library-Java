@@ -245,11 +245,12 @@
     fetchRegion = function(ct_gn, suffix, suffixFallback) {
         let name = ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn;
         if(suffix == null) suffix = "";
-        if(suffixFallback == null) suffixFallback = "";
 
         return Vars.headless ?
             SLCAirObjects.textureRegion :
-            Core.atlas.find(name + suffix, Core.atlas.find(name + suffixFallback));
+            suffixFallback == null ?
+                Core.atlas.find(name + suffix) :
+                Core.atlas.find(name + suffix, Core.atlas.find(name + suffixFallback));
     };
 
 

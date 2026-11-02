@@ -44,6 +44,7 @@
          * @memberof ${2:}
          * @instance
          * @type {${3:}}
+         * @default ${4:}
          */
         '''
 

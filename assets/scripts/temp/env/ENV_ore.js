@@ -13,7 +13,7 @@
      */
 
 
-    const PARENT = require("lovec/temp/env/ENV_baseOverlay");
+    const PARENT = require("lovec/temp/env/ENV_oreOverlay");
 
 
     /* <------------------------------ component ------------------------------> */
@@ -44,7 +44,7 @@
      * <br> See {@link ENV_wallOre} for wall ones.
      * <br> `NAMEGEN`
      * @class ENV_ore
-     * @extends ENV_baseOverlay
+     * @extends ENV_oreOverlay
      */
     module.exports = newClass()
     .extendClass(PARENT, "ENV_ore")

@@ -114,7 +114,7 @@
                 b.liquids.each((liq, amt) => {
                     if(b.delegee.hasLiqTarget) return;
                     if(!b.block.consumesLiquid(liq) && amt > 1.0) {
-                        b.delegee.hasLiqTarget = true;;
+                        b.delegee.hasLiqTarget = true;
                     };
                 });
             };

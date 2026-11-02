@@ -69,7 +69,7 @@
      * @return {boolean}
      */
     const hasAnyRecipe = function(ct_gn) {
-        let cond = false;;
+        let cond = false;
         MDL_recipeDict.getConsumers(ct_gn, true).forEachRow(3, (blk, amt, data) => {
             if(cond) return;
             cond = amt > 0.0 && !data.hidden;
