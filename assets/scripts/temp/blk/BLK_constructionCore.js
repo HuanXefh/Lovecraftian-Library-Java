@@ -43,7 +43,7 @@
 
         // noinspection JSValidateTypes
         blk.delegee.placeBlk = MDL_content.getCt(blk.delegee.placeBlk, ContentGetModes.BLK);
-        if(blk.delegee.placeBlk == null) throw new LCError.NullArgumentError(blk.name + ".placeBlk");
+        if(blk.delegee.placeBlk == null) throw new SLCError.NullArgumentError(blk.name + ".placeBlk");
         blk.self.ex_calcBlksReq(blk.delegee.constructionBlksReq);
         blk.self.ex_calcItemsReq(blk.delegee.constructionItemsReq, blk.delegee.constructionBlksReq);
         if(!blk.delegee.skipTargetSetup) {

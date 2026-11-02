@@ -58,7 +58,7 @@
             if(blk.delegee.shouldDropPay) {
                 let oblk;
                 Vars.content.items().each(item => {
-                    oblk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
+                    oblk = MDL_content.getCt(SLCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
                     if(oblk == null || !blk.self.ex_canMine(oblk, item, 1.0)) return;
                     MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(item)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
                 });
@@ -140,7 +140,7 @@
             if(blk.delegee.itemWhitelist.length > 0 && !blk.delegee.itemWhitelist.includes(item)) return false;
         };
         if(blk.delegee.shouldDropPay) {
-            let payBlk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
+            let payBlk = MDL_content.getCt(SLCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
             if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
         };
         return blk.self.ex_calcDropHardness(oblk, item) <= blk.tier * tierMtp;
@@ -187,7 +187,7 @@
             b.super$offload(item);
             return;
         };
-        let blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
+        let blkTarget = MDL_content.getCt(SLCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
         if(blkTarget == null) return;
         SLCNativeObject.numIncre(b.delegee.payChargeObj, item.name);
         if(b.delegee.payChargeObj[item.name] >= blkTarget.requirements[0].amount) {

@@ -25,7 +25,7 @@
      * @return {void}
      */
     function comp_init(item) {
-        item.delegee.sintTemp = item.delegee.sintTemp >= 0.0 ? item.delegee.sintTemp : LCDBFileHandler.read("item-sintering-temperature", item, 100.0);
+        item.delegee.sintTemp = item.delegee.sintTemp >= 0.0 ? item.delegee.sintTemp : SLCDBFileHandler.read("item-sintering-temperature", item, 100.0);
     };
 
 

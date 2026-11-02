@@ -38,7 +38,7 @@
 
         if(!Vars.headless) {
             MDL_event.onLoad(() => {
-                if(!blk.customShadowRegion.found()) LCLogHandler.log("noCustomShadowRegionFound", blk.name);
+                if(!blk.customShadowRegion.found()) SLCLogHandler.log("noCustomShadowRegionFound", blk.name);
                 if(blk.variantShadowRegions != null) {
                     let i = 0, iCap = blk.variantShadowRegions.iCap();
                     while(i < iCap) {

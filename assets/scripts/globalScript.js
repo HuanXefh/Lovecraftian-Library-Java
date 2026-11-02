@@ -334,7 +334,7 @@
      * For other mods, add names here for new arrays in DB files.
      * @global
      */
-    LCModDBRegister = {
+    SLCModDBRegister = {
 
 
         /** Target: {@link DB_item.db.map.attr}. */
@@ -391,11 +391,11 @@
          * @return {this}
          */
         apply(name, obj) {
-            if(!(LCModDBRegister[name] instanceof Array)) throw new Error("Error registering DB list: ${1} cannot be extended".format(name));
-            LCModDBRegister[name].forEachFast(key => {
+            if(!(SLCModDBRegister[name] instanceof Array)) throw new Error("Error registering DB list: ${1} cannot be extended".format(name));
+            SLCModDBRegister[name].forEachFast(key => {
                 obj[key] = [];
             }, true);
-            return LCModDBRegister;
+            return SLCModDBRegister;
         },
 
 
@@ -481,7 +481,7 @@
          * Used to test some draw function in game quickly.
          * @global
          */
-        LCDrawTest = {
+        SLCDrawTest = {
 
 
             /** @type {boolean} */
@@ -504,13 +504,13 @@
              * @return {void}
              */
             reset() {
-                LCDrawTest.enabled = false;
-                LCDrawTest.safe = false;
-                LCDrawTest.xF = Function.airZero;
-                LCDrawTest.yF = Function.airZero;
-                LCDrawTest.radF = Function.airZero;
-                LCDrawTest.colorF = Function.airWhite;
-                LCDrawTest.drawF = Function.air;
+                SLCDrawTest.enabled = false;
+                SLCDrawTest.safe = false;
+                SLCDrawTest.xF = Function.airZero;
+                SLCDrawTest.yF = Function.airZero;
+                SLCDrawTest.radF = Function.airZero;
+                SLCDrawTest.colorF = Function.airWhite;
+                SLCDrawTest.drawF = Function.air;
             },
 
 
@@ -520,9 +520,9 @@
              */
             toggle(bool) {
                 if(bool == null) {
-                    LCDrawTest.enabled = !LCDrawTest.enabled;
+                    SLCDrawTest.enabled = !SLCDrawTest.enabled;
                 } else {
-                    LCDrawTest.enabled = Boolean(bool);
+                    SLCDrawTest.enabled = Boolean(bool);
                 };
             },
 
@@ -536,11 +536,11 @@
              * @lovecTypeSensitive
              */
             setGetter(xF, yF, radF, colorF) {
-                LCDrawTest.safe = false;
-                if(xF != null && typeof xF === "function") LCDrawTest.xF = xF;
-                if(yF != null && typeof yF === "function") LCDrawTest.yF = yF;
-                if(radF != null && typeof radF === "function") LCDrawTest.radF = radF;
-                if(colorF != null && typeof colorF === "function") LCDrawTest.colorF = colorF;
+                SLCDrawTest.safe = false;
+                if(xF != null && typeof xF === "function") SLCDrawTest.xF = xF;
+                if(yF != null && typeof yF === "function") SLCDrawTest.yF = yF;
+                if(radF != null && typeof radF === "function") SLCDrawTest.radF = radF;
+                if(colorF != null && typeof colorF === "function") SLCDrawTest.colorF = colorF;
             },
 
 
@@ -551,7 +551,7 @@
              * @lovecTypeSensitive
              */
             setPlayerGetter(radF, colorF) {
-                LCDrawTest.setGetter(
+                SLCDrawTest.setGetter(
                     () => Vars.player.unit() == null ? -9999.0 : Vars.player.unit().x,
                     () => Vars.player.unit() == null ? -9999.0 : Vars.player.unit().y,
                     radF,
@@ -567,8 +567,8 @@
              */
             setDrawF(drawF) {
                 if(drawF == null || typeof drawF !== "function") return;
-                LCDrawTest.safe = false;
-                LCDrawTest.drawF = drawF;
+                SLCDrawTest.safe = false;
+                SLCDrawTest.drawF = drawF;
             },
 
 
@@ -576,18 +576,18 @@
              * @return {void}
              */
             draw() {
-                if(LCDrawTest.safe) {
-                    LCDrawTest.drawF(LCDrawTest.xF(), LCDrawTest.yF(), LCDrawTest.radF(), LCDrawTest.colorF());
+                if(SLCDrawTest.safe) {
+                    SLCDrawTest.drawF(SLCDrawTest.xF(), SLCDrawTest.yF(), SLCDrawTest.radF(), SLCDrawTest.colorF());
                 } else {
                     // Try only once to save memory
                     try {
-                        LCDrawTest.drawF(LCDrawTest.xF(), LCDrawTest.yF(), LCDrawTest.radF(), LCDrawTest.colorF());
+                        SLCDrawTest.drawF(SLCDrawTest.xF(), SLCDrawTest.yF(), SLCDrawTest.radF(), SLCDrawTest.colorF());
                     } catch(err) {
-                        LCDrawTest.reset();
+                        SLCDrawTest.reset();
                         console.err("[LOVEC] Failed to implement the draw function: \n" + err);
                         return;
                     };
-                    LCDrawTest.safe = true;
+                    SLCDrawTest.safe = true;
                 };
             },
 

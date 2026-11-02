@@ -77,7 +77,7 @@
      */
     function comp_ex_init(btp) {
         btp.delegee.flyingMode = CLS_bulletFlyingMode.get(btp.delegee.flyingMode);
-        if(btp.delegee.flyingMode == null) throw new LCError.NullArgumentError("flyingMode");
+        if(btp.delegee.flyingMode == null) throw new SLCError.NullArgumentError("flyingMode");
     };
 
 

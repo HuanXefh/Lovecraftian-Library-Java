@@ -548,7 +548,7 @@
 
                 blkTarget = null;
                 if(blk.shouldDropPay) {
-                    blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), ContentGetModes.BLK);
+                    blkTarget = MDL_content.getCt(SLCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), ContentGetModes.BLK);
                     if(blkTarget == null) return;
                 };
                 rcGrp = oreGrpMap.get(oblk.itemDrop);

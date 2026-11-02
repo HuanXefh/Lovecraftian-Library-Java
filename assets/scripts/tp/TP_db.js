@@ -6,7 +6,7 @@
 
 
     /**
-     * Registers new database objects to {@link LCDBFileHandler}.
+     * Registers new database objects to {@link SLCDBFileHandler}.
      */
 
 
@@ -17,7 +17,7 @@
 */
 
 
-    batchCall(LCDBFileHandler, function() {
+    batchCall(SLCDBFileHandler, function() {
 
 
         this.addContentReader("block-reload");

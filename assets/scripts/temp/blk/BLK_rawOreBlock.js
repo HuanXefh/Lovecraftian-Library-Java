@@ -45,7 +45,7 @@
         if(blk.delegee.recolorRegStr == null) return;
         let parent = blk.delegee.oreParent != null ?
             blk.delegee.oreParent :
-            Object.keyByVal(LCDBFileHandler.getDataObj("item-payload-block"), blk.name, null);
+            Object.keyByVal(SLCDBFileHandler.getDataObj("item-payload-block"), blk.name, null);
         if(parent == null) return;
 
         let pix = MDL_texture.recolorPix(
@@ -68,7 +68,7 @@
         if(blk.requirements.length !== 1) throw new Error("Raw ore block should have only one item material!");
 
         if(blk.delegee.oreParent == null) {
-            let oreParent = Object.keyByVal(LCDBFileHandler.getDataObj("item-payload-block"), blk.name, null);
+            let oreParent = Object.keyByVal(SLCDBFileHandler.getDataObj("item-payload-block"), blk.name, null);
             if(oreParent != null) blk.delegee.oreParent = oreParent;
         };
         blk.delegee.oreParent = MDL_content.getCt(blk.delegee.oreParent, ContentGetModes.RS);

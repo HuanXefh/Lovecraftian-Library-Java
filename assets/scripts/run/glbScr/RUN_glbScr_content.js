@@ -468,7 +468,7 @@
                         cont[nameMod].read(name) :
                         cont[nameMod][name];
                     if(ct == null && def !== undefined) ct = def;
-                    if(isNullable ? ct === undefined : ct == null) throw new LCError.FetchUnregisteredContentError(nameMod + "-" + name);
+                    if(isNullable ? ct === undefined : ct == null) throw new SLCError.FetchUnregisteredContentError(nameMod + "-" + name);
                     return ct;
                 };
 
@@ -480,7 +480,7 @@
                         cont.read(name) :
                         cont[name];
                     if(ct == null && def !== undefined) ct = def;
-                    if(isNullable ? ct === undefined : ct == null) throw new LCError.FetchUnregisteredContentError(name);
+                    if(isNullable ? ct === undefined : ct == null) throw new SLCError.FetchUnregisteredContentError(name);
                     return ct;
                 };
 
@@ -503,7 +503,7 @@
                     let ct = ctorCall(JavaAdapter, extendBase.setupArgs(temp, obj));
                     extendBase.setupFields(temp, obj);
                     temp.initContent(ct);
-                    LCContentHandler.add(ct);
+                    SLCContentHandler.add(ct);
                     processClassLoader(null, extendInd);
                     return ct;
                 };
@@ -520,7 +520,7 @@
                             def;
                     };
                     let ct = getter(paramObj);
-                    if(ct == null && !isNullable) throw new LCError.FetchUnregisteredContentError(name);
+                    if(ct == null && !isNullable) throw new SLCError.FetchUnregisteredContentError(name);
                     return ct;
                 };
 

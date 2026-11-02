@@ -433,7 +433,7 @@
             UTIL_templatePatch.parseDifficulty(sec, jval);
             if(jval.has("planet")) {
                 pla = UTIL_templatePatch.locate(ContentType.planet, jval.getString("planet", "serpulo"));
-                if(pla == null) throw new LCError.NullArgumentError(sec.name + ".planet");
+                if(pla == null) throw new SLCError.NullArgumentError(sec.name + ".planet");
                 jval.remove("planet");
             };
             if(jval.has("sector")) {

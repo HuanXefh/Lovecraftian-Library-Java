@@ -31,7 +31,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(!blk.hasPower) throw new LCError.NoPowerModuleError(blk);
+        if(!blk.hasPower) throw new SLCError.NoPowerModuleError(blk);
 
         MDL_event.onLoad(() => {
             let blkCons = new ConsumePowerDynamic(b => b.self.ex_calcFurnPowCons());

@@ -32,7 +32,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(blk.delegee.attrRsArr == null) throw new LCError.NullArgumentError(blk.name + ".attrRsArr");
+        if(blk.delegee.attrRsArr == null) throw new SLCError.NullArgumentError(blk.name + ".attrRsArr");
 
         blk.attribute = TP_attr.attr_placeholder;
     };

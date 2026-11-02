@@ -53,7 +53,7 @@ const db = {
         /**
          * Maps an attribute to some resource, mostly for dynamic attribute output.
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.attrRsMap}
+         * @lovecExtensible {@link SLCModDBRegister.attrRsMap}
          */
         attr: {
 
@@ -276,7 +276,7 @@ const db = {
 };
 
 
-LCModDBRegister
+SLCModDBRegister
 .apply("attrRsMap", db["map"]["attr"]);
 
 

@@ -46,7 +46,7 @@
      * @return {void}
      */
     function comp_ex_init(sta) {
-        if(sta.delegee.nameInfo == null) throw new LCError.NullArgumentError(sta.name + ".nameInfo");
+        if(sta.delegee.nameInfo == null) throw new SLCError.NullArgumentError(sta.name + ".nameInfo");
 
         sta.databaseCategory = "lovec-information";
         MDL_content.rename(

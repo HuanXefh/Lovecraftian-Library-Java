@@ -228,7 +228,7 @@
      * @return {this}
      */
     CLS_dialogFlowBuilder.prototype.setSpeaker = function(nameMod, nameChara) {
-        if(this.offInd !== 1) throw new LCError.DialogFlowDataStructureError;
+        if(this.offInd !== 1) throw new SLCError.DialogFlowDataStructureError;
         this.dialFlowData.push([nameMod, nameChara]);
         this.offInd = 2;
         return this;
@@ -247,7 +247,7 @@
         } else if(this.offInd === 1) {
             this.dialFlowData.push(null);
         } else if(this.offInd !== 2) {
-            throw new LCError.DialogFlowDataStructureError;
+            throw new SLCError.DialogFlowDataStructureError;
         };
         this.dialFlowData.push(obj);
         this.offInd = 3;

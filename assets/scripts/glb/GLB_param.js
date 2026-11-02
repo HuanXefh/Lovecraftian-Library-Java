@@ -60,7 +60,7 @@
     exports.MODDED = (function() {
         let cond1 = Core.settings.getBool("load-force-modded", false);
         let cond2 = DB_misc.db["mod"]["lovecMod"].some(nameMod => fetchMod(nameMod) != null);
-        if(cond1 && !cond2) LCLogHandler.log("forceModded");
+        if(cond1 && !cond2) SLCLogHandler.log("forceModded");
 
         return cond1 || cond2;
     })();

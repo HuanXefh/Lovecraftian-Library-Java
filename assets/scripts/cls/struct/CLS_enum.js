@@ -21,7 +21,7 @@
     CLS_enum.prototype.init = function(obj) {
 
 
-        if(obj == null) throw new LCError.NullArgumentError("obj");
+        if(obj == null) throw new SLCError.NullArgumentError("obj");
 
 
         /** @type {Array<string>} */

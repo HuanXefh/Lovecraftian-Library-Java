@@ -35,7 +35,7 @@
     const getBlkPol = function(blk_gn) {
         let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
         if(blk == null) return 0.0;
-        return LCDBFileHandler.read("block-pollution", blk, 0.0);
+        return SLCDBFileHandler.read("block-pollution", blk, 0.0);
     }
     .setCache();
     exports.getBlkPol = getBlkPol;
@@ -50,7 +50,7 @@
     const getRsPol = function(rs_gn) {
         let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
         if(rs == null) return 0.0;
-        return LCDBFileHandler.read("resource-pollution", rs, (function() {
+        return SLCDBFileHandler.read("resource-pollution", rs, (function() {
             let parent = tryJsProp(rs, "intmdParent", null);
             return parent == null ?
                 0.0 :
@@ -113,7 +113,7 @@
     const getPolTol = function(ct_gn) {
         let ct = MDL_content.getCt(ct_gn, null, true);
         if(ct == null) return -1.0;
-        return LCDBFileHandler.read(ct instanceof UnitType ? "unit-pollution-tolerance" : "block-pollution-tolerance", ct, -1.0);
+        return SLCDBFileHandler.read(ct instanceof UnitType ? "unit-pollution-tolerance" : "block-pollution-tolerance", ct, -1.0);
     }
     .setCache();
     exports.getPolTol = getPolTol;

@@ -152,7 +152,7 @@
         let dens = 1.0;
         let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
         if(liq == null) return dens;
-        dens = LCDBFileHandler.read("liquid-density", liq);
+        dens = SLCDBFileHandler.read("liquid-density", liq);
         if(dens == null) {
             let densDef = liq.gas ? thisFun.defGasDens : thisFun.defLiqDens;
             let eleGrp = getEleGrp(liq);
@@ -190,7 +190,7 @@
             boilPon = DB_fluid.db["grpParam"]["solventBoil"].read(liq.solvent);
             if(boilPon != null) return boilPon;
         };
-        boilPon = LCDBFileHandler.read("liquid-boiling-point", liq);
+        boilPon = SLCDBFileHandler.read("liquid-boiling-point", liq);
         if(boilPon == null) {
             let eleGrp = getEleGrp(liq);
             boilPon = eleGrp == null ?
@@ -220,7 +220,7 @@
         let fHeat = thisFun.defFHeat;
         let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
         if(liq == null) return fHeat;
-        fHeat = LCDBFileHandler.read("liquid-fluid-heat", liq, thisFun.defFHeat);
+        fHeat = SLCDBFileHandler.read("liquid-fluid-heat", liq, thisFun.defFHeat);
         return fHeat;
     }
     .setProp({
@@ -268,7 +268,7 @@
         let viscWrap = thisFun.defLiqViscWrap;
         let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
         if(liq == null) return viscWrap;
-        let visc = LCDBFileHandler.read("liquid-viscosity", liq);
+        let visc = SLCDBFileHandler.read("liquid-viscosity", liq);
         if(visc != null) {
             viscWrap = halfLogWrap(visc, thisFun.viscHalf, thisFun.viscMax);
         } else {
@@ -317,7 +317,7 @@
         let res = thisFun.defRes;
         let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
         if(blk == null) return res;
-        res = LCDBFileHandler.read("block-pressure-resistance", blk);
+        res = SLCDBFileHandler.read("block-pressure-resistance", blk);
         if(res == null) {
             let matGrp = getMatGrp(blk);
             res = matGrp == null ? thisFun.defRes : DB_block.db["grpParam"]["presRes"].read(matGrp, thisFun.defRes);
@@ -345,7 +345,7 @@
         let res = thisFun.defRes;
         let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
         if(blk == null) return res;
-        res = LCDBFileHandler.read("block-vacuum-resistance", blk);
+        res = SLCDBFileHandler.read("block-vacuum-resistance", blk);
         if(res == null) {
             let matGrp = getMatGrp(blk);
             res = matGrp == null ? thisFun.defRes : DB_block.db["grpParam"]["vacRes"].read(matGrp, thisFun.defRes);
@@ -390,7 +390,7 @@
         let corPow = thisFun.defCorPow;
         let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
         if(liq == null) return corPow;
-        corPow = LCDBFileHandler.read("liquid-corrosion-power", liq);
+        corPow = SLCDBFileHandler.read("liquid-corrosion-power", liq);
         if(corPow == null) {
             let eleGrp = getEleGrp(liq);
             corPow = eleGrp == null ? thisFun.defCorPow : corPow = DB_fluid.db["grpParam"]["corrosion"].read(eleGrp, thisFun.defCorPow);
@@ -459,7 +459,7 @@
         let corRes = thisFun.defCorRes;
         let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
         if(blk == null) return corRes;
-        corRes = LCDBFileHandler.read("block-corrosion-resistance", blk);
+        corRes = SLCDBFileHandler.read("block-corrosion-resistance", blk);
         if(corRes == null) {
             let matGrp = getMatGrp(blk);
             corRes = matGrp == null ? thisFun.defCorRes : DB_block.db["grpParam"]["corRes"].read(matGrp, thisFun.defCorRes);
@@ -534,7 +534,7 @@
         let heatRes = thisFun.defHeatRes;
         let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
         if(blk == null) return heatRes;
-        heatRes = LCDBFileHandler.read("block-heat-resistance", blk);
+        heatRes = SLCDBFileHandler.read("block-heat-resistance", blk);
         if(heatRes == null) {
             let matGrp = getMatGrp(blk);
             heatRes = matGrp == null ? thisFun.defHeatRes : DB_block.db["grpParam"]["heatRes"].read(matGrp, thisFun.defHeatRes);
@@ -584,7 +584,7 @@
         if(amt < 0.01) return def;
         let cap = b.block.liquidCapacity;
         if(cap < 0.0001) return def;
-        let fHeatBase = LCDBFileHandler.read("liquid-fluid-heat", liqCur, def);
+        let fHeatBase = SLCDBFileHandler.read("liquid-fluid-heat", liqCur, def);
 
         return fHeatBase * (1.0 + amt / cap * 0.2);
     };

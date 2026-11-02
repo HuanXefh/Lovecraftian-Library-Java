@@ -126,7 +126,7 @@
 
                             let blkTarget;
                             if(blk.delegee.shouldDropPay) {
-                                blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), ContentGetModes.BLK);
+                                blkTarget = MDL_content.getCt(SLCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), ContentGetModes.BLK);
                                 if(blkTarget == null) return;
                             };
                             let rcGrp = oreGrpMap.get(oblk.itemDrop);
@@ -164,7 +164,7 @@
 
                             let blkTarget;
                             if(blk.delegee.shouldDropPay) {
-                                blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), ContentGetModes.BLK);
+                                blkTarget = MDL_content.getCt(SLCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), ContentGetModes.BLK);
                                 if(blkTarget == null) return;
                             };
                             let rcGrp = oreGrpMap.get(oblk.itemDrop);

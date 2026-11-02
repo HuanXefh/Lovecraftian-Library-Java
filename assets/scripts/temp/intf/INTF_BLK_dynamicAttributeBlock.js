@@ -28,7 +28,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(blk.delegee.attrRsArr == null) throw new LCError.NullArgumentError(blk.name + ".attrRsArr");
+        if(blk.delegee.attrRsArr == null) throw new SLCError.NullArgumentError(blk.name + ".attrRsArr");
 
         if(!SLCVersionResolver.isV8 || blk instanceof AttributeCrafter) {
             blk.displayEfficiency = false;

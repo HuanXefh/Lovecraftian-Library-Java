@@ -165,7 +165,7 @@
          * Fluids with fluid heat.
          * @type {Array<Liquid>}
          */
-        exports.hotFlds = module.exports.allFlds.filter(liq => LCDBFileHandler.read("liquid-fluid-heat", liq, 0.0) >= 50.0);
+        exports.hotFlds = module.exports.allFlds.filter(liq => SLCDBFileHandler.read("liquid-fluid-heat", liq, 0.0) >= 50.0);
 
 
         /**

@@ -7,7 +7,7 @@ This lib uses some custom JSDoc tags for documentation.
 | `@lovecOrderless`     | Array           | This formatted array can be read orderlessly.                                            |                     |
 | `@lovecContentGen`    | Array           | For DB array. Elements are pushed automatically.                                         |                     |
 | `@lovecAutoRecipe`    | Array           | For recipe generation raw data. Recipes here can be automatically selected.              |                     |
-| `@lovecExtensible`    | Object          | For DB object. New arrays can be registered with {@link LCModDBRegister}.                | {@link targetArray} |
+| `@lovecExtensible`    | Object          | For DB object. New arrays can be registered with {@link SLCModDBRegister}.                | {@link targetArray} |
 | `@lovecTryBlock`      | Function        | This method includes a try-catch block and should not be called in main loops.           |                     |
 | `@lovecPropGen`       | Function        | This method generates new properties for this instance.                                  | {@link targetClass} |
 | `@lovecAttached`      | Function        | This method does not exist on the orginal class, and is usually added with Java adapter. |                     |

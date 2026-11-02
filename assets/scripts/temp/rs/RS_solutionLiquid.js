@@ -25,7 +25,7 @@
      * @return {void}
      */
     function comp_init(liq) {
-        let liqSolv = MDL_content.getCt(LCDBFileHandler.read("liquid-solvent", liq.delegee.solvent, null), ContentGetModes.RS, true);
+        let liqSolv = MDL_content.getCt(SLCDBFileHandler.read("liquid-solvent", liq.delegee.solvent, null), ContentGetModes.RS, true);
 
         if(liqSolv != null && liq.delegee.setupVanillaProp) {
             liq.flammability = liqSolv.flammability;

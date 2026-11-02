@@ -24,7 +24,7 @@
      * Stores contents created with {@link extendBase} and its variants.
      * @global
      */
-    LCContentHandler = {
+    SLCContentHandler = {
 
 
         /** @type {ObjectMap<string, UnlockableContent>} */
@@ -39,12 +39,12 @@
          * @return {void}
          */
         add(ct) {
-            if(!checkCreatedByTemp(ct)) throw new LCError.NotCreatedByTemplateError(ct);
-            LCContentHandler.__nameMap__.put(ct.name, ct);
-            if(LCContentHandler.__typeMaps__[ct.getContentType().toString()] !== undefined) {
-                LCContentHandler.__typeMaps__[ct.getContentType().toString()].put(ct.name, ct);
+            if(!checkCreatedByTemp(ct)) throw new SLCError.NotCreatedByTemplateError(ct);
+            SLCContentHandler.__nameMap__.put(ct.name, ct);
+            if(SLCContentHandler.__typeMaps__[ct.getContentType().toString()] !== undefined) {
+                SLCContentHandler.__typeMaps__[ct.getContentType().toString()].put(ct.name, ct);
             } else {
-                LCContentHandler.__typeMaps__[ct.getContentType().toString()] = new ObjectMap();
+                SLCContentHandler.__typeMaps__[ct.getContentType().toString()] = new ObjectMap();
             };
         },
 
@@ -57,8 +57,8 @@
          * @return {UnlockableContent|null}
          */
         fetch: newMultiFunction(
-            function(nameCt) {return LCContentHandler.__nameMap__.get(nameCt)},
-            function(nameCt, ctType) {return LCContentHandler.__typeMaps__[ctType].get(nameCt)},
+            function(nameCt) {return SLCContentHandler.__nameMap__.get(nameCt)},
+            function(nameCt, ctType) {return SLCContentHandler.__typeMaps__[ctType].get(nameCt)},
         ),
 
 
@@ -75,9 +75,9 @@
      */
     fetchContent = function(nameCt, ctType) {
         let ct = ctType == null ?
-            LCContentHandler.fetch(nameCt) :
-            LCContentHandler.fetch(nameCt, ctType);
-        if(ct == null) throw new LCError.NotCreatedByTemplateError(nameCt);
+            SLCContentHandler.fetch(nameCt) :
+            SLCContentHandler.fetch(nameCt, ctType);
+        if(ct == null) throw new SLCError.NotCreatedByTemplateError(nameCt);
         return ct;
     };
 
@@ -201,7 +201,7 @@
         let ct = ctorCall(JavaAdapter, extendBase.setupArgs(temp, obj, nameCt));
         extendBase.setupFields(ct, obj);
         temp.initContent(ct);
-        LCContentHandler.add(ct);
+        SLCContentHandler.add(ct);
         processClassLoader(null, GLB_var.extendInd.base);
         return ct;
     };
@@ -314,7 +314,7 @@
             return b;
         };
         temp[0].initContent(blk);
-        LCContentHandler.add(blk);
+        SLCContentHandler.add(blk);
         processClassLoader(null, GLB_var.extendInd.block);
         return blk;
     };
@@ -335,7 +335,7 @@
         let utp = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objUtp, nameUtp));
         extendBase.setupFields(utp, objUtp);
         temp.initContent(utp);
-        LCContentHandler.add(utp);
+        SLCContentHandler.add(utp);
         processClassLoader(null, GLB_var.extendInd.unit);
         return utp;
     };
@@ -357,7 +357,7 @@
         let pla = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objPla, namePla, null, 1.0, sectorSize));
         extendBase.setupFields(temp, objPla);
         temp.initContent(pla);
-        LCContentHandler.add(pla);
+        SLCContentHandler.add(pla);
         processClassLoader(null, GLB_var.extendInd.planet);
         return pla;
     };
@@ -378,7 +378,7 @@
         let sec = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objSec, nameSec, Reflect.get(ContentLoader, Vars.content, "currentMod")));
         extendBase.setupFields(temp, objSec);
         temp.initContent(sec);
-        LCContentHandler.add(sec);
+        SLCContentHandler.add(sec);
         processClassLoader(null, GLB_var.extendInd.sector);
         return sec;
     };

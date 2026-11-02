@@ -43,7 +43,7 @@
     const addPacketHandler = function thisFun(mode, header, payloadC, addOnce) {
         if(thisFun.headers.includes(header)) {
             if(addOnce) return;
-            throw new LCError.HeaderConflictError(header);
+            throw new SLCError.HeaderConflictError(header);
         };
         if(mode == null) mode = PacketModes.CLIENT;
         if(!PacketModes.has(mode)) return;

@@ -92,12 +92,12 @@
                 ct = Vars.content.getByName(ContentType[ctTypeStr], ct_gn);
             }, true);
         } else {
-            if(!suppressWarning) LCLogHandler.log("costyContentSearch", ct_gn);
+            if(!suppressWarning) SLCLogHandler.log("costyContentSearch", ct_gn);
             ct = Vars.content.byName(ct_gn);
         };
 
         if(ct == null && !suppressWarning) {
-            LCLogHandler.log("noContentFoundWithMode", ct_gn, mode);
+            SLCLogHandler.log("noContentFoundWithMode", ct_gn, mode);
         };
         return ct == null ? null : global.lovecUtil.db.oreDict.get(ct, ct);
     };

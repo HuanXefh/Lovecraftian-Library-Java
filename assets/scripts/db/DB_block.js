@@ -95,7 +95,7 @@ const db = {
         /**
          * Material groups, used mainly for corrosion.
          * @type {Object<string, Array<BlockGn>>}
-         * @lovecExtensible {@link LCModDBRegister.blkMat}
+         * @lovecExtensible {@link SLCModDBRegister.blkMat}
          */
         material: {
 
@@ -888,7 +888,7 @@ const db = {
 };
 
 
-LCModDBRegister
+SLCModDBRegister
 .apply("blkMat", db["group"]["material"]);
 
 

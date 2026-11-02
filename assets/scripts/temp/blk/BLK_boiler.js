@@ -32,7 +32,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(!blk.hasLiquids) throw new LCError.NoLiquidModuleError(blk);
+        if(!blk.hasLiquids) throw new SLCError.NoLiquidModuleError(blk);
         // noinspection JSValidateTypes
         blk.delegee.exploFldTarget = MDL_content.getCt(blk.delegee.exploFldTarget, ContentGetModes.RS);
         // noinspection JSValidateTypes

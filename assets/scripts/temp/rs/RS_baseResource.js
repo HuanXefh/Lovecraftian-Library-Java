@@ -45,11 +45,11 @@
      * @return {void}
      */
     function comp_setStats(rs, stats) {
-        let shortName = LCDBFileHandler.read("resource-short-name", rs);
+        let shortName = SLCDBFileHandler.read("resource-short-name", rs);
         if(shortName != null) {
             stats.add(fetchStat("lovec", "rs-shortname"), shortName);
         };
-        let formula = LCDBFileHandler.read("resource-chemical-formula", rs);
+        let formula = SLCDBFileHandler.read("resource-chemical-formula", rs);
         if(formula != null) {
             stats.add(fetchStat("lovec", "rs-formula"), formula);
         };
@@ -364,7 +364,7 @@
          */
         ex_getShortName: function() {
             if(this.delegee.shortName == null) {
-                this.delegee.shortName = LCDBFileHandler.read("resource-short-name", this, LCDBFileHandler.read("resource-chemical-formula", this, this.localizedName));
+                this.delegee.shortName = SLCDBFileHandler.read("resource-short-name", this, SLCDBFileHandler.read("resource-chemical-formula", this, this.localizedName));
             };
             return this.delegee.shortName;
         }

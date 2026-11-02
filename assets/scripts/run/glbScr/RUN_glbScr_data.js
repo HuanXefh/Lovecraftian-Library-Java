@@ -160,7 +160,7 @@
      * Handles DB JSON file objects.
      * @global
      */
-    LCDBFileHandler = {
+    SLCDBFileHandler = {
 
 
         /** @type {ObjectMap<string, Tup2<Object, (dbFiObj: Object, ...args: Array<Object>) => Object>>} */
@@ -177,7 +177,7 @@
          * @return {Object}
          */
         getDataObj(key) {
-            let tup = LCDBFileHandler.__keyTupMap__.get(key);
+            let tup = SLCDBFileHandler.__keyTupMap__.get(key);
             return tup == null ?
                 Object.air :
                 tup[0];
@@ -187,11 +187,11 @@
         /**
          * Adds a reader for `<key>.json`, see {@link readAuxJsonData}.
          * @param {string} key
-         * @param {(dbFiObj: Object, ...args: Array<Object>) => Object} fun - Arguments will be passed down from {@link LCDBFileHandler.read}.
+         * @param {(dbFiObj: Object, ...args: Array<Object>) => Object} fun - Arguments will be passed down from {@link SLCDBFileHandler.read}.
          * @return {void}
          */
         addReader(key, fun) {
-            LCDBFileHandler.__keyTupMap__.put(key, [readAuxJsonData({}, key), fun]);
+            SLCDBFileHandler.__keyTupMap__.put(key, [readAuxJsonData({}, key), fun]);
         },
 
 
@@ -201,7 +201,7 @@
          * @return {void}
          */
         addContentReader(key) {
-            LCDBFileHandler.addReader(key, (dbFiObj, ct_gn, def) => tryVal(dbFiObj[tryVal(ct_gn.name, ct_gn)], def));
+            SLCDBFileHandler.addReader(key, (dbFiObj, ct_gn, def) => tryVal(dbFiObj[tryVal(ct_gn.name, ct_gn)], def));
         },
 
 
@@ -212,10 +212,10 @@
          * @return {Object}
          */
         read(key) {
-            let tup = LCDBFileHandler.__keyTupMap__.get(key);
+            let tup = SLCDBFileHandler.__keyTupMap__.get(key);
             if(tup == null) throw new Error("Database key ${1} is not registered!".format(key));
 
-            let args = LCDBFileHandler.__tmpArgs__.clear();
+            let args = SLCDBFileHandler.__tmpArgs__.clear();
             args.push(tup[0]);
             if(arguments.length > 1) {
                 let i = 1, iCap = arguments.length;

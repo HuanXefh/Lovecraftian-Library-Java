@@ -28,7 +28,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(!blk.hasLiquids) throw new LCError.NoLiquidModuleError(blk);
+        if(!blk.hasLiquids) throw new SLCError.NoLiquidModuleError(blk);
 
         if(!blk.delegee.presProd.fEqual(0.0)) {
             MDL_event.onLoadPost(() => {

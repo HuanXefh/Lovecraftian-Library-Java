@@ -180,7 +180,7 @@
      */
     const stackPixWithCt = function(packer, pixBase, ct_gn) {
         let ct = findContent(ct_gn);
-        if(ct == null) throw new LCError.ContentNotFoundError(ct_gn);
+        if(ct == null) throw new SLCError.ContentNotFoundError(ct_gn);
         let
             pixCt,
             pixCtStack = new Pixmap(pixBase.width, pixBase.height);
@@ -289,9 +289,9 @@
      */
     const packIconWithCt = function(ct, packer, suffix, ctUnd_gn, ctOv_gn) {
         let ctUnd = findContent(ctUnd_gn);
-        if(ctUnd == null) throw new LCError.ContentNotFoundError(ctUnd_gn);
+        if(ctUnd == null) throw new SLCError.ContentNotFoundError(ctUnd_gn);
         let ctOv = findContent(ctOv_gn);
-        if(ctOv == null) throw new LCError.ContentNotFoundError(ctOv_gn);
+        if(ctOv == null) throw new SLCError.ContentNotFoundError(ctOv_gn);
         packIcon(ct, packer, suffix, () => stackPixWithCt(packer, packer.get(ctUnd.name), ctOv));
     };
     exports.packIconWithCt = packIconWithCt;

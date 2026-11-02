@@ -158,7 +158,7 @@
 
 
     /**
-     * Registers new error types under {@link LCError}.
+     * Registers new error types under {@link SLCError}.
      * @param {string} name
      * @param {boolean|unset} [exposeToGlobal] - If true, the error type will be also exposed to the global scope. Use with care.
      * @return {Class<Error>}
@@ -175,11 +175,11 @@
         scrStr += name + ".prototype = Object.create(Error.prototype);";
         scrStr += name + ".constructor = " + name + ";";
         scrStr += name + ";";
-        globalize(eval(scrStr), name, "LCError");
+        globalize(eval(scrStr), name, "SLCError");
         if(exposeToGlobal) {
-            globalize(LCError[name], name);
+            globalize(SLCError[name], name);
         };
-        return LCError[name];
+        return SLCError[name];
     };
 
 
@@ -664,7 +664,7 @@
      * Collection of log types.
      * @global
      */
-    LCLogHandler = {
+    SLCLogHandler = {
 
 
         /** @type {ObjectMap<string, F0Function<string>>} */

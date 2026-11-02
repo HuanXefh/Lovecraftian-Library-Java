@@ -34,7 +34,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(blk.delegee.cropData == null || blk.delegee.cropData.length === 0) throw new LCError.NullArgumentError(blk.name + ".cropData");
+        if(blk.delegee.cropData == null || blk.delegee.cropData.length === 0) throw new SLCError.NullArgumentError(blk.name + ".cropData");
 
         blk.group = BlockGroup.none;
         blk.update = true;
@@ -179,7 +179,7 @@
                 "offSha", -4.0,
                 "drawF", function(b) {b.block.self.ex_drawCropDef(b)},
             );
-            if(obj.dur == null) throw new LCError.NullArgumentError(blk.name + ".cropData.dur");
+            if(obj.dur == null) throw new SLCError.NullArgumentError(blk.name + ".cropData.dur");
             blk.delegee.growTotalTime += obj.dur;
             obj.item = MDL_content.getCt(obj.item, ContentGetModes.RS);
             i++;

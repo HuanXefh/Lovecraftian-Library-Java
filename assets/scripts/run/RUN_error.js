@@ -21,7 +21,7 @@
     /**
      * Container of all custom error types registered with {@link registerNewError}.
      * @global
-     * @name LCError
+     * @name SLCError
      * @type {Object}
      * @prop {typeof Error} NullArgumentError
      * @prop {typeof Error} HeaderConflictError
@@ -35,7 +35,7 @@
      * @prop {typeof Error} RecipeDictionaryCustomFieldNotFoundError
      * @prop {typeof Error} DialogFlowDataStructureError
      */
-    globalize({}, "LCError");
+    globalize({}, "SLCError");
 
 
 

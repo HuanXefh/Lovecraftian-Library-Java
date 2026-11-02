@@ -6,7 +6,7 @@
 
 
     /**
-     * Registers new logs to {@link LCLogHandler}.
+     * Registers new logs to {@link SLCLogHandler}.
      * <br> `IMPORTANT`: {@link LogModes} has not been defined yet, do not use it here!
      */
 
@@ -18,7 +18,7 @@
 */
 
 
-    batchCall(LCLogHandler, function() {
+    batchCall(SLCLogHandler, function() {
 
         this.add(1, "invalidArguments", () => "[LOVEC] ${1}".format("Invalid arguments!".color(GLB_color.remove)));
         this.add(1, "notInGame", () => "[LOVEC] ${1}".format("Method is unavailable outside of game!".color(GLB_color.remove)));
@@ -36,12 +36,12 @@
 
         this.add(0, "liquidInfo", (tx, ty) => {
             if(!Vars.state.isGame()) {
-                LCLogHandler.log("notInGame");
+                SLCLogHandler.log("notInGame");
                 return;
             };
             let b = GLB_var.world.build(tx, ty);
             if(b == null) {
-                LCLogHandler.log("noBuildingFound", tx, ty);
+                SLCLogHandler.log("noBuildingFound", tx, ty);
                 return;
             };
             return String.multiline(
@@ -68,7 +68,7 @@
 
         this.add(0, "cepInfo", team => {
             if(!Vars.state.isGame()) {
-                LCLogHandler.log("notInGame");
+                SLCLogHandler.log("notInGame");
                 return;
             };
             if(team == null) team = Vars.player.team();

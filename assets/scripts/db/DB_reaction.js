@@ -195,7 +195,7 @@ const db = {
      * Target liquid in a solvation reaction.
      * If null, content of puddle won't be changed.
      * @type {Object<string, Array>}
-     * @lovecExtensible {@link LCModDBRegister.reacSolvTarget}
+     * @lovecExtensible {@link SLCModDBRegister.reacSolvTarget}
      */
     solvationTarget: {
 
@@ -216,7 +216,7 @@ const db = {
 };
 
 
-LCModDBRegister
+SLCModDBRegister
 .apply("reacSolvTarget", db["solvationTarget"]);
 
 

@@ -899,14 +899,14 @@ const db = {
     /**
      * Collection of raw recipe data used in {@link TP_recipeGen}.
      * @type {Object<string, Array|Object<string, Array>>}
-     * @lovecExtensible {@link LCModDBRegister.rcGenData}
+     * @lovecExtensible {@link SLCModDBRegister.rcGenData}
      */
     genData: {
 
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenAssemblyData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenAssemblyData}
          */
         assembly: {
 
@@ -943,7 +943,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenCoolingData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenCoolingData}
          */
         cooling: {
 
@@ -960,7 +960,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenCrushingData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenCrushingData}
          */
         crushing: {
 
@@ -986,7 +986,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenDryingData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenDryingData}
          */
         drying: {
 
@@ -1052,7 +1052,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenElectrolysisData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenElectrolysisData}
          */
         electrolysis: {
 
@@ -1066,7 +1066,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenFiltrationData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenFiltrationData}
          */
         filtration: {
 
@@ -1090,7 +1090,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenHeatingData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenHeatingData}
          */
         heating: {
 
@@ -1121,7 +1121,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenMixingData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenMixingData}
          */
         mixing: {
 
@@ -1154,7 +1154,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenPulverizationData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenPulverizationData}
          */
         pulverization: {
 
@@ -1171,7 +1171,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenPurificationData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenPurificationData}
          */
         purification: {
 
@@ -1209,7 +1209,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenReactionData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenReactionData}
          */
         reaction: {
 
@@ -1252,7 +1252,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenRoastingData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenRoastingData}
          */
         roasting: {
 
@@ -1280,7 +1280,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenShapingData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenShapingData}
          */
         shaping: {
 
@@ -1298,7 +1298,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenSinteringData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenSinteringData}
          */
         sintering: {
 
@@ -1322,7 +1322,7 @@ const db = {
 
         /**
          * @type {Object<string, Array>}
-         * @lovecExtensible {@link LCModDBRegister.rcGenSmeltingData}
+         * @lovecExtensible {@link SLCModDBRegister.rcGenSmeltingData}
          */
         smelting: {
 
@@ -1350,7 +1350,7 @@ const db = {
 };
 
 
-LCModDBRegister
+SLCModDBRegister
 .apply("rcGenData", db["genData"])
 .apply("rcGenAssemblyData", db["genData"]["assembly"]);
 

@@ -823,9 +823,9 @@
                 return [
                     "rcMdl", function(val) {
                         // Convert name to actual recipe module object
-                        if(val == null) throw new LCError.NullArgumentError("rcMdl");
+                        if(val == null) throw new SLCError.NullArgumentError("rcMdl");
                         let nameMod = this.rcSourceMod;
-                        if(nameMod == null) throw new LCError.NullArgumentError("rcSourceMod");
+                        if(nameMod == null) throw new SLCError.NullArgumentError("rcSourceMod");
                         return MDL_recipe.getRcMdl(nameMod, val);
                     },
                 ]

@@ -171,7 +171,7 @@
                 // Unit reload display
                 if(GLB_param.SHOULD_DRAW_UNIT_RELOAD) {
                     for(let i = 0; i < 3; i++) {
-                        mtIds = LCDBFileHandler.read("unit-reload-" + i, unit.type.name, null);
+                        mtIds = SLCDBFileHandler.read("unit-reload-" + i, unit.type.name, null);
                         if(mtIds == null) continue;
                         MDL_draw.unitReload(unit, mtIds, GLB_color.techBlue, 1.0, 0.0, i, null);
                     };
@@ -257,7 +257,7 @@
                 MDL_prop.getBuildShield(b), MDL_prop.getBuildSpd(b), null,
             );
             if(GLB_param.SHOULD_DRAW_UNIT_RELOAD) {
-                cond = b.ex_getReloadFrac != null || DB_block.db["class"]["group"]["reload"]["class"].hasIns(b.block) || LCDBFileHandler.read("block-reload", b.block.name, false);
+                cond = b.ex_getReloadFrac != null || DB_block.db["class"]["group"]["reload"]["class"].hasIns(b.block) || SLCDBFileHandler.read("block-reload", b.block.name, false);
                 if(cond) {
                     MDL_draw.unitReload(b, null, GLB_color.techBlue, 1.0, -16.0, -1.25 + GLB_var.range.offBuildStatR, MDL_prop.getReloadFrac(b));
                 };
@@ -358,8 +358,8 @@
         drawInfo();
         drawNoise();
 
-        if(LCDrawTest != null && LCDrawTest.enabled) {
-            LCDrawTest.draw();
+        if(SLCDrawTest != null && SLCDrawTest.enabled) {
+            SLCDrawTest.draw();
         };
 
         drawUi();

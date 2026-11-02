@@ -46,7 +46,7 @@
      * @return {void}
      */
     function comp_ex_init(sta) {
-        if(sta.nameDialFlow == null) throw new LCError.NullArgumentError(sta.name + ".nameDialFlow");
+        if(sta.nameDialFlow == null) throw new SLCError.NullArgumentError(sta.name + ".nameDialFlow");
 
         sta.databaseCategory = "lovec-information";
         if(!Vars.headless) {

@@ -32,8 +32,8 @@
             maxTemp = readParam(metaObj, "maxTemp"),
             tempGap = readParam(metaObj, "tempGap", 300.0);
 
-        if(target == null) throw new LCError.NullArgumentError("target");
-        if(maxTemp == null) throw new LCError.NullArgumentError("maxTemp");
+        if(target == null) throw new SLCError.NullArgumentError("target");
+        if(maxTemp == null) throw new SLCError.NullArgumentError("maxTemp");
 
         this.setCateg("aux");
         let i = 1, tempCur = tempGap;
@@ -69,7 +69,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("assembler", mode, "assembly");
         this.setCateg(categ);
@@ -95,7 +95,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("cooler", mode);
         this.setCateg(categ);
@@ -195,7 +195,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("dryer", mode, "drying");
         this.setCateg(categ);
@@ -222,7 +222,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("electrolyzer", mode, "electrolysis");
         this.setCateg(categ);
@@ -248,7 +248,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("filter", mode, "filtration");
         this.setCateg(categ);
@@ -275,7 +275,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("heater", mode, "heating");
         this.setCateg(categ);
@@ -302,7 +302,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("mixer", mode, "mixing");
         this.setCateg(categ);
@@ -335,11 +335,11 @@
         );
         this.handleCtLi(
             rc,
-            GLB_varGen.tagIntmdsMap.get("rs-sol").filter(liq => liq.delegee.intmdParent != null && LCDBFileHandler.read("liquid-solvent", liq.delegee.solvent) != null),
+            GLB_varGen.tagIntmdsMap.get("rs-sol").filter(liq => liq.delegee.intmdParent != null && SLCDBFileHandler.read("liquid-solvent", liq.delegee.solvent) != null),
             null,
             metaObj,
             (liq, metaObj) => {
-                let liqSolv = LCDBFileHandler.read("liquid-solvent", liq.delegee.solvent);
+                let liqSolv = SLCDBFileHandler.read("liquid-solvent", liq.delegee.solvent);
                 return {
                     tag: liqSolv.name,
                     liqI: liqSolv,
@@ -366,7 +366,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("pulverizer", mode, "pulverization");
         this.setCateg(categ);
@@ -417,7 +417,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("purifier", mode, "purification");
         this.setCateg(categ);
@@ -463,7 +463,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("reactor", mode);
         this.setCateg(categ);
@@ -519,7 +519,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("roastingFurnace", mode, "roasting");
         this.setCateg(categ);
@@ -632,13 +632,13 @@
         this.handleCtLi(
             rc,
             GLB_varGen.rawOreBlks,
-            blk => MDL_content.getCt(Object.keyByVal(LCDBFileHandler.getDataObj("item-payload-block"), blk.name, null), ContentGetModes.RS),
+            blk => MDL_content.getCt(Object.keyByVal(SLCDBFileHandler.getDataObj("item-payload-block"), blk.name, null), ContentGetModes.RS),
             metaObj,
             (item, metaObj) => ({
-                keyCt: LCDBFileHandler.read("item-payload-block", item.name),
-                payI: LCDBFileHandler.read("item-payload-block", item.name),
+                keyCt: SLCDBFileHandler.read("item-payload-block", item.name),
+                payI: SLCDBFileHandler.read("item-payload-block", item.name),
                 itemO: item,
-                amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name), ContentGetModes.BLK).requirements[0].amount,
+                amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(SLCDBFileHandler.read("item-payload-block", item.name), ContentGetModes.BLK).requirements[0].amount,
             }),
         );
     };
@@ -657,7 +657,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("shaper", mode);
         this.setCateg(categ);
@@ -684,7 +684,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("sinteringFurnace", mode, "sintering");
         this.setCateg(categ);
@@ -696,7 +696,7 @@
                 metaObj,
                 (item, metaObj) => ({
                     keyCt: item.name,
-                    tempReq: LCDBFileHandler.read("item-sintering-temperature", item.delegee.intmdParent, -1.0),
+                    tempReq: SLCDBFileHandler.read("item-sintering-temperature", item.delegee.intmdParent, -1.0),
                     itemI: item,
                     itemO: item.delegee.intmdParent,
                 }),
@@ -716,7 +716,7 @@
                 (item, metaObj) => ({
                     icon: MDL_content.getIntmd(item.delegee.intmdParent, "rs-ore0conc"),
                     keyCt: item.name,
-                    tempReq: LCDBFileHandler.read("item-sintering-temperature", item.delegee.intmdParent, -1.0),
+                    tempReq: SLCDBFileHandler.read("item-sintering-temperature", item.delegee.intmdParent, -1.0),
                     itemI: item,
                     itemO: MDL_content.getIntmd(item.delegee.intmdParent, "rs-ore0conc"),
                 }),
@@ -753,7 +753,7 @@
         let
             mode = readParam(metaObj, "mode");
 
-        if(mode == null) throw new LCError.NullArgumentError("mode");
+        if(mode == null) throw new SLCError.NullArgumentError("mode");
 
         let categ = this.getCategByMode("smelter", mode, "smelting");
         this.setCateg(categ);
