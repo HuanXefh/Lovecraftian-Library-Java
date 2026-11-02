@@ -1,5 +1,6 @@
 package lovec.graphics;
 
+import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.*;
 import arc.math.Mathf;
@@ -18,6 +19,10 @@ import mindustry.Vars;
 public class SLCDraw {
 
 
+    private static final Vec2[] tmpVecs = {
+        new Vec2(), new Vec2(), new Vec2(), new Vec2(), new Vec2(),
+        new Vec2(), new Vec2(), new Vec2(), new Vec2(), new Vec2(),
+    };
     private static final Color[] tmpColors = {
         new Color(), new Color(), new Color(), new Color(), new Color(),
         new Color(), new Color(), new Color(), new Color(), new Color(),
@@ -161,6 +166,23 @@ public class SLCDraw {
     };
     public static void segLine(TextureRegion segReg, float x1, float y1, float x2, float y2) {
         segLine(segReg, x1, y1, x2, y2, 1f);
+    };
+
+
+    /**
+     * Draws line between given position and somewhere beyond camera view.
+     */
+    public static void radialLine(float x, float y, float ang, float clipRad) {
+        tmpVecs[0].set(x, y);
+        Core.camera.project(tmpVecs[0]);
+        float rad = Mathf.sqrt(Mathf.pow(Core.camera.width, 2) + Mathf.pow(Core.camera.height, 2)) / 2f + clipRad;
+        tmpVecs[0].add(tmpVecs[1].trns(ang, rad));
+        Core.camera.unproject(tmpVecs[0]);
+        Lines.line(x, y, tmpVecs[0].x, tmpVecs[1].y);
+    };
+    // Overload
+    public static void radialLine(float x, float y, float ang) {
+        radialLine(x, y, ang, 32f);
     };
 
 
