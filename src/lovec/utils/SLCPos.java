@@ -4,10 +4,7 @@ import arc.Core;
 import arc.func.Cons;
 import arc.func.Cons3;
 import arc.math.Mathf;
-import arc.math.geom.Geometry;
-import arc.math.geom.Point2;
-import arc.math.geom.Position;
-import arc.math.geom.Vec2;
+import arc.math.geom.*;
 import arc.util.Nullable;
 import arc.util.Tmp;
 import lovec.utils.extend.SLCNativeArray;
@@ -225,6 +222,64 @@ public class SLCPos {
             cons3.get(x1 + (x2 - x1) * frac_i, y1 + (y2 - y1) * frac_i, ang);
             i++;
         };
+    };
+
+
+    private static final Vec2[] curveLineVecs = {
+        new Vec2(), new Vec2(), new Vec2(), new Vec2(), new Vec2(),
+    };
+
+
+    /**
+     * Gets position on a round curve line.
+     */
+    public static Vec2 getCoordsRoundLine(Vec2 out, float frac, float x1, float y1, float x2, float y2, boolean inv, float a) {
+        curveLineVecs[1].set(x1, y1);
+        curveLineVecs[2].set(!inv ? Mathf.lerp(x1, x2, a) : x1, !inv ? y1 : Mathf.lerp(y1, y2, a));
+        curveLineVecs[3].set(!inv ? x2 : Mathf.lerp(x2, x1, a), !inv ? Mathf.lerp(y2, y1, a) : y2);
+        curveLineVecs[4].set(x2, y2);
+        Bezier.cubic(out, frac, curveLineVecs[1], curveLineVecs[4], curveLineVecs[2], curveLineVecs[3], curveLineVecs[0]);
+        return out;
+    };
+    // Overload
+    public static Vec2 getCoordsRoundLine(Vec2 out, float frac, float x1, float y1, float x2, float y2, boolean inv) {
+        return getCoordsRoundLine(out, frac, x1, y1, x2, y2, inv, 0.5f);
+    };
+    public static Vec2 getCoordsRoundLine(Vec2 out, float frac, float x1, float y1, float x2, float y2) {
+        return getCoordsRoundLine(out, frac, x1, y1, x2, y2, false);
+    };
+
+
+    /**
+     * Gets position on an S-shaped curve line.
+     */
+    public static Vec2 getCoordsSLine(Vec2 out, float frac, float x1, float y1, float x2, float y2, boolean inv, float a) {
+        curveLineVecs[1].set(x1, y1);
+        curveLineVecs[2].set(!inv ? Mathf.lerp((x1 + x2) / 2f, x2, a) : Mathf.lerp((x1 + x2) / 2f, x1, a), !inv ? Mathf.lerp((y1 + y2) / 2f, y1, a) : Mathf.lerp((y1 + y2) / 2f, y2, a));
+        curveLineVecs[3].set(!inv ? Mathf.lerp((x1 + x2) / 2f, x1, a) : Mathf.lerp((x1 + x2) / 2f, x2, a), !inv ? Mathf.lerp((y1 + y2) / 2f, y2, a) : Mathf.lerp((y1 + y2) / 2f, y1, a));
+        curveLineVecs[4].set(x2, y2);
+        Bezier.cubic(out, frac, curveLineVecs[1], curveLineVecs[4], curveLineVecs[2], curveLineVecs[3], curveLineVecs[0]);
+        return out;
+    };
+    // Overload
+    public static Vec2 getCoordsSLine(Vec2 out, float frac, float x1, float y1, float x2, float y2, boolean inv) {
+        return getCoordsSLine(out, frac, x1, y1, x2, y2, inv, 0.5f);
+    };
+    public static Vec2 getCoordsSLine(Vec2 out, float frac, float x1, float y1, float x2, float y2) {
+        return getCoordsSLine(out, frac, x1, y1, x2, y2, false);
+    };
+
+
+    /**
+     * Gets position on a vector offset curve line.
+     */
+    public static Vec2 getCoordsVecOffLine(Vec2 out, float frac, float x1, float y1, float x2, float y2, Vec2 vec) {
+        curveLineVecs[1].set(x1, y1);
+        curveLineVecs[2].set(x1 + vec.x, y1 + vec.y);
+        curveLineVecs[3].set(x2 + vec.x, y2 + vec.y);
+        curveLineVecs[4].set(x2, y2);
+        Bezier.cubic(out, frac, curveLineVecs[1], curveLineVecs[4], curveLineVecs[2], curveLineVecs[3], curveLineVecs[0]);
+        return out;
     };
 
 

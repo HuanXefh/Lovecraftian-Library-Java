@@ -3,6 +3,7 @@ package lovec.graphics;
 import arc.graphics.Color;
 import arc.graphics.g2d.*;
 import arc.math.Mathf;
+import arc.math.geom.Vec2;
 import arc.util.Nullable;
 import arc.util.Tmp;
 import lovec.utils.SLCVersionResolver;
@@ -160,6 +161,111 @@ public class SLCDraw {
     };
     public static void segLine(TextureRegion segReg, float x1, float y1, float x2, float y2) {
         segLine(segReg, x1, y1, x2, y2, 1f);
+    };
+
+
+    /**
+     * Draws round curve line.
+     */
+    public static void roundLine(float x1, float y1, float x2, float y2, boolean inv, float a, int segAmt) {
+        if(!inv) {
+            Lines.curve(
+                x1,
+                y1,
+                Mathf.lerp(x1, x2, a),
+                y1,
+                x2,
+                Mathf.lerp(y2, y1, a),
+                x2,
+                y2,
+                segAmt
+            );
+        } else {
+            Lines.curve(
+                x1,
+                y1,
+                x1,
+                Mathf.lerp(y1, y2, a),
+                Mathf.lerp(x2, x1, a),
+                y2,
+                x2,
+                y2,
+                segAmt
+            );
+        };
+    };
+    // Overload
+    public static void roundLine(float x1, float y1, float x2, float y2, boolean inv, float a) {
+        roundLine(x1, y1, x2, y2, inv, a, 15);
+    };
+    public static void roundLine(float x1, float y1, float x2, float y2, boolean inv) {
+        roundLine(x1, y1, x2, y2, inv, 0.5f);
+    };
+    public static void roundLine(float x1, float y1, float x2, float y2) {
+        roundLine(x1, y1, x2, y2, false);
+    };
+
+
+    /**
+     * Draws S-shaped curve line.
+     */
+    public static void sLine(float x1, float y1, float x2, float y2, boolean inv, float a, int segAmt) {
+        if(!inv) {
+            Lines.curve(
+                x1,
+                y1,
+                Mathf.lerp((x1 + x2) / 2f, x2, a),
+                Mathf.lerp((y1 + y2) / 2f, y1, a),
+                Mathf.lerp((x1 + x2) / 2f, x1, a),
+                Mathf.lerp((y1 + y2) / 2f, y2, a),
+                x2,
+                y2,
+                segAmt
+            );
+        } else {
+            Lines.curve(
+                x1,
+                y1,
+                Mathf.lerp((x1 + x2) / 2f, x1, a),
+                Mathf.lerp((y1 + y2) / 2f, y2, a),
+                Mathf.lerp((x1 + x2) / 2f, x2, a),
+                Mathf.lerp((y1 + y2) / 2f, y1, a),
+                x2,
+                y2,
+                segAmt
+            );
+        };
+    };
+    // Overload
+    public static void sLine(float x1, float y1, float x2, float y2, boolean inv, float a) {
+        sLine(x1, y1, x2, y2, inv, a, 15);
+    };
+    public static void sLine(float x1, float y1, float x2, float y2, boolean inv) {
+        sLine(x1, y1, x2, y2, inv, 0.75f);
+    };
+    public static void sLine(float x1, float y1, float x2, float y2) {
+        sLine(x1, y1, x2, y2, false);
+    };
+
+
+    /**
+     * Draws curve line using a vector as offset.
+     */
+    public static void vecOffLine(float x1, float y1, float x2, float y2, Vec2 vec, int segAmt) {
+        Lines.curve(
+            x1,
+            y1,
+            x1 + vec.x,
+            y1 + vec.y,
+            x2 + vec.x,
+            y2 + vec.y,
+            x2, y2,
+            segAmt
+        );
+    };
+    // Overload
+    public static void vecOffLine(float x1, float y1, float x2, float y2, Vec2 vec) {
+        vecOffLine(x1, y1, x2, y2, vec, 15);
     };
 
 
