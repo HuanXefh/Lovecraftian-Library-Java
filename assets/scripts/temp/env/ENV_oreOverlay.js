@@ -23,6 +23,38 @@
     /**
      * @private
      * @param {ENVOreOverlay} blk
+     * @param {PackContext} packer
+     * @return {void}
+     */
+    function comp_createIcons(blk, packer) {
+        if(blk instanceof OreBlock && packer.has(blk.name + "-large")) {
+            let
+                pixOri = packer.get(blk.name + "-large"),
+                pix = pixOri.crop(),
+                rawColor = Color.rgba8888(0.0, 0.0, 0.0, 0.3),
+                x,
+                y = 0;
+            while(y < pix.height) {
+                x = 0;
+                while(x < pix.width) {
+                    if(pixOri.getA(x, y) < 36 && pixOri.getA(x, y - 3) >= 36) {
+                        pix.setRaw(x, y, rawColor);
+                    };
+                    x++;
+                };
+                y++;
+            };
+            SLCVersionResolver.isV8 ?
+                packer.add(MultiPacker.PageType.environment, blk.name + "-large", pix) :
+                packer.add(blk.name + "-large", pix);
+            pix.dispose();
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {ENVOreOverlay} blk
      * @param {Tile} t
      * @return {void}
      */
@@ -53,6 +85,11 @@
     .setTags()
     .setParam({})
     .setMethod({
+
+
+        createIcons: function(packer) {
+            comp_createIcons(this, packer);
+        },
 
 
         drawBase: function(t) {
