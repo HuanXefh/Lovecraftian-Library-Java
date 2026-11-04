@@ -75,8 +75,8 @@
      */
     function comp_linkValid(blk, b, b_t) {
         return b_t.team === b.team && b_t.block.consumesPower
-            && !checkSubInsOfTemp(b_t, "B_basePowerTransmitter")
-            && Math.max(Math.abs(b_t.x - b.x), Math.abs(b_t.y - b.y)) <= (blk.size * 0.5 + blk.delegee.blkR) * Vars.tilesize;
+            && !checkSubInsOfTemp(b_t, "B_basePowerTransmitter") && !checkSubInsOfTemp(b_t, "B_fluidPipe")
+            && Math.max(Math.abs(b_t.x - b.x), Math.abs(b_t.y - b.y)) <= (blk.size * 0.5 + blk.delegee.blkR) * Vars.tilesize + 0.01;
     };
 
 
@@ -116,8 +116,8 @@
         blk.delegee.tmpLinkSeq.each(
             ob => ob != null && ob.tile !== t
                 && ob.power != null && ob.block.consumesPower
-                && !checkSubInsOfTemp(ob, "B_basePowerTransmitter")
-                && Math.max(Math.abs(ob.x - t.x.toFCoord(blk.size)), Math.abs(ob.y - t.y.toFCoord(blk.size))) <= (blk.size * 0.5 + blk.delegee.blkR) * Vars.tilesize
+                && !checkSubInsOfTemp(ob, "B_basePowerTransmitter") && !checkSubInsOfTemp(ob, "B_fluidPipe")
+                && Math.max(Math.abs(ob.x - t.x.toFCoord(blk.size)), Math.abs(ob.y - t.y.toFCoord(blk.size))) <= (blk.size * 0.5 + blk.delegee.blkR) * Vars.tilesize + 0.01
                 && !blk.delegee.tmpGraphSet.contains(ob.power.graph)
                 && !PowerNode.insulated(t, ob.tile)
                 && !Edges.getEdges(blk.size).some(pon => {
@@ -254,8 +254,8 @@
 
 
             changePlacementPath: function(pons, rot) {
-                Placement.calculateNodes(pons, this, rot, (pon, ob) => {
-                    return Math.max(Math.abs(ob.x - this.x), Math.abs(ob.y - this.y)) <= (this.size * 0.5 + this.delegee.blkR) * Vars.tilesize;
+                Placement.calculateNodes(pons, this, rot, (pon, opon) => {
+                    return Math.max(Math.abs(opon.x.toFCoord(this.size) - pon.x.toFCoord(this.size)), Math.abs(opon.y.toFCoord(this.size) - pon.y.toFCoord(this.size))) <= (this.size * 0.5 + this.delegee.blkR) * Vars.tilesize + 0.01;
                 });
             }
             .setProp({

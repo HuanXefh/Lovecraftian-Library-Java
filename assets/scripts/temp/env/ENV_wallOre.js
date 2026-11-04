@@ -54,6 +54,18 @@
     .setParam({
 
 
+        /* <------------------------------ internal ------------------------------> */
+
+
+        /**
+         * `INTERNAL`: Has to fixed to match large walls.
+         * @memberof ENV_wallOre
+         * @instance
+         * @type {number}
+         */
+        largeThr: 0.5,
+
+
         /* <------------------------------ vanilla ------------------------------> */
 
 
