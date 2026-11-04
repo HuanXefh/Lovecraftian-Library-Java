@@ -81,8 +81,8 @@
             switch(str) {
                 case "SPEC: click" :
                     b.delegee.underConstruction ?
-                        b.configure("SPEC: stop") :
-                        b.configure("SPEC: start");
+                        b.configureAny("SPEC: stop") :
+                        b.configureAny("SPEC: start");
                     break;
                 case "SPEC: start" :
                     b.delegee.underConstruction = true;
@@ -589,7 +589,7 @@
     function comp_updateTile(b) {
         if(!GLB_param.UPDATE_SUPPRESSED && b.delegee.underConstruction) {
             if(!Vars.net.client() && b.delegee.constructionTimeCur >= b.block.delegee.constructionTimeReq) {
-                b.configure("SPEC: complete");
+                b.configureAny("SPEC: complete");
             };
             b.delegee.constructionTimeCur += !global.lovecUtil.fun.checkSandbox() ? Time.delta : b.block.delegee.constructionTimeReq / 60.0;
             if(!Vars.headless) {
@@ -599,7 +599,7 @@
             if(!Vars.net.client() && GLB_timer.secFive) {
                 // Deconstruction during construction?
                 if(!b.block.self.ex_checkPlanComplete(b.team, b.delegee.constructionPlan)) {
-                    b.configure("SPEC: stop");
+                    b.configureAny("SPEC: stop");
                 };
             };
         };

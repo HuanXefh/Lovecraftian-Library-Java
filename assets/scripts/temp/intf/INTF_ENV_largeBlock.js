@@ -115,7 +115,7 @@
 
 
                 /**
-                 * `PARAM`: Larger value leads to more large variant drawn.
+                 * `PARAM`: Larger value leads to more large variant drawn. Normalized.
                  * @memberof INTF_ENV_largeBlock
                  * @instance
                  * @type {number}

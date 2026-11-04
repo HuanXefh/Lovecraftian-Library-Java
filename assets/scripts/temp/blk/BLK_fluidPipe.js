@@ -96,11 +96,11 @@
             b.block.consPower.trigger(b);
         };
 
-        if(GLB_timer.sec && b.delegee.isLeak) {
+        if(GLB_timer.secFive && b.delegee.isLeak) {
             let amt = b.liquids.currentAmount();
             if(amt > 0.001) {
                 let liq = b.liquids.current();
-                MDL_pollution.addDynaPol(MDL_pollution.getRsPol(liq) / 60.0);
+                MDL_pollution.addDynaPol(MDL_pollution.getRsPol(liq) / 12.0);
                 if(!Vars.net.client() && liq.gas && liq.flammability > 0.0 && Mathf.chance(0.03 * liq.flammability)) {
                     MDL_net.sendPacket(
                         PacketModes.BOTH, "lovec-both-flammable-gas-emission",

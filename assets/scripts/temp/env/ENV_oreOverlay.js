@@ -41,6 +41,7 @@
 
 
     /**
+     * Parent of all mineable overlay blocks.
      * @class ENV_oreOverlay
      * @extends ENV_baseOverlay
      */
