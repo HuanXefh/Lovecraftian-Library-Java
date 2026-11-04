@@ -58,7 +58,7 @@
 
 
         /**
-         * `INTERNAL`: Has to fixed to match large walls.
+         * `INTERNAL`: Has to be fixed to match large walls.
          * @memberof ENV_wallOre
          * @instance
          * @type {number}

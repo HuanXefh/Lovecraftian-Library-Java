@@ -1184,12 +1184,13 @@
         let
             r = readParam(paramObj, "r", 0.5),
             color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
+            a = readParam(paramObj, "a", 1.0),
             scl = readParam(paramObj, "scl", 1.0),
             z = readParam(paramObj, "z", null);
 
         let tmp = new Effect(40.0 * scl, eff => {
             Draw.color(tryVal(color, eff.color));
-            Draw.alpha(eff.fout());
+            Draw.alpha(eff.fout() * a);
             Fill.square(eff.x, eff.y, r * Vars.tilesize);
             Draw.reset();
         });
@@ -1200,6 +1201,33 @@
         return tmp;
     };
     exports.fadeSquare = fadeSquare;
+
+
+    /**
+     * @param {Object|unset} [paramObj]
+     * @return {Effect}
+     */
+    const fadeDisk = function(paramObj) {
+        let
+            rad = readParam(paramObj, "rad", 40.0),
+            color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
+            a = readParam(paramObj, "a", 1.0),
+            scl = readParam(paramObj, "scl", 1.0),
+            z = readParam(paramObj, "z", null);
+
+        let tmp = new Effect(40.0 * scl, eff => {
+            Draw.color(tryVal(color, eff.color));
+            Draw.alpha(eff.fout() * a);
+            Fill.circle(eff.x, eff.y, rad);
+            Draw.reset();
+        });
+        if(z != null) {
+            tmp.layer = z;
+        };
+
+        return tmp;
+    };
+    exports.fadeDisk = fadeDisk;
 
 
     /**

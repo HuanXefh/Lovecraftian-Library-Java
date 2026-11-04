@@ -37,9 +37,47 @@
         blk.connectedPower = false;
         blk.update = true;
         blk.configurable = false;
+        blk.swapDiagonalPlacement = false;
         blk.maxNodes = Number.intMax;
 
         blk.clipSize = Math.max(blk.clipSize, (blk.size * 0.5 + blk.delegee.blkR) * Vars.tilesize);
+
+        if(blk.delegee.rangeFadeEff == null) {
+            let len = blk.size * Vars.tilesize * 0.15;
+            let rad = blk.size * Vars.tilesize * 0.6;
+            blk.delegee.rangeFadeEff = new MultiEffect(
+                TP_effect.fadeSquare({
+                    r: blk.size * 0.5 + blk.delegee.blkR,
+                    color: GLB_color.accent,
+                    a: 0.125,
+                    scl: 2.5,
+                    z: GLB_var.layer.p3dRange,
+                }),
+                new SeqEffect(
+                    TP_effect.sparkLine({
+                        amt: 4,
+                        len: len,
+                        rad: rad,
+                        color: GLB_color.accent,
+                        scl: 1.8,
+                    }),
+                    TP_effect.sparkLine({
+                        amt: 4,
+                        len: len,
+                        rad: rad,
+                        color: GLB_color.accent,
+                        scl: 1.8,
+                    }),
+                    TP_effect.sparkLine({
+                        amt: 4,
+                        len: len,
+                        rad: rad,
+                        color: GLB_color.accent,
+                        scl: 1.8,
+                    }),
+                ),
+            );
+        };
     };
 
 
@@ -140,6 +178,9 @@
     function comp_updateTile(b) {
         if(GLB_timer.secThree) {
             b.self.ex_refreshLinks();
+            if(b.power.status > 0.1) {
+                b.block.delegee.rangeFadeEff.at(b);
+            };
         };
     };
 
@@ -209,6 +250,16 @@
         .setParam({
 
 
+            /**
+             * `PARAM`: Effect used to display range. Use null for default effect.
+             * @memberof BLK_rangeWireRelay
+             * @instance
+             * @type {Effect}
+             * @default null
+             */
+            rangeFadeEff: null,
+
+
             /* <------------------------------ internal ------------------------------> */
 
 
@@ -253,10 +304,11 @@
             },
 
 
-            changePlacementPath: function(pons, rot) {
-                Placement.calculateNodes(pons, this, rot, (pon, opon) => {
-                    return Math.max(Math.abs(opon.x.toFCoord(this.size) - pon.x.toFCoord(this.size)), Math.abs(opon.y.toFCoord(this.size) - pon.y.toFCoord(this.size))) <= (this.size * 0.5 + this.delegee.blkR) * Vars.tilesize + 0.01;
-                });
+            changePlacementPath: function(ponSeq, rot) {
+                Placement.calculateNodes(ponSeq, this, rot, (pon, opon) => Mathf.mod(rot, 2) === 0 ?
+                    Math.abs(pon.x - opon.x) <= (this.size + this.delegee.blkR * 2) :
+                    Math.abs(pon.y - opon.y) <= (this.size + this.delegee.blkR * 2)
+                );
             }
             .setProp({
                 noSuper: true,

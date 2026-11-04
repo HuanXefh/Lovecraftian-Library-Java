@@ -203,8 +203,8 @@
 
             changePlacementPath: function(ponSeq, rot) {
                 Placement.calculateNodes(ponSeq, this, rot, (pon, opon) => Mathf.mod(rot, 2) === 0 ?
-                    Math.abs(pon.x - opon.x) <= (this.size + this.placeRestrictR) :
-                    Math.abs(pon.y - opon.y) <= (this.size + this.placeRestrictR)
+                    Math.abs(pon.x - opon.x) <= (this.size + this.delegee.placeRestrictR) :
+                    Math.abs(pon.y - opon.y) <= (this.size + this.delegee.placeRestrictR)
                 );
             }
             .setProp({
