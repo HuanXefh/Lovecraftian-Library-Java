@@ -105,9 +105,9 @@
      */
     setWeapon = function(utp, getter) {
         Events.run(ContentInitEvent, () => {
-            let wps = utp.weapons.toArray();
+            let weaps = utp.weapons.toArray();
             try{
-                utp.weapons = getter(wps).compact().flatten().toSeq();
+                utp.weapons = getter(weaps).compact().flatten().toSeq();
             } catch(err) {
                 console.err("[LOVEC] Failed to set weapons for ${1}\n".format(utp.name.color(GLB_color.accent)) + err);
             };
@@ -502,7 +502,7 @@
                     processClassLoader(null, extendInd);
                     let obj = temp.build(paramObj != null ? paramObj : {});
                     let ct = ctorCall(JavaAdapter, extendBase.setupArgs(temp, obj));
-                    extendBase.setupFields(temp, obj);
+                    extendBase.setupFields(ct, obj);
                     temp.initContent(ct);
                     SLCContentHandler.add(ct);
                     processClassLoader(null, extendInd);
@@ -775,8 +775,20 @@
                         cont[name] = getter.apply(this, arguments);
                 });
 
-            // Getter
+            // Template getter
             case 2 :
+                return function(name, tempGetter) {
+                    if(cont.includes(name)) return;
+                    try {
+                        let temp = tempGetter();
+                    } catch(err) {
+                        console.err("[LOVEC] Cannot register template ${1}:\n".format(name.color(Pal.accent)) + err);
+                    };
+                    cont.push(name, tempGetter);
+                };
+
+            // Getter
+            case 3 :
                 return thisFun.wrapPhase(phaseMode, function(name, argGetter) {
                     if(cont.includes(name)) return;
                     cont.push(name, argGetter);
@@ -1027,7 +1039,7 @@
      * @param {FFunction<Object|unset, Ability>} getter
      * @return {void}
      */
-    newAbility = __createNewXxx__(__extraContentData__.ability, 2, null, 1);
+    newAbility = __createNewXxx__(__extraContentData__.ability, 3, null, 1);
 
 
     /**
@@ -1037,7 +1049,7 @@
      * @param {FFunction<Unit, AIController>} getter
      * @return {void}
      */
-    newAi = __createNewXxx__(__extraContentData__.ai, 2, null, 1);
+    newAi = __createNewXxx__(__extraContentData__.ai, 3, null, 1);
 
 
     /**
@@ -1047,7 +1059,7 @@
      * @param {FFunction<Object|unset, ShootPattern>} getter
      * @return {void}
      */
-    newShootPattern = __createNewXxx__(__extraContentData__.shootPattern, 2, null, 1);
+    newShootPattern = __createNewXxx__(__extraContentData__.shootPattern, 3, null, 1);
 
 
     /**
@@ -1099,7 +1111,7 @@
      * @param {FFunction<Object|unset, DrawBlock>} getter
      * @return {void}
      */
-    newDrawer = __createNewXxx__(__extraContentData__.drawer, 2, null, 1);
+    newDrawer = __createNewXxx__(__extraContentData__.drawer, 3, null, 1);
 
 
     /**
@@ -1109,7 +1121,7 @@
      * @param {FFunction<Object|unset, Consume>} getter
      * @return {void}
      */
-    newConsumer = __createNewXxx__(__extraContentData__.consumer, 2, null, 1);
+    newConsumer = __createNewXxx__(__extraContentData__.consumer, 3, null, 1);
 
 
     /**

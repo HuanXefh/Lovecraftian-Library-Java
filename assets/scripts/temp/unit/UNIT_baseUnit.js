@@ -55,6 +55,12 @@
                 }),
             ]);
         };
+
+        MDL_event.onLoad(() => {
+            if(utp.weapons.contains(boolf(weap => checkSubInsOfTemp("WEAP_repairBeam") && !weap.autoTarget && weap.controllable))) {
+                utp.aimDst = 0.0;
+            };
+        });
     };
 
 

@@ -18,4 +18,5 @@
 */
 
 
-    newWeaponTemplate("BaseWeapon", () => require("lovec/temp/wp/WP_baseWeapon"));
+    newWeaponTemplate("BaseWeapon", () => require("lovec/temp/weap/WEAP_baseWeapon"));
+    newWeaponTemplate("RepairBeam", () => require("lovec/temp/weap/WEAP_repairBeam"));

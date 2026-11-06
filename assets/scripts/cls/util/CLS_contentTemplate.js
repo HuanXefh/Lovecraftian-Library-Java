@@ -460,6 +460,7 @@
         });
         // Warn invalid fields in `paramObj`
         Object.eachPair(paramObj, (name, val) => {
+            if(name === "metaObj") return;
             if(this.paramObj[name] === undefined) {
                 console.warn("[LOVEC] Unknown field for content template ${1}: ".format(this.clsName.color(GLB_color.accent)) + name);
             };

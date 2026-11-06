@@ -39,7 +39,7 @@
     /** @type {Payload} */
     let pay;
     /** @type {Weapon} */
-    let wp;
+    let weap;
     /** @type {Array<number>} */
     let mtIds;
     /** @type {NoiseLayerArguments} */
@@ -116,37 +116,37 @@
                     rot = unit.rotation - 90.0;
                     cond = false;
                     unit.mounts.forEachFast(mt => {
-                        wp = mt.weapon;
+                        weap = mt.weapon;
                         // Probably not a weapon
-                        if(wp.alwaysShooting) return;
-                        if(wp.shootCone > 0.0 && wp.shootCone < 179.99) {
+                        if(weap.alwaysShooting) return;
+                        if(weap.shootCone > 0.0 && weap.shootCone < 179.99) {
                             // Regular weapon
                             cond = true;
-                            x = unit.x + Angles.trnsx(rot, wp.x, wp.y);
-                            y = unit.y + Angles.trnsy(rot, wp.x, wp.y);
+                            x = unit.x + Angles.trnsx(rot, weap.x, weap.y);
+                            y = unit.y + Angles.trnsy(rot, weap.x, weap.y);
                             Draw.color(
-                                wp instanceof RepairBeamWeapon ?
+                                weap instanceof RepairBeamWeapon ?
                                     GLB_color.heal :
-                                    wp instanceof PointDefenseWeapon || wp instanceof PointDefenseBulletWeapon ?
+                                    weap instanceof PointDefenseWeapon || weap instanceof PointDefenseBulletWeapon ?
                                         GLB_color.techBlue :
-                                        wp.noAttack ?
+                                        weap.noAttack ?
                                             Color.white :
                                             unit.team.color,
                                 GLB_param.UNIT_RANGE_ALPHA,
                             );
-                            Fill.arc(x, y, wp.range(), wp.shootCone / 180.0, rot + mt.rotation + 90.0 - wp.shootCone);
+                            Fill.arc(x, y, weap.range(), weap.shootCone / 180.0, rot + mt.rotation + 90.0 - weap.shootCone);
                         } else if(
-                            wp.bullet instanceof BombBulletType
-                                || (wp.bullet.speed < 2.0 && !wp.bullet.collides && wp.bullet.splashDamage > 0.0)
+                            weap.bullet instanceof BombBulletType
+                                || (weap.bullet.speed < 2.0 && !weap.bullet.collides && weap.bullet.splashDamage > 0.0)
                         ) {
                             // Bomb weapon
                             cond = true;
                             Draw.color(unit.team.color, 0.1);
-                            Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0);
-                            Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0 + 180.0);
+                            Fill.arc(unit.x, unit.y, weap.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0);
+                            Fill.arc(unit.x, unit.y, weap.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0 + 180.0);
                             Lines.stroke(1.0);
                             Draw.color(GLB_color.accent, GLB_param.UNIT_RANGE_ALPHA);
-                            SLCDraw.circle(unit.x, unit.y, wp.bullet.splashDamageRadius, false);
+                            SLCDraw.circle(unit.x, unit.y, weap.bullet.splashDamageRadius, false);
                         };
                     }, true);
                     if(!cond) {

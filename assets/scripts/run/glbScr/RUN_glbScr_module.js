@@ -212,9 +212,6 @@
     UTIL_dragButtonInfoList = require("lovec/cls/ui/UTIL_dragButtonInfoList");
     /** @global */
     CLS_dragButton = require("lovec/cls/ui/CLS_dragButton");
-    require("lovec/tp/TP_bullet");
-    require("lovec/tp/TP_part");
-    require("lovec/tp/TP_weapon");
     /** @global */
     TP_ability = require("lovec/tp/TP_ability");
     /** @global */
@@ -241,3 +238,6 @@
     require("lovec/run/RUN_logic");
     require("lovec/run/RUN_render");
     require("lovec/run/RUN_mod");
+    require("lovec/tp/TP_part");
+    require("lovec/tp/TP_bullet");
+    require("lovec/tp/TP_weapon");

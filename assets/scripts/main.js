@@ -392,15 +392,15 @@
 
                 if(GLB_param.SECRET_FITH) {
                     let pitchBase;
-                    function fireInTheHole(wp) {
-                        wp.shootSound = fetchSound("se-meme-fith");
-                        pitchBase = Mathf.lerp(1.8, 0.5, Interp.pow2Out.apply(Mathf.clamp(wp.reload / 100.0)));
-                        wp.soundPitchMin = pitchBase - 0.1;
-                        wp.soundPitchMax = pitchBase + 0.1;
+                    function fireInTheHole(weap) {
+                        weap.shootSound = fetchSound("se-meme-fith");
+                        pitchBase = Mathf.lerp(1.8, 0.5, Interp.pow2Out.apply(Mathf.clamp(weap.reload / 100.0)));
+                        weap.soundPitchMin = pitchBase - 0.1;
+                        weap.soundPitchMax = pitchBase + 0.1;
                     };
                     Vars.content.units().each(utp => {
                         utp.deathSound = fetchSound("se-meme-fith");
-                        utp.weapons.each(wp => !wp.noAttack, wp => fireInTheHole(wp));
+                        utp.weapons.each(weap => !weap.noAttack, weap => fireInTheHole(weap));
                     });
                     Vars.content.blocks().each(blk => {
                         blk.destroySound = fetchSound("se-meme-fith");

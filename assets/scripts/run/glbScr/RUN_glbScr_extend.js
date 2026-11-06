@@ -40,6 +40,7 @@
          */
         add(ct) {
             if(!checkCreatedByTemp(ct)) throw new SLCError.NotCreatedByTemplateError(ct);
+            if(ct.getContentType == null || String.isEmpty(ct.name)) return;
             SLCContentHandler.__nameMap__.put(ct.name, ct);
             if(SLCContentHandler.__typeMaps__[ct.getContentType().toString()] !== undefined) {
                 SLCContentHandler.__typeMaps__[ct.getContentType().toString()].put(ct.name, ct);
