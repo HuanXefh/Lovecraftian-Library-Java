@@ -50,7 +50,7 @@
         if(utp.delegee.unitDurabCap > 0.0) {
             setAbility(utp, abis => [
                 abis,
-                fetchAbility("unit-ability", {
+                fetchAbility("unitDurability", {
                     durabCap: utp.delegee.unitDurabCap,
                 }),
             ]);

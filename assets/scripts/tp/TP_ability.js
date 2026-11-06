@@ -200,7 +200,7 @@
 
 
     });
-    newAbility("shield-core", shieldCore);
+    newAbility("shieldCore", shieldCore);
     exports.shieldCore = shieldCore;
 
 
@@ -331,7 +331,7 @@
 
 
     });
-    newAbility("laser-defense", laserDefense);
+    newAbility("laserDefense", laserDefense);
     exports.laserDefense = laserDefense;
 
 
@@ -425,7 +425,7 @@
 
 
     });
-    newAbility("building-repairer-module", buildingRepairerModule);
+    newAbility("buildingRepairerModule", buildingRepairerModule);
     exports.buildingRepairerModule = buildingRepairerModule;
 
 
@@ -479,5 +479,5 @@
 
 
     });
-    newAbility("unit-durability", unitDurability);
+    newAbility("unitDurability", unitDurability);
     exports.unitDurability = unitDurability;
