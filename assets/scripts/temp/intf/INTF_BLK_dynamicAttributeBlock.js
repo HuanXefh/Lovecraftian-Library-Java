@@ -237,12 +237,12 @@
         if(b.delegee.dynaAttrRs == null) return;
         if(b.delegee.dynaAttrRs instanceof Liquid && b.liquids != null) {
             if(b.liquids.get(b.delegee.dynaAttrRs) < b.block.liquidCapacity) {
-                b.handleLiquid(b, b.delegee.dynaAttrRs, b.block.self.ex_getDynaAttrProdAmt(b.delegee.dynaAttrRs) * b.getProgressIncrease(1.0));
+                b.handleLiquid(b, b.delegee.dynaAttrRs, b.block.self.ex_getDynaAttrProdAmt(b.delegee.dynaAttrRs) * b.getProgressIncrease(1.0) * b.block.delegee.dynaAttrRsEffcMap.get(b.delegee.dynaAttrRs.name, 1.0));
             };
             b.dumpLiquid(b.delegee.dynaAttrRs, 2.0);
         };
         if(b.delegee.dynaAttrRs instanceof Item && b.items != null) {
-            b.delegee.dumpTimeCur += b.delta();
+            b.delegee.dumpTimeCur += b.delta() * b.block.delegee.dynaAttrRsEffcMap.get(b.delegee.dynaAttrRs.name, 1.0);
             if(b.delegee.dumpTimeCur >= b.block.dumpTime) {
                 b.delegee.dumpTimeCur %= b.block.dumpTime;
                 b.dump(b.delegee.dynaAttrRs);
@@ -258,10 +258,6 @@
      */
     function comp_updateEfficiencyMultiplier(b) {
         b.efficiency *= b.delegee.dynaAttrEffc;
-        if(b.delegee.dynaAttrRs != null) {
-            // noinspection JSValidateTypes
-            b.efficiency *= b.block.delegee.dynaAttrRsEffcMap.get(b.delegee.dynaAttrRs.name, 1.0);
-        };
     };
 
 
