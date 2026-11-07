@@ -270,6 +270,7 @@
         trigger(b) {
             if(
                 Vars.net.client()
+                    || b.cheating()
                     || b.power == null || b.power.status < 0.0001
                     || b.liquids == null || !tryJsProp(b.liquids.current(), "isConductive", false)
             ) return;
