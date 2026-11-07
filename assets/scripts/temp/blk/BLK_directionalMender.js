@@ -120,7 +120,7 @@
         if(b.charge > b.block.reload && cond) {
             b.charge = 0.0;
             if(b.delegee.lastHealTarget != null && MDL_cond.canHeal(b.delegee.lastHealTarget)) {
-                FRAG_attack.heal(b.delegee.lastHealTarget, (b.delegee.lastHealTarget.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt) * b.efficiency, true);
+                FRAG_attack.heal(b.delegee.lastHealTarget, (b.delegee.lastHealTarget.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt) * b.efficiency);
             };
         };
     };

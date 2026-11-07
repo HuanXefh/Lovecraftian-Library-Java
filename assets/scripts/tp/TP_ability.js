@@ -354,6 +354,8 @@
         rad: readParam(paramObj, "rad", 40.0),
         /** @type {number} */
         strokeScl: readParam(paramObj, "strokeScl", 1.0),
+        /** @type {Color} */
+        color: readParam(paramObj, "color", GLB_color.heal),
         /** @type {IntMap<Interval>} */
         timerMap: new IntMap(),
         /** @type {Interval} */
@@ -411,8 +413,8 @@
             this.delegee.lastB = SLCEntity.getBuildBy(unit.x, unit.y, unit.team, this.delegee.rad, b => MDL_cond.canHeal(b));
             if(this.delegee.lastB == null) return;
 
-            FRAG_attack.heal(this.delegee.lastB, this.delegee.lastB.maxHealth * this.delegee.healPerc + this.delegee.healAmt);
-            MDL_effect.laser(unit.x, unit.y, unit, this.delegee.lastB, GLB_color.heal, this.delegee.strokeScl);
+            FRAG_attack.heal(this.delegee.lastB, this.delegee.lastB.maxHealth * this.delegee.healPerc + this.delegee.healAmt, this.delegee.color);
+            MDL_effect.laser(unit.x, unit.y, unit, this.delegee.lastB, this.delegee.color, this.delegee.strokeScl);
         },
 
 

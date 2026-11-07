@@ -48,6 +48,14 @@
          * @default 40.0
          */
         repairRad: 40.0,
+        /**
+         * `PARAM`: Color for repair effect.
+         * @memberof WEAP_repairBeam
+         * @instance
+         * @type {Color}
+         * @default GLB_color.heal
+         */
+        repairColor: GLB_color.heal,
 
 
         /* <------------------------------ vanilla ------------------------------> */
@@ -58,6 +66,11 @@
 
     })
     .setParamParser([
+        "repairColor", function(val) {
+            this.laserColor = val;
+            this.healColor = val;
+            return val;
+        },
         "bullet", function(val) {
             if(!(val instanceof BulletType)) {
                 val = extend(BulletType, {

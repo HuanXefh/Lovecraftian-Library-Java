@@ -139,15 +139,17 @@
      * Applies healing (triggers damage display).
      * @param {Healthc} e
      * @param {number} healAmt
+     * @param {Color|unset} [colorOverwrite]
      * @return {boolean} Whether target is healed.
      * @lovecTypeSensitive
      */
-    const heal = function(e, healAmt) {
+    const heal = function(e, healAmt, colorOverwrite) {
         if(healAmt < 0.0001 || !MDL_cond.canHeal(e)) return false;
+        if(colorOverwrite == null) colorOverwrite = GLB_color.heal;
 
         if(e instanceof Building) {
             MDL_effect.damage(e.x, e.y, healAmt, null, "heal");
-            MDL_effect.flash(e, GLB_color.heal);
+            MDL_effect.flash(e, colorOverwrite);
             e.recentlyHealed();
         } else if(e instanceof Unit) {
             MDL_effect.damage(e.x, e.y, healAmt, null, "heal");

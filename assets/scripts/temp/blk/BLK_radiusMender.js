@@ -90,7 +90,7 @@
 
             if(b.block.delegee.healsBuilding) {
                 SLCEntity.eachBuild(b.x, b.y, b.team, rad, ob => MDL_cond.canHeal(ob), ob => {
-                    FRAG_attack.heal(ob, (ob.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency, true);
+                    FRAG_attack.heal(ob, (ob.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency);
                 });
             };
 
