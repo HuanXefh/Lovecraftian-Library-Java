@@ -2,6 +2,7 @@ package lovec.type.block.factory;
 
 import arc.Core;
 import arc.graphics.g2d.TextureRegion;
+import arc.util.Nullable;
 import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Building;
@@ -62,8 +63,8 @@ public class MultiBlockLinkConstructBlock extends Block {
     public class MultiBlockLinkConstructBuild extends Building {
 
 
-        public Tile linkedTile;
-        public ConstructBlock.ConstructBuild linkedBuild;
+        public @Nullable Tile linkedTile;
+        public @Nullable ConstructBlock.ConstructBuild linkedBuild;
         public boolean shouldCheck = false;
 
 
@@ -100,19 +101,19 @@ public class MultiBlockLinkConstructBlock extends Block {
         @Override
         public TextureRegion getDisplayIcon() {
             return linkedBuild == null ?
-                    block.uiIcon :
-                    linkedBuild.getDisplayIcon();
+                block.uiIcon :
+                linkedBuild.getDisplayIcon();
         };
 
 
         @Override
         public String getDisplayName() {
             String name = linkedBuild == null ?
-                    block.localizedName :
-                    linkedBuild.block.localizedName;
+                block.localizedName :
+                linkedBuild.block.localizedName;
             return team == Team.derelict ?
-                    (name + "\n" + Core.bundle.get("block.derelict")) :
-                    (name + ((team != Vars.player.team() && !team.emoji.isEmpty()) ? " " + team.emoji : ""));
+                (name + "\n" + Core.bundle.get("block.derelict")) :
+                (name + ((team != Vars.player.team() && !team.emoji.isEmpty()) ? " " + team.emoji : ""));
         };
 
 

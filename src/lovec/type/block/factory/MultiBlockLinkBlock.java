@@ -4,6 +4,7 @@ import arc.Core;
 import arc.func.Func;
 import arc.graphics.g2d.TextureRegion;
 import arc.scene.ui.layout.Table;
+import arc.util.Nullable;
 import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Building;
@@ -89,7 +90,7 @@ public class MultiBlockLinkBlock extends Block {
     public class MultiBlockLinkBuild extends Building {
 
 
-        public Building linkedBuild;
+        public @Nullable Building linkedBuild;
 
 
         @Override

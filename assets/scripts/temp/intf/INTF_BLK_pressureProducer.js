@@ -119,7 +119,7 @@
                 if(ob.block instanceof MultiBlockLinkBlock) {
                     ob = ob.linkedBuild;
                 };
-                if(tryJsProp(ob, "presBase") == null) return;
+                if(ob == null || tryJsProp(ob, "presBase") == null) return;
                 if(ob.block.rotate && (!MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === ob.rotation : b.relativeTo(ob) !== ob.rotation)) return;
                 fldType1 = b.block.delegee.presFldType;
                 fldType2 = tryJsProp(ob.block, "fldType", "any");

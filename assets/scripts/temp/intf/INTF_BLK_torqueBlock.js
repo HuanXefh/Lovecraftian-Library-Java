@@ -175,6 +175,7 @@
                 if(ob.block instanceof MultiBlockLinkBlock) {
                     ob = ob.linkedBuild;
                 };
+                if(ob == null) return;
                 rateProd = MDL_recipeDict.getProdAmt(GLB_varGen.auxTor, ob.block);
                 if(rateProd < 0.0001) return;
                 b.delegee.torFetchTargets.push(ob, rateProd);
@@ -199,7 +200,7 @@
                 if(ob.block instanceof MultiBlockLinkBlock) {
                     ob = ob.linkedBuild;
                 };
-                if(ob.block.consumesLiquid(GLB_varGen.auxTor) || ob.block.consumesLiquid(GLB_varGen.auxRpm)) {
+                if(ob != null && ob.block.consumesLiquid(GLB_varGen.auxTor) || ob.block.consumesLiquid(GLB_varGen.auxRpm)) {
                     b.delegee.torSupplyTargets.push(ob, MDL_recipeDict.getConsAmt(GLB_varGen.auxTor, ob.block));
                 };
             };

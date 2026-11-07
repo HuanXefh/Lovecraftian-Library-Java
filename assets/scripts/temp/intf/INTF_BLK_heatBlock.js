@@ -245,7 +245,7 @@
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
-            if(ob.ex_getHeatProd != null || MDL_recipeDict.getProdAmt(GLB_varGen.auxHeat, ob.block) > 0.0) {
+            if(ob != null && ob.ex_getHeatProd != null || MDL_recipeDict.getProdAmt(GLB_varGen.auxHeat, ob.block) > 0.0) {
                 b.delegee.heatFetchTargets.push(ob, MDL_pos.calcSideFrac(ob, b));
             };
         });
@@ -264,7 +264,7 @@
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
-            if(ob.ex_getHeatTransferred != null && !ob.block.delegee.skipHeatTrans && SLCGeometry.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) {
+            if(ob != null && ob.ex_getHeatTransferred != null && !ob.block.delegee.skipHeatTrans && SLCGeometry.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) {
                 b.delegee.heatTransTargets.push(ob);
             };
         });
@@ -283,9 +283,11 @@
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
-            if((!b.block.rotate ? true : b.relativeTo(ob) === b.rotation)
-                && !ob.block.delegee.skipHeatFetch
-                && (ob.ex_handleExtHeat != null || ob.block.consumesLiquid(GLB_varGen.auxHeat))
+            if(
+                ob != null
+                    && (!b.block.rotate || b.relativeTo(ob) === b.rotation)
+                    && !ob.block.delegee.skipHeatFetch
+                    && (ob.ex_handleExtHeat != null || ob.block.consumesLiquid(GLB_varGen.auxHeat))
             ) {
                 b.delegee.heatSupplyTargets.push(ob);
             };

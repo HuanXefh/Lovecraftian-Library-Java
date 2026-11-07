@@ -223,6 +223,7 @@
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
+            if(ob == null) return;
             if(ob.ex_getPres != null && ob.self.ex_checkPresFetchValid(b) && !b.delegee.presTransCountTmpBs.includes(ob)) {
                 b.delegee.presTransCount++;
                 b.delegee.presTransCountTmpBs.push(ob);
@@ -248,6 +249,7 @@
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
+            if(ob == null) return;
             if((ob.acceptLiquid(b, GLB_varGen.auxPres) || ob.acceptLiquid(b, GLB_varGen.auxVac)) && b.self.ex_checkPresSupplyValid(ob)) {
                 b.delegee.presSupplyTargets.push(ob);
             };
