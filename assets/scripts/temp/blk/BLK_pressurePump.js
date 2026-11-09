@@ -49,7 +49,7 @@
 
         /**
          * A crafter that produces pressure/vacuum.
-         * Torque/heat can be produced by a crafter as abstract fluid, but it's different for pressure/vacuum since pressure producers are not all crafters.
+         * <br> Torque/heat can be produced by a crafter as abstract fluid, but it's different for pressure/vacuum since pressure producers are not all crafters.
          * @class BLK_pressurePump
          * @extends BLK_baseFactory
          * @extends INTF_BLK_pressureProducer

@@ -52,7 +52,7 @@
      */
     function comp_updateTile(b) {
         if(b.delegee.blk$polTol > 0.0) {
-            b.delegee.polExcess = Mathf.maxZero(MDL_pollution.getGlbPol() - b.delegee.blk$polTol);
+            b.delegee.polExcess = Mathf.maxZero(MDL_pollution.getGlbPol() - b.delegee.blk$polTol) * b.block.delegee.polExcessScl;
             b.delegee.polEffc = b.self.ex_calcPolEffc();
 
             if(b.delegee.polEffc < 1.0 && Mathf.chanceDelta(0.03)) {
@@ -122,6 +122,14 @@
                 return {
 
 
+                    /**
+                     * `PARAM`: How slow this block reaches 0% when pollution exceeds tolerance.
+                     * @memberof INTF_BLK_pollutionHandler
+                     * @instance
+                     * @type {number}
+                     * @default 1.0
+                     */
+                    polExcessScl: 1.0,
                     /**
                      * `PARAM`: If true, this block requires pollution to reach 100% efficiency. But why?
                      * @memberof INTF_BLK_pollutionHandler

@@ -51,23 +51,6 @@
     };
 
 
-    /**
-     * @private
-     * @param {BBaseItemBlock} b
-     * @return {void}
-     */
-    function comp_updateTile(b) {
-        if(
-            !Vars.net.client()
-                && b.block.delegee.isExposed
-                && b.items != null && b.items.any() && !b.block.delegee.noReac
-                && Mathf.chanceDelta(0.025)
-        ) {
-            b.items.each((item, amt) => MDL_reaction.handleReaction(item, "GROUP: air", 40.0, b));
-        };
-    };
-
-
 /*
   ================================================================================
   Section: Application
@@ -134,8 +117,29 @@
 
 
             updateTile: function() {
-                comp_updateTile(this);
+                this.self.ex_updateExposed();
             },
+
+
+            /**
+             * @memberof B_baseItemBlock
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_updateExposed: function() {
+                if(
+                    !Vars.net.client()
+                        && this.block.delegee.isExposed
+                        && this.items != null && this.items.any() && !this.block.delegee.noReac
+                        && Mathf.chanceDelta(0.025)
+                ) {
+                    this.items.each((item, amt) => MDL_reaction.handleReaction(item, "GROUP: air", 40.0, this));
+                };
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
         }),

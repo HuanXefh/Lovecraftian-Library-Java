@@ -6,7 +6,7 @@
 
 
     /**
-     * Methods to process reactions (mostly chemical) between resource.
+     * Methods to process reactions (mostly chemical) between resources.
      * @module lovec/mdl/MDL_reaction
      */
 
@@ -70,15 +70,17 @@
      * @lovecTypeSensitive
      */
     const getReacGrps = function(contArr, reac) {
-      let arr = contArr != null ? contArr.clear() : [];
+        let arr = contArr != null ? contArr.clear() : [];
 
-      !(reac instanceof UnlockableContent) ?
-          arr.push(reac) :
-          grpBitsetMapTup[(reac instanceof Item ? 0 : 1)].each((grp, bitset) => {
-              if(bitset.get(reac.id)) arr.push(grp);
-          });
+        !(reac instanceof UnlockableContent) ?
+            arr.push(reac) :
+            grpBitsetMapTup[reac instanceof Item ? 0 : 1].each((grp, bitset) => {
+                if(bitset.get(reac.id)) {
+                    arr.push(grp);
+                };
+            });
 
-      return arr;
+        return arr;
     };
     exports.getReacGrps = getReacGrps;
 
@@ -160,7 +162,7 @@
 
     /**
      * Request the host to apply some reactions.
-     * @param {Array} reactions
+     * @param {ReactionResult} reactions
      * @param {number} pMtp
      * @param {number} x
      * @param {number} y
@@ -191,7 +193,7 @@
 
 
     /**
-     * Calls possible reactions between `reac1` and `reac2` at `t0e`.
+     * Calls possible reactions between `reac1` and `reac2` at `bearer`.
      * @param {Reactant} reac1
      * @param {Reactant} reac2
      * @param {number} pMtp

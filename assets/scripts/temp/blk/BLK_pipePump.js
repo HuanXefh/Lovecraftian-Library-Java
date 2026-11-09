@@ -124,7 +124,7 @@
 
 
         /**
-         * A Nx1 pressure pump that should be placed between pipes.
+         * An Nx1 pressure pump that should be placed between pipes.
          * @class BLK_pipePump
          * @extends BLK_pressurePump
          */

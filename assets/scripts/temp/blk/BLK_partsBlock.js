@@ -47,9 +47,8 @@
 
 
         /**
-         * Blocks that are mostly treated as payloads.
-         * Used mostly for recipes.
-         * Cannot be built or placed.
+         * Blocks that are mostly treated as payload material.
+         * Unlike {@link BLK_materialBlock}, these blocks cannot be constructed nor placed.
          * @class BLK_partsBlock
          * @extends BLK_materialBlock
          */

@@ -235,7 +235,8 @@
 
 
         /**
-         * Supplies power for power consumers in a rectangular range.
+         * Supplies power for all power consumers in a rectangular range.
+         * Cannot be directly linked with nodes.
          * <br> `laserRange` is not used!
          * @class BLK_rangeWireRelay
          * @extends BLK_basePowerTransmitter

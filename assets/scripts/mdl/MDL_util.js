@@ -79,12 +79,12 @@
          * @type {Array<Seq<UnlockableContent>>}
          */
         defSeqs: [
-          Vars.content.items(),
-          Vars.content.liquids(),
-          Vars.content.blocks(),
-          Vars.content.units(),
-          Vars.content.statusEffects(),
-          Vars.content.sectors(),
+            Vars.content.items(),
+            Vars.content.liquids(),
+            Vars.content.blocks(),
+            Vars.content.units(),
+            Vars.content.statusEffects(),
+            Vars.content.sectors(),
         ],
         /**
          * @memberof lockModContents

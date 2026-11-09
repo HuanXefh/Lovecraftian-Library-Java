@@ -338,7 +338,8 @@
 
 
     /**
-     * Tries to get a JS property from some object created with {@link JavaAdapter}.
+     * Tries getting a JS property from some instance created with {@link JavaAdapter}.
+     * Can be safely used on regular Java instances.
      * @global
      * @param {Object} obj
      * @param {string} nameProp
@@ -448,7 +449,7 @@
 
     /**
      * Used to call constructor function with an argument array.
-     * <br> It's not possible to call `apply` on constructor function.
+     * <br> It's not possible to directly call `apply` on constructor function.
      * @global
      * @template T
      * @param {T} ctor

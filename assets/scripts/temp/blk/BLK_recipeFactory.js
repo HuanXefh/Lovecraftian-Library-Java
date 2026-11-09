@@ -93,9 +93,9 @@
 
         /**
          * Lovec version of multi-crafter, the bedrock of Reindustrialization.
-         * Only `ConsumePower` can be used, do not add any other consumers.
-         * Crafter chaining is possible if an item/fluid exists in both input and output. Note that it's only stable for multi-crafters!
-         * Recipe data should be set in {@link INTF_BLK_recipeHandler#rcMdl}.
+         * <br> Only `ConsumePower` can be used, do not add any other consumers.
+         * <br> Crafter chaining is possible if an item/fluid exists in both input and output. Note that it's only stable for multi-crafters!
+         * <br> Recipe data should be set in {@link INTF_BLK_recipeHandler#rcMdl}.
          * @class BLK_recipeFactory
          * @extends BLK_baseFactory
          * @extends INTF_BLK_recipeSelector

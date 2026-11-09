@@ -47,8 +47,8 @@
 
 
         /**
-         * Not a wall for defense but technically a wall.
-         * Used as building material.
+         * Not a wall for defense but technically a featureless wall.
+         * Can be used as payload material or building block in plans of {@link BLK_constructionCore}.
          * @class BLK_materialBlock
          * @extends BLK_baseBlock
          */

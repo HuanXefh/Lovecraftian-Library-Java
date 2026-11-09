@@ -34,6 +34,7 @@
 
         /**
          * Implement this interface to disable some mechanics used in ProjReind.
+         * <br> For internal use only.
          * @class INTF_BLK_vanillaLikeBlock
          */
         new CLS_interface("INTF_BLK_vanillaLikeBlock", {
@@ -75,6 +76,7 @@
                     noReac: true,
                     /**
                      * `INTERNAL`
+                     * <br> `REALIZED`
                      * @override
                      * @memberof EXT_BLK_recipeFactory
                      * @instance

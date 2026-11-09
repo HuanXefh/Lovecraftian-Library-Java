@@ -122,7 +122,7 @@
 
 
         /**
-         * Loot hopper that actively pulls nearby loots towards it.
+         * A variant of {@link BLK_lootHopper} that actively pulls nearby loots towards it.
          * <br> Nah I won't do regular radius loot collector.
          * @class BLK_lootPullerHopper
          * @extends BLK_lootHopper

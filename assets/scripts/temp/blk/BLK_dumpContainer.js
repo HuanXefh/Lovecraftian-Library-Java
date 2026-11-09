@@ -96,8 +96,8 @@
 
 
         /**
-         * Unlike vanilla container, this block can dump selected items actively.
-         * The output speed is controlled by `dumpTime`.
+         * Unlike vanilla container, this block can actively dump selected items.
+         * Dump speed is controlled by `blk.dumpTime`.
          * @class BLK_dumpContainer
          * @extends BLK_container
          * @extends INTF_BLK_contentMultiSelector

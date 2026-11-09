@@ -91,7 +91,7 @@
 
 
         /**
-         * Vanilla wall crafter, but enhanced.
+         * {@link WallCrafter} but enhanced.
          * @class BLK_wallHarvester
          * @extends BLK_baseHarvester
          * @extends INTF_BLK_lootProducer
