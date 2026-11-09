@@ -83,12 +83,12 @@
         .setMethod({
 
 
-            shouldConsume: function thisFun() {
-                return thisFun.funPrev.call(this);
+            shouldConsume: function() {
+                return true;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                boolMode: "and",
             }),
 
 

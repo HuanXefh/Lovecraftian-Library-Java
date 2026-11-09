@@ -388,6 +388,13 @@
                      * @instance
                      * @type {boolean}
                      */
+                    orOperForDynaAttrCanAdd: false,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_BLK_dynamicAttributeBlock
+                     * @instance
+                     * @type {boolean}
+                     */
                     hasDynaAttrItem: false,
                     /**
                      * `INTERNAL`
@@ -677,7 +684,11 @@
                 return comp_shouldConsume(this);
             }
             .setProp({
-                boolMode: "and",
+                mergeMode: function(valPrev, val) {
+                    return this.block.delegee.orOperForDynaAttrCanAdd ?
+                        valPrev || val :
+                        valPrev && val;
+                },
             }),
 
 

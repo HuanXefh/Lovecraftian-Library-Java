@@ -241,6 +241,13 @@
                      * @type {TDynamic<Seq<INTFBGraphBlock>>}
                      */
                     graphProximity: tprov(() => new Seq()),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_graphBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    updatesGraphOnProximityUpdate: true,
 
 
                 };
@@ -254,7 +261,9 @@
 
 
             onProximityUpdate: function() {
-                this.self.ex_updateGraphProximity();
+                if(this.delegee.updatesGraphOnProximityUpdate) {
+                    this.self.ex_updateGraphProximity();
+                };
             },
 
 

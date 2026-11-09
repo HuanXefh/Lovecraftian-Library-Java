@@ -222,6 +222,15 @@
              * @type {boolean}
              */
             shouldDrawDynaAttrText: false,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_depthPump
+             * @instance
+             * @type {boolean}
+             */
+            orOperForDynaAttrCanAdd: true,
 
 
         })
@@ -361,29 +370,18 @@
             },
 
 
-            shouldConsume: function thisFun() {
-                return thisFun.funPrev.funPrev.call(this) || thisFun.funPrev.call(this);
+            shouldConsume: function() {
+                return true;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                boolMode: "and",
             }),
 
 
             draw: function() {
                 comp_draw(this);
             },
-
-
-            read: function thisFun(rd, revi) {
-                if(this.delegee.LCRevi === 5) {
-                    rd.s();
-                };
-                thisFun.funPrev.apply(this, [rd, revi]);
-            }
-            .setProp({
-                override: true,
-            }),
 
 
             /**

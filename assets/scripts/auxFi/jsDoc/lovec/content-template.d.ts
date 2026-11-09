@@ -15,6 +15,10 @@ interface TemplateFunction {
     addSuper?: boolean;
     /** If true, previous methods will be ignored. */
     override?: boolean;
+    /** If true, method is run before the previous method. */
+    insert?: boolean;
+    /** Whether this method is skipped in method mixing. */
+    skipCondition?: FFunction<ExtendObject, boolean>|null;
     /** If true, this method becomes fixed and won't mix with methods defined later. */
     final?: boolean;
     /** For boolean operation with the previous method. <br> `VALS`: "none", "and", "or". */
@@ -27,15 +31,15 @@ interface TemplateFunction {
     argLen?: number;
 
     /**
-     * Previous method before mixing. Do not set.
+     * Content template where this method is added.
      * @internal
      */
-    funPrev?: Function;
+    tempFrom?: Object;
     /**
-     * Current method before mixing. Do not set.
+     * Target method name.
      * @internal
      */
-    funCur?: Function;
+    mixName?: string;
 }
 
 

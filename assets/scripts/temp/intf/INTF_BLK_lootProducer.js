@@ -281,7 +281,6 @@
                         wr.i(this.delegee.lootCharge);
                     },
                     rd => {
-                        if(this.delegee.LCRevi === 5) return;
                         this.delegee.lootCharge = rd.i();
                     },
                 );

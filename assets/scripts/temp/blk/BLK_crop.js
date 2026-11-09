@@ -450,11 +450,8 @@
             },
 
 
-            icons: function thisFun() {
-                let reg = this.delegee.cropRegs.last();
-                return reg != null && reg.found() ?
-                    [reg] :
-                    thisFun.funPrev.call(this);
+            icons: function() {
+                return [this.delegee.cropRegs.last()];
             }
             .setProp({
                 noSuper: true,

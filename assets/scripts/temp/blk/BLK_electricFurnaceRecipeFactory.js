@@ -223,12 +223,12 @@
              * @func
              * @return {number}
              */
-            ex_calcFailP: function thisFun() {
-                return comp_ex_calcFailP(this) * thisFun.funPrev.call(this);
+            ex_calcFailP: function() {
+                return comp_ex_calcFailP(this);
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                mergeMode: "mul",
             }),
 
 

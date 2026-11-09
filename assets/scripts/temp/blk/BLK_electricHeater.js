@@ -82,7 +82,7 @@
              * @instance
              * @type {boolean}
              */
-            useAndOperForAccept: true,
+            andOperForFuelAccept: true,
             /**
              * `INTERNAL`
              * <br> `REALIZED`

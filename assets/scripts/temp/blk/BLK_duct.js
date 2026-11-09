@@ -20,7 +20,6 @@
 
 
     const PARENT = require("lovec/temp/blk/BLK_baseItemDistributor");
-    const INTF_BLK_updateOverrider = require("lovec/temp/intf/INTF_BLK_updateOverrider");
     const INTF_BLK_transportBlockSideDisplay = require("lovec/temp/intf/INTF_BLK_transportBlockSideDisplay");
     const INTF_BLK_mainBusInputSite = require("lovec/temp/intf/INTF_BLK_mainBusInputSite");
 
@@ -48,7 +47,6 @@
          */
         newClass()
         .extendClass(PARENT[0], "BLK_duct")
-        .implement(INTF_BLK_updateOverrider[0])
         .implement(INTF_BLK_transportBlockSideDisplay[0])
         .implement(INTF_BLK_mainBusInputSite[0])
         .initTemplate()
@@ -143,21 +141,12 @@
          */
         newClass()
         .extendClass(PARENT[1], "B_duct")
-        .implement(INTF_BLK_updateOverrider[1])
         .implement(INTF_BLK_transportBlockSideDisplay[1])
         .implement(INTF_BLK_mainBusInputSite[1])
         .initTemplate()
         .setParent("Duct.DuctBuild")
         .setParam({})
-        .setMethod({
-
-
-            updateTile: function() {
-                this.self.ex_updateExposed();
-            },
-
-
-        }),
+        .setMethod({}),
 
 
     ];

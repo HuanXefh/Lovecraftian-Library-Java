@@ -291,9 +291,6 @@
 
 
             read: function(rd, revi) {
-                if(this.delegee.LCRevi === 5) {
-                    rd.s();
-                };
                 this.sortItem = MDL_io.ct(rd);
                 this.delegee.isInv = rd.bool();
             },

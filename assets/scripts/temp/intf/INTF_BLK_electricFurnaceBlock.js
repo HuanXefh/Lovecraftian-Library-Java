@@ -352,12 +352,12 @@
              * @func
              * @return {number}
              */
-            ex_calcTempTarget: function thisFun() {
-                return Math.max(thisFun.funPrev.apply(this, arguments), this.delegee.tempSet);
+            ex_calcTempTarget: function() {
+                return this.delegee.tempSet;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                mergeMode: "max",
             }),
 
 

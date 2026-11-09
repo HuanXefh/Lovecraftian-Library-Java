@@ -96,21 +96,21 @@
             },
 
 
-            consumesItem: function thisFun(item) {
-                return thisFun.funPrev.apply(this, arguments);
+            consumesItem: function(item) {
+                return true;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                boolMode: "and",
             }),
 
 
-            consumesLiquid: function thisFun(liq) {
-                return thisFun.funPrev.apply(this, arguments);
+            consumesLiquid: function(liq) {
+                return true;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                boolMode: "and",
             }),
 
 
@@ -161,21 +161,21 @@
             }),
 
 
-            acceptItem: function thisFun(b_f, item) {
-                return thisFun.funPrev.apply(this, arguments);
+            acceptItem: function(b_f, item) {
+                return true;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                boolMode: "and",
             }),
 
 
-            acceptLiquid: function thisFun(b_f, liq) {
-                return thisFun.funPrev.apply(this, arguments);
+            acceptLiquid: function(b_f, liq) {
+                return true;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                boolMode: "and",
             }),
 
 
@@ -250,12 +250,12 @@
              * @func
              * @return {number}
              */
-            ex_calcFailP: function thisFun() {
-                return comp_ex_calcFailP(this) * thisFun.funPrev.call(this);
+            ex_calcFailP: function() {
+                return comp_ex_calcFailP(this);
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                mergeMode: "mul",
             }),
 
 
@@ -271,13 +271,11 @@
             ex_handleConfigStrDef: function thisFun(str) {
                 if(str.startsWith("FUEL: ")) {
                     this.delegee.fuelSel = MDL_content.getCt(str.replace("FUEL: ", ""), ContentGetModes.RS);
-                } else {
-                    thisFun.funPrev.apply(this, [str]);
                 };
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                insert: true,
             }),
 
 

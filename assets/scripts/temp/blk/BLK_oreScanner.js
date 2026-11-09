@@ -451,9 +451,6 @@
 
 
             read: function(rd, revi) {
-                if(this.delegee.LCRevi === 5) {
-                    rd.s();
-                };
                 MDL_io.ints(rd, this.delegee.revealedInts);
             },
 

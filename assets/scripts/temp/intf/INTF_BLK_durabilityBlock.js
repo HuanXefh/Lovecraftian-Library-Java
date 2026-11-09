@@ -19,6 +19,19 @@
      */
 
 
+    /* <------------------------------ auxiliary ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {ExtendObject} obj
+     * @return {boolean}
+     */
+    function skipCondition(obj) {
+        return obj.typeData != null && (!isFinite(obj.typeData.delegee.durabCap) || obj.typeData.delegee.durabCap <= 0.0);
+    };
+
+
     /* <------------------------------ component ------------------------------> */
 
 
@@ -265,17 +278,26 @@
 
             updateTile: function() {
                 comp_updateTile(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             updateEfficiencyMultiplier: function() {
                 comp_updateEfficiencyMultiplier(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             drawSelect: function() {
                 comp_drawSelect(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             /**
@@ -289,6 +311,7 @@
             }
             .setProp({
                 noSuper: true,
+                skipCondition: skipCondition,
             }),
 
 
@@ -307,7 +330,6 @@
                         wr.str(this.delegee.durabMode);
                     },
                     rd => {
-                        if(this.delegee.LCRevi === 5 && this.block.self.ex_isSubInsOf("BLK_baseMiner")) return;
                         this.delegee.durabFrac = rd.f();
                         this.delegee.durabMode = rd.str();
                     },

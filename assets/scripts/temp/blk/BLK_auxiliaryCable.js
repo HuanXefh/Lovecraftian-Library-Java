@@ -119,6 +119,15 @@
 
             /**
              * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof B_auxiliaryCable
+             * @instance
+             * @type {boolean}
+             */
+            updatesGraphOnProximityUpdate: false,
+            /**
+             * `INTERNAL`
              * @memberof B_auxiliaryCable
              * @instance
              * @type {number|TmpStateTag}
@@ -130,13 +139,10 @@
         .setMethod({
 
 
-            onProximityUpdate: function thisFun() {
+            onProximityUpdate: function() {
                 comp_onProximityUpdate(this);
-                thisFun.funPrev.call(this);
-            }
-            .setProp({
-                override: true,
-            }),
+                this.self.ex_updateGraphProximity();
+            },
 
 
             /**

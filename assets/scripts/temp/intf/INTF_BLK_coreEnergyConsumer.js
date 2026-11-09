@@ -19,6 +19,19 @@
      */
 
 
+    /* <------------------------------ auxiliary ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {ExtendObject} obj
+     * @return {boolean}
+     */
+    function skipCondition(obj) {
+        return obj.typeData != null && DB_block.db["param"]["cep"]["use"].read(obj.typeData.name) == null;
+    };
+
+
     /* <------------------------------ component ------------------------------> */
 
 
@@ -190,12 +203,18 @@
 
             updateTile: function() {
                 comp_updateTile(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             updateEfficiencyMultiplier: function() {
                 comp_updateEfficiencyMultiplier(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             /**
@@ -209,6 +228,7 @@
             }
             .setProp({
                 noSuper: true,
+                skipCondition: skipCondition,
             }),
 
 

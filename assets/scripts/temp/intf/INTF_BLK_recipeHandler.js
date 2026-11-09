@@ -1435,17 +1435,18 @@
              * @param {Payload} pay
              * @return {boolean}
              */
-            ex_acceptPay: function thisFun(b_f, pay) {
+            ex_acceptPay: function(b_f, pay) {
                 if(pay == null) return false;
                 let ct = pay.content();
                 if(this.delegee.blk$useAutoSelection && this.delegee.rc.keyPayHeaderMap != null && ct !== this.delegee.keyCt && b_f !== this && this.delegee.rc.keyPayHeaderMap.containsKey(ct)) {
                     this.delegee.keyCt = ct;
                 };
-                return thisFun.funPrev.apply(this, arguments);
+                return true;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                insert: true,
+                boolMode: "and",
                 argLen: 2,
             }),
 

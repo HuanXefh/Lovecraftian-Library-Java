@@ -98,7 +98,7 @@
              * @instance
              * @type {boolean}
              */
-            useAndOperForAccept: true,
+            andOperForFuelAccept: true,
             /**
              * `INTERNAL`
              * <br> `REALIZED`
@@ -145,21 +145,21 @@
         .setMethod({
 
 
-            acceptItem: function thisFun(b_f, item) {
-                return thisFun.funPrev.apply(this, arguments);
+            acceptItem: function(b_f, item) {
+                return true;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                boolMode: "and",
             }),
 
 
-            acceptLiquid: function thisFun(b_f, liq) {
-                return thisFun.funPrev.apply(this, arguments);
+            acceptLiquid: function(b_f, liq) {
+                return true;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                boolMode: "and",
             }),
 
 

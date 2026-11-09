@@ -388,7 +388,7 @@
                      * @instance
                      * @type {boolean}
                      */
-                    useAndOperForAccept: false,
+                    andOperForFuelAccept: false,
                     /**
                      * `INTERNAL`
                      * <br> `REALIZED`
@@ -533,12 +533,12 @@
             },
 
 
-            acceptItem: function(b_f, item) {
+            acceptItem: function thisFun(b_f, item) {
                 return comp_acceptItem(this, b_f, item);
             }
             .setProp({
                 mergeMode: function(valPrev, val) {
-                    return this.block.delegee.noFuelInput || this.block.delegee.useAndOperForAccept ?
+                    return this.block.delegee.noFuelInput || this.block.delegee.andOperForFuelAccept ?
                         val && valPrev :
                         val || valPrev;
                 },
@@ -550,7 +550,7 @@
             }
             .setProp({
                 mergeMode: function(valPrev, val) {
-                    return this.block.delegee.noFuelInput || this.block.delegee.useAndOperForAccept ?
+                    return this.block.delegee.noFuelInput || this.block.delegee.andOperForFuelAccept ?
                         val && valPrev :
                         val || valPrev;
                 },
@@ -614,12 +614,12 @@
              * @func
              * @return {number}
              */
-            ex_calcTempTarget: function thisFun() {
-                return Math.max(thisFun.funPrev.apply(this, arguments), this.delegee.tempFuel);
+            ex_calcTempTarget: function() {
+                return this.delegee.tempFuel;
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                mergeMode: "max",
             }),
 
 

@@ -210,9 +210,6 @@
 
 
             read: function(rd, revi) {
-                if(this.delegee.LCRevi === 5) {
-                    rd.s();
-                };
                 this.delegee.nameDialFlow = rd.str();
             },
 

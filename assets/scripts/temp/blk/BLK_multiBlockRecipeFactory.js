@@ -128,13 +128,12 @@
         .setMethod({
 
 
-            updateTile: function thisFun() {
+            updateTile: function() {
                 this.updateLinkedBuilds();
-                thisFun.funPrev.call(this);
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                insert: true,
             }),
 
 

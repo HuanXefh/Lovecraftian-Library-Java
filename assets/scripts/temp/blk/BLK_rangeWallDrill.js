@@ -388,15 +388,15 @@
 
 
             canPlaceOn: function thisFun(t, team, rot) {
-                return comp_canPlaceOn(this, t, team, rot) && thisFun.funPrev.funPrev.apply(this, arguments);
+                return comp_canPlaceOn(this, t, team, rot);
             }
             .setProp({
                 noSuper: true,
-                override: true,
+                boolMode: "and",
             }),
 
 
-            drawPlace: function thisFun(tx, ty, rot, valid) {
+            drawPlace: function(tx, ty, rot, valid) {
                 comp_drawPlace(this, tx, ty, rot, valid);
             }
             .setProp({
@@ -565,13 +565,11 @@
             },
 
 
-            updateTile: function thisFun() {
-                thisFun.funPrev.funPrev.call(this);
+            updateTile: function() {
                 comp_updateTile(this);
             }
             .setProp({
                 noSuper: true,
-                override: true,
             }),
 
 

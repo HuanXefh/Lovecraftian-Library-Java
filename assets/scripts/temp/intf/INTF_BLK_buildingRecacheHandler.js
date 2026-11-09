@@ -19,6 +19,29 @@
      */
 
 
+    /* <------------------------------ auxiliary ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {ExtendObject} obj
+     * @return {boolean}
+     */
+    function skipConditionItem(obj) {
+        return obj.typeData != null && (!obj.typeData.drawCached || !obj.typeData.hasItems || !obj.typeData.delegee.recacheForItem);
+    };
+
+
+    /**
+     * @private
+     * @param {ExtendObject} obj
+     * @return {boolean}
+     */
+    function skipConditionFld(obj) {
+        return obj.typeData != null && (!obj.typeData.drawCached || !obj.typeData.hasLiquids || !obj.typeData.delegee.recacheForFld);
+    };
+
+
     /* <------------------------------ component ------------------------------> */
 
 
@@ -75,24 +98,34 @@
 
 
             handleItem: function(b_f, item) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
-            },
+                if(!Vars.headless) this.recache();
+            }
+            .setProp({
+                skipCondition: skipConditionItem,
+            }),
 
 
             handleStack: function(item, amt, e_f) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
-            },
+                if(!Vars.headless) this.recache();
+            }
+            .setProp({
+                skipCondition: skipConditionItem,
+            }),
 
 
             itemTaken: function(item) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
-            },
+                if(!Vars.headless) this.recache();
+            }
+            .setProp({
+                skipCondition: skipConditionItem,
+            }),
 
 
             removeStack: function(item, amt) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
+                if(!Vars.headless) this.recache();
             }
             .setProp({
+                skipCondition: skipConditionItem,
                 mergeMode: function(valPrev, val) {
                     return valPrev;
                 },
@@ -100,9 +133,10 @@
 
 
             dump: function(item) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
+                if(!Vars.headless) this.recache();
             }
             .setProp({
+                skipCondition: skipConditionItem,
                 mergeMode: function(valPrev, val) {
                     return valPrev;
                 },
@@ -110,9 +144,10 @@
 
 
             moveForward: function(item) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
+                if(!Vars.headless) this.recache();
             }
             .setProp({
+                skipCondition: skipConditionItem,
                 mergeMode: function(valPrev, val) {
                     return valPrev;
                 },
@@ -120,19 +155,26 @@
 
 
             handleLiquid: function(b_f, liq, amt) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
-            },
+                if(!Vars.headless) this.recache();
+            }
+            .setProp({
+                skipCondition: skipConditionFld,
+            }),
 
 
             dumpLiquid: function(liq, amt) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
-            },
+                if(!Vars.headless) this.recache();
+            }
+            .setProp({
+                skipCondition: skipConditionFld,
+            }),
 
 
             moveLiquid: function(b_t, liq) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
+                if(!Vars.headless) this.recache();
             }
             .setProp({
+                skipCondition: skipConditionFld,
                 mergeMode: function(valPrev, val) {
                     return valPrev;
                 },
@@ -140,9 +182,10 @@
 
 
             moveLiquidForward: function(b_t, liq) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
+                if(!Vars.headless) this.recache();
             }
             .setProp({
+                skipCondition: skipConditionFld,
                 mergeMode: function(valPrev, val) {
                     return valPrev;
                 },
@@ -150,8 +193,11 @@
 
 
             transferLiquid: function(b_t, amt, liq) {
-                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
-            },
+                if(!Vars.headless) this.recache();
+            }
+            .setProp({
+                skipCondition: skipConditionFld,
+            }),
 
 
         }),

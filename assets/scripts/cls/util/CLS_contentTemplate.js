@@ -22,6 +22,8 @@
     );
     /** @type {Array<string>} */
     const registeredTags = [];
+    /** @type {ObjectMap<string, ObjectMap<string, Array<TemplateFunction>>>} */
+    const tempFunDataMap = new ObjectMap();
     /** @type {number} */
     let buildTaskAmt = 0;
     /** @type {String|null} */
@@ -56,6 +58,9 @@
     /** @type {Object} */
     CLS_contentTemplate.paramObj = {
         tempParent: null,
+        tempName: null,
+        tempTarget: null,
+        typeData: null,
         tempFunPrefix: "ex_",
         tempTags: [],
     };
@@ -63,8 +68,6 @@
     CLS_contentTemplate.paramAliasArr = [];
     /** @type {TemplateParserArray} */
     CLS_contentTemplate.paramParserArr = [];
-    /** @type {Object<string, TemplateFunction>} */
-    CLS_contentTemplate.funObj = {};
 
 
     MDL_event.onLoad(() => {
@@ -84,14 +87,32 @@
 
     /**
      * Maps a name to some content template class.
-     * Do not invoke this manually!
+     * <br> For internal use only.
      * @param {string} name
-     * @param {typeof CLS_contentTemplate} temp
+     * @param {ContentTemplate} temp
      * @return {void}
      */
     CLS_contentTemplate.register = function(name, temp) {
         nameTempMap.put(name, temp);
         nameTempParentsMap.put(name, nameTempParentsMap.get(temp.__superClass__.clsName).cpy().pushAll(name));
+        if(!tempFunDataMap.containsKey(name)) {
+            tempFunDataMap.put(name, new ObjectMap());
+        };
+    };
+
+
+    /**
+     * Handles method inheritance data.
+     * <br> For internal use only.
+     * @param {ContentTemplate} temp
+     * @return {void}
+     */
+    CLS_contentTemplate.applyInheritance = function(temp) {
+        if(temp.__superClass__ === CLS_contentTemplate) return;
+        let nameFunsMap = tempFunDataMap.get(temp.clsName);
+        tempFunDataMap.get(temp.__superClass__.clsName).each((name, funs) => {
+            nameFunsMap.put(name, funs.cpy());
+        });
     };
 
 
@@ -116,9 +137,22 @@
 
 
     /**
+     * Gets template methods before mixing.
+     * @param {string} nameTemp
+     * @param {string} nameFun
+     * @return {Array<TemplateFunction>|null}
+     */
+    CLS_contentTemplate.getRawTempMethods = function(nameTemp, nameFun) {
+        let nameFunsMap = tempFunDataMap.get(nameTemp);
+        if(nameFunsMap == null) return null;
+        return nameFunsMap.get(nameFun);
+    };
+
+
+    /**
      * Adds common methods shared by all contents created with template.
      * @param {Object} obj
-     * @param {CLS_contentTemplate} tempCur
+     * @param {ContentTemplate} tempCur
      * @return {void}
      */
     CLS_contentTemplate.registerCommonMethods = function(obj, tempCur) {
@@ -128,7 +162,7 @@
          * Gets the content template that creates this content.
          * @memberof UnlockableContent
          * @instance
-         * @return {CLS_contentTemplate}
+         * @return {ContentTemplate}
          * @lovecAttached
          */
         obj.ex_getTemp = function() {
@@ -338,34 +372,39 @@
      * @return {this}
      */
     CLS_contentTemplate.setMethod = function(nameFunObj, isFromIntf) {
-        const thisCls = this;
-
+        let
+            nameFunsMap = tempFunDataMap.get(this.clsName),
+            funs;
         Object.eachPair(nameFunObj, (name, fun) => {
             // Internal methods used in interfaces
             if(name === "__protoF__") {
                 throw new Error("Do not set prototype properties for content template interface!");
             };
             if(name === "__paramObjM__") {
-                thisCls.setParam(fun());
+                this.setParam(fun());
                 return;
             };
             if(name === "__paramAliasM__") {
-                thisCls.setParamAlias(fun());
+                this.setParamAlias(fun());
                 return;
             };
             if(name === "__paramParserM__") {
-                thisCls.setParamParser(fun());
+                this.setParamParser(fun());
                 return;
             };
 
             initTempMethod(fun, isFromIntf);
 
+            funs = nameFunsMap.get(name);
+            if(funs == null) {
+                funs = [];
+                nameFunsMap.put(name, funs);
+            };
+
             if(fun.override) {
-                // Override the previous method
-                fun.funPrev = thisCls.funObj[name];
-                thisCls.funObj[name] = fun;
+                funs.clear().push(fun);
             } else {
-                let superFun = thisCls.funObj[name];
+                let superFun = funs.last();
                 if(superFun != null) {
                     if((fetchSetting("test-intf-nosuper-warning") || !isFromIntf) && !fun.override && superFun.noSuper && fun.noSuper !== superFun.noSuper) {
                         console.warn("[LOVEC] ${1}${2} has mismatched `noSuper` with super method in ${3}!".format(name.color(GLB_color.accent), !isFromIntf ? "" : " (from interface)", this.clsName.color(GLB_color.accent)));
@@ -373,20 +412,27 @@
                     if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) {
                         console.warn("[LOVEC] ${1} has mismatched argument length (${2}) with super method in ${3}!".format(name.color(GLB_color.accent), fun.argLen, this.clsName.color(GLB_color.accent)));
                     };
+                    if(superFun.final) {
+                        // Do nothing
+                    } else {
+                        funs.push(fun);
+                    };
+                } else {
+                    funs.push(fun);
                 };
-                thisCls.funObj[name] = mixTempMethods(superFun, fun, MethodMixModes.NORMAL);
             };
-            thisCls.funObj[name].clsName = name;
-            if(!thisCls.funObj[name].noSuper && name.startsWith(thisCls.paramObj.tempFunPrefix)) {
+            fun.tempFrom = this;
+            fun.mixName = name;
+            if(!fun.noSuper && name.startsWith(this.paramObj.tempFunPrefix)) {
                 let str = "";
                 Object.eachPair(nameFunObj, (name, fun) => {
                     str += "> " + name + "\n";
                     str += fun;
                 });
                 console.warn(String.multiline(
-                    '[LOVEC] Found an "${1}xxx" method without `noSuper = true` in ${2}:'.format(thisCls.paramObj.tempFunPrefix, this.clsName.color(GLB_color.accent)),
+                    '[LOVEC] Found an "${1}xxx" method without `noSuper = true` in ${2}:'.format(this.paramObj.tempFunPrefix, this.clsName.color(GLB_color.accent)),
                     name,
-                    thisCls.funObj[name],
+                    fun,
                     "Full object:",
                     str,
                 ));
@@ -503,10 +549,31 @@
             if(prop instanceof TemplateFunc) obj[name] = prop.get(obj);
         });
         // Gets final version of methods (with wrapped length)
-        let finalMethodName;
-        Object.eachPair(this.funObj, (name, fun) => {
+        let
+            i,
+            iCap,
+            finalMethodName,
+            finalMethod,
+            methodToMix;
+        tempFunDataMap.get(this.clsName).each((name, funs) => {
             finalMethodName = CLS_contentTemplate.resolveMethodName(name);
-            obj[finalMethodName] = mixTempMethods(null, fun, MethodMixModes.BUILD, name);
+            i = 0;
+            iCap = funs.iCap();
+            finalMethod = null;
+            while(i < iCap) {
+                methodToMix = funs[i];
+                if(methodToMix.skipCondition == null || !methodToMix.skipCondition(obj)) {
+                    finalMethod = mixTempMethods(
+                        i === 0 ? null : finalMethod,
+                        funs[i],
+                        MethodMixModes.NORMAL,
+                    );
+                };
+                i++;
+            };
+            if(finalMethod != null) {
+                obj[finalMethodName] = mixTempMethods(null, finalMethod, MethodMixModes.BUILD, name);
+            };
         });
 
         CLS_contentTemplate.registerCommonMethods(obj, this);

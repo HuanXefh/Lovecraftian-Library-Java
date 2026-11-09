@@ -233,6 +233,9 @@
             .setProp({
                 noSuper: true,
                 boolMode: "and",
+                skipCondition: function(obj) {
+                    return obj.tempName === "BLK_rangeWallDrill";
+                },
             }),
 
 
@@ -276,6 +279,9 @@
             }
             .setProp({
                 noSuper: true,
+                skipCondition: function(obj) {
+                    return obj.tempName === "B_rangeWallDrill";
+                },
             }),
 
 

@@ -196,7 +196,7 @@
      */
     extendBase = function(temp, nameCt, obj) {
         processClassLoader(null, GLB_var.extendInd.base);
-        obj = extendBase.setupObj(temp, obj);
+        obj = extendBase.setupObj(temp, obj, nameCt);
         // Can't implement interfaces with `extend`, that's why `new JavaAdapter(...)` is used
         // You cannot pass an array as arguments to a constructor function directly, here it's wrapped in `ctorCall`
         let ct = ctorCall(JavaAdapter, extendBase.setupArgs(temp, obj, nameCt));
@@ -209,11 +209,25 @@
     /**
      * @param {ContentTemplate} temp
      * @param {ExtendParamObject|unset} [obj]
+     * @param {string|unset} [nameCt]
+     * @param {*} [typeData]
      * @return {ExtendObject}
      */
-    extendBase.setupObj = function(temp, obj) {
+    extendBase.setupObj = function(temp, obj, nameCt, typeData) {
         // If `obj` not given, build it from template with default values
-        return obj != null ? obj : temp.build();
+        if(obj == null) {
+            // noinspection JSValidateTypes
+            obj = temp.build({
+                tempName: temp.clsName,
+                tempTarget: tryVal(nameCt, null),
+                typeData: tryVal(typeData, null),
+            });
+        } else {
+            obj.tempName = temp.clsName;
+            obj.tempTarget = tryVal(nameCt, null);
+            obj.typeData = tryVal(typeData, null);
+        };
+        return obj;
     };
     /**
      * `ARGS`: temp, obj, arg1, arg2, arg3, ...
@@ -261,7 +275,7 @@
      */
     extendBlock = function(temp, nameBlk, objBlk, objB) {
         processClassLoader(null, GLB_var.extendInd.block);
-        let obj = extendBase.setupObj(temp[0], objBlk);
+        let obj = extendBase.setupObj(temp[0], objBlk, nameBlk);
         if(obj.forceUseDrawer) {
             let load = obj.load;
             obj.load = function() {
@@ -287,7 +301,7 @@
         extendBase.setupFields(blk, obj);
         blk.buildType = () => {
             processClassLoader(null, GLB_var.extendInd.build);
-            let obj1 = extendBase.setupObj(temp[1], objB);
+            let obj1 = extendBase.setupObj(temp[1], objB, blk.name, blk);
             if(obj.forceUseDrawer) {
                 obj1.draw = function() {
                     this.block.delegee == null ?
@@ -331,7 +345,7 @@
      */
     extendUnit = function(temp, nameUtp, objUtp) {
         processClassLoader(null, GLB_var.extendInd.unit);
-        objUtp = extendBase.setupObj(temp, objUtp);
+        objUtp = extendBase.setupObj(temp, objUtp, nameUtp);
         /** @type {UnitType} */
         let utp = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objUtp, nameUtp));
         extendBase.setupFields(utp, objUtp);
@@ -353,7 +367,7 @@
      */
     extendPlanet = function(temp, namePla, sectorSize, objPla) {
         processClassLoader(null, GLB_var.extendInd.planet);
-        objPla = extendBase.setupObj(temp, objPla);
+        objPla = extendBase.setupObj(temp, objPla, namePla);
         /** @type {Planet} */
         let pla = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objPla, namePla, null, 1.0, sectorSize));
         extendBase.setupFields(temp, objPla);
@@ -374,7 +388,7 @@
      */
     extendSector = function(temp, nameSec, objSec) {
         processClassLoader(null, GLB_var.extendInd.sector);
-        objSec = extendBase.setupObj(temp, objSec);
+        objSec = extendBase.setupObj(temp, objSec, nameSec);
         /** @type {SectorPreset} */
         let sec = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objSec, nameSec, Reflect.get(ContentLoader, Vars.content, "currentMod")));
         extendBase.setupFields(temp, objSec);

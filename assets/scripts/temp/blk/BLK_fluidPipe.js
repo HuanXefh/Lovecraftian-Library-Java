@@ -201,7 +201,7 @@
             },
 
 
-            blends: function thisFun() {
+            blends: function() {
                 return this.delegee.fluidPipeUpdater.blends.apply(this.delegee.fluidPipeUpdater, arguments);
             }
             .setProp({

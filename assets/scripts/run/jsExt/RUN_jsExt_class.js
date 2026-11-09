@@ -144,6 +144,7 @@
             if(this.__isContentTemplate__) {
                 if(CLS_contentTemplate.get(name) != null) throw new Error("Template name ${1} has already been used???".format(name));
                 CLS_contentTemplate.register(name, this);
+                CLS_contentTemplate.applyInheritance(this);
             };
         } else {
             this.clsName = "";

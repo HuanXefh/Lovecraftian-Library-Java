@@ -19,6 +19,19 @@
      */
 
 
+    /* <------------------------------ auxiliary ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {ExtendObject} obj
+     * @return {boolean}
+     */
+    function skipCondition(obj) {
+        return obj.ters.length === 0;
+    };
+
+
     /* <------------------------------ component ------------------------------> */
 
 
@@ -29,7 +42,6 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        if(blk.delegee.ters.length === 0) return;
         stats.add(
             blk.delegee.terMode === "enable" ? fetchStat("lovec", "blk-terreq") : fetchStat("lovec", "blk-terban"),
             MDL_text.getTagText(blk.delegee.ters.map(ter => MDL_terrain.getTerBundle(ter))).color(blk.delegee.terMode === "enable" ? GLB_color.heal : GLB_color.remove),
@@ -47,7 +59,6 @@
      */
     const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
         if(t == null) return false;
-        if(blk.delegee.ters.length === 0) return true;
 
         if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
             thisFun.tmpTer = MDL_terrain.getTer(t, blk.size, blk.self.ex_getTerrainCheckR());
@@ -66,6 +77,7 @@
                 cond = false;
             };
         };
+
         return cond;
     }
     .setProp({
@@ -140,13 +152,17 @@
 
             setStats: function(stats) {
                 comp_setStats(this, getCtStats(this, stats));
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             canPlaceOn: function(t, team, rot) {
                 return comp_canPlaceOn(this, t, team, rot);
             }
             .setProp({
+                skipCondition: skipCondition,
                 boolMode: "and",
             }),
 

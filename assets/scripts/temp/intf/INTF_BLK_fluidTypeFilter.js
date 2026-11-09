@@ -88,6 +88,9 @@
                 return comp_acceptLiquid(this, b_f, liq);
             }
             .setProp({
+                skipCondition: function(obj) {
+                    return obj.typeData != null && obj.typeData.delegee.fldType === "any";
+                },
                 boolMode: "and",
             }),
 

@@ -19,6 +19,19 @@
      */
 
 
+    /* <------------------------------ auxiliary ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {ExtendObject} obj
+     * @return {boolean}
+     */
+    function skipCondition(obj) {
+        return obj.typeData != null && MDL_pollution.getPolTol(obj.typeData) < 0.0001;
+    };
+
+
     /* <------------------------------ component ------------------------------> */
 
 
@@ -51,13 +64,11 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        if(b.delegee.blk$polTol > 0.0) {
-            b.delegee.polExcess = Mathf.maxZero(MDL_pollution.getGlbPol() - b.delegee.blk$polTol) * b.block.delegee.polExcessScl;
-            b.delegee.polEffc = b.self.ex_calcPolEffc();
+        b.delegee.polExcess = Mathf.maxZero(MDL_pollution.getGlbPol() - b.block.delegee.polTol) * b.block.delegee.polExcessScl;
+        b.delegee.polEffc = b.self.ex_calcPolEffc();
 
-            if(b.delegee.polEffc < 1.0 && Mathf.chanceDelta(0.03)) {
-                MDL_effect.corrosion(b.x, b.y, b.block.size, GLB_color.pollution);
-            };
+        if(b.delegee.polEffc < 1.0 && Mathf.chanceDelta(0.03)) {
+            MDL_effect.corrosion(b.x, b.y, b.block.size, GLB_color.pollution);
         };
     };
 
@@ -96,8 +107,8 @@
             ) :
             Mathf.clamp(
                 b.block.delegee.revertedPolEffc ?
-                    (b.delegee.polExcess / b.delegee.blk$polTol) :
-                    (1.0 - b.delegee.polExcess / b.delegee.blk$polTol)
+                    (b.delegee.polExcess / b.block.delegee.polTol) :
+                    (1.0 - b.delegee.polExcess / b.block.delegee.polTol)
             );
     };
 
@@ -196,13 +207,6 @@
                      * @type {number}
                      */
                     polExcess: 0.0,
-                    /**
-                     * `INTERNAL`
-                     * @memberof INTF_B_pollutionHandler
-                     * @instance
-                     * @type {number|TmpStateTag}
-                     */
-                    blk$polTol: TmpStateTag.needReplace,
 
 
                 };
@@ -211,12 +215,18 @@
 
             updateTile: function() {
                 comp_updateTile(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             updateEfficiencyMultiplier: function() {
                 comp_updateEfficiencyMultiplier(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             ex_postUpdateEfficiencyMultiplier: function() {
@@ -224,6 +234,7 @@
             }
             .setProp({
                 noSuper: true,
+                skipCondition: skipCondition,
             }),
 
 
