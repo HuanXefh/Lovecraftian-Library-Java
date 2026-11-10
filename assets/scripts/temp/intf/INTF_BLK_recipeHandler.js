@@ -147,6 +147,9 @@
             blk.outputsLiquid = MDL_recipe.checkAnyFldOutput(blk.delegee.rcMdl, false);
             blk.hasConsumers = true;
 
+            blk.delegee.hasPayInput = MDL_recipe.checkAnyPayInput(blk.delegee.rcMdl);
+            blk.delegee.hasPayOutput = MDL_recipe.checkAnyPayOutput(blk.delegee.rcMdl);
+            
             blk.delegee.isErekirHeatConsumer = MDL_recipe.checkErekirHeatInput(blk.delegee.rcMdl);
             blk.delegee.isErekirHeatProducer = MDL_recipe.checkErekirHeatOutput(blk.delegee.rcMdl);
             if(blk.delegee.isErekirHeatConsumer && blk.delegee.isErekirHeatProducer) {
@@ -450,7 +453,7 @@
         };
 
         // PAYI
-        if(b.delegee.hasPayInput) {
+        if(b.delegee.blk$hasPayInput) {
             i = 0;
             iCap = b.delegee.rc.payi.iCap();
             while(i < iCap) {
@@ -647,9 +650,9 @@
         b.delegee.rc = CLS_recipe.get(b.block, rcHeader);
 
         MDL_event.onDelayRun(0.0, () => {
-            b.delegee.hasPayInput = b.delegee.rc.hasPayInput;
-            b.delegee.hasPayOutput = b.delegee.rc.hasPayOutput;
-            if(b.delegee.hasPayInput) {
+            b.delegee.blk$hasPayInput = b.delegee.rc.hasPayInput;
+            b.delegee.blk$hasPayOutput = b.delegee.rc.hasPayOutput;
+            if(b.delegee.blk$hasPayInput) {
                 b.delegee.rc.payi.forEachRow(2, (tmp, amt) => {
                     if(amt > 0 && b.delegee.payReqObj[tmp] == null) {
                         b.delegee.payReqObj[tmp] = 0;

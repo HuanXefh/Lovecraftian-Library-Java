@@ -24,6 +24,39 @@
     const INTF_BLK_terrainHandler = require("lovec/temp/intf/INTF_BLK_terrainHandler");
 
 
+    /* <------------------------------ auxiliary ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {ExtendObject} obj
+     * @return {boolean}
+     */
+    function skipConditionDirAccept(obj) {
+        return obj.typeData != null && (!obj.typeData.rotate || obj.typeData.delegee.inputDirs.length === 0);
+    };
+
+
+    /**
+     * @private
+     * @param {ExtendObject} obj
+     * @return {boolean}
+     */
+    function skipConditionDirFldAccept(obj) {
+        return obj.typeData != null && (!obj.typeData.rotate || obj.typeData.delegee.fldInputDirs.length === 0);
+    };
+
+
+    /**
+     * @private
+     * @param {ExtendObject} obj
+     * @return {boolean}
+     */
+    function skipConditionDirDump(obj) {
+        return obj.typeData != null && (!obj.typeData.rotate || obj.typeData.delegee.outputDirs.length === 0);
+    };
+
+
     /* <------------------------------ component ------------------------------> */
 
 
@@ -107,8 +140,7 @@
      * @return {boolean}
      */
     function comp_acceptItem(b, b_f, item) {
-        return !b.block.rotate || b.block.delegee.inputDirs.length === 0
-            || b.block.delegee.inputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
+        return b.block.delegee.inputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
     };
 
 
@@ -120,8 +152,7 @@
      * @return {boolean}
      */
     function comp_acceptLiquid(b, b_f, liq) {
-        return !b.block.rotate || b.block.delegee.fldInputDirs.length === 0
-            || MDL_cond.isAuxiliaryFluid(liq)
+        return MDL_cond.isAuxiliaryFluid(liq)
             || b.block.delegee.fldInputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
     };
 
@@ -134,8 +165,7 @@
      * @return {boolean}
      */
     function comp_canDump(b, b_t, item) {
-        return !b.block.rotate || b.block.delegee.outputDirs.length === 0
-            || b.block.delegee.outputDirs.some(offRot => b.relativeTo(b_t) === Mathf.mod(b.rotation + offRot, 4));
+        return b.block.delegee.outputDirs.some(offRot => b.relativeTo(b_t) === Mathf.mod(b.rotation + offRot, 4));
     };
 
 
@@ -305,6 +335,7 @@
                 return comp_acceptItem(this, b_f, item);
             }
             .setProp({
+                skipCondition: skipConditionDirAccept,
                 boolMode: "and",
             }),
 
@@ -313,6 +344,7 @@
                 return comp_acceptLiquid(this, b_f, liq);
             }
             .setProp({
+                skipCondition: skipConditionDirFldAccept,
                 boolMode: "and",
             }),
 
@@ -321,6 +353,7 @@
                 return comp_canDump(this, b_t, item);
             }
             .setProp({
+                skipCondition: skipConditionDirDump,
                 boolMode: "and",
             }),
 

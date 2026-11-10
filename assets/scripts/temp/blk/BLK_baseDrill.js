@@ -47,6 +47,9 @@
             }, true);
         };
 
+        blk.delegee.hasPayInput = false;
+        blk.delegee.hasPayOutput = blk.delegee.shouldDropPay;
+
         blk.delegee.itemWhitelist = blk.delegee.itemWhitelist.map(nameItem => MDL_content.getCt(nameItem, ContentGetModes.RS)).compact();
 
         MDL_event.onLoadPost(() => {
@@ -144,18 +147,6 @@
             if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
         };
         return blk.self.ex_calcDropHardness(oblk, item) <= blk.tier * tierMtp;
-    };
-
-
-    /**
-     * @private
-     * @param {BBaseDrill} b
-     * @return {void}
-     */
-    function comp_created(b) {
-        if(b.block.delegee.shouldDropPay) {
-            b.delegee.hasPayOutput = true;
-        };
     };
 
 
@@ -486,11 +477,6 @@
 
         })
         .setMethod({
-
-
-            created: function() {
-                comp_created(this);
-            },
 
 
             updateTile: function() {

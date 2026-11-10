@@ -19,6 +19,19 @@
      */
 
 
+    /* <------------------------------ auxiliary ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {ExtendObject} obj
+     * @return {boolean}
+     */
+    function skipCondition(obj) {
+        return obj.typeData != null && !obj.typeData.delegee.hasPayInput && !obj.typeData.delegee.hasPayOutput;
+    };
+
+
     /* <------------------------------ component ------------------------------> */
 
 
@@ -46,7 +59,9 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(fetchStat("lovec", "blk0fac-payroom"), blk.delegee.payAmtCap);
+        if(blk.delegee.hasPayOutput) {
+            stats.add(fetchStat("lovec", "blk0fac-payroom"), blk.delegee.payAmtCap);
+        };
     };
 
 
@@ -90,19 +105,19 @@
     function comp_updateTile(b) {
         if(GLB_param.UPDATE_SUPPRESSED) return;
 
-        if(b.delegee.hasPayOutput && GLB_timer.effcPay) {
+        if(b.delegee.blk$hasPayOutput && GLB_timer.effcPay) {
             b.delegee.payAmtTotal = SLCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
             b.delegee.payAmtTotalAfterProd = SLCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * (amt + b.self.ex_getPayProdAmt(nameCt))));
         };
 
-        if(GLB_timer.secHalf && b.delegee.hasPayInput) {
+        if(GLB_timer.secHalf && b.delegee.blk$hasPayInput) {
             b.delegee.payInputBs.forEachFast(ob => {
                 b.self.ex_takePay(ob);
             }, true);
         };
 
         // Payload dumping is not affected by `blk.disableDump`, because you cannot manually take payload out of the building
-        if(b.delegee.hasPayOutput && GLB_timer.secHalf && b.delegee.payOutputBs.length > 0) {
+        if(b.delegee.blk$hasPayOutput && GLB_timer.secHalf && b.delegee.payOutputBs.length > 0) {
             if(b.delegee.lastDumpPay == null) {
                 let nameCt = Object.randKey(b.delegee.payStockObj);
                 if(nameCt != null && b.delegee.payStockObj[nameCt] > 0) {
@@ -127,7 +142,7 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        if(b.delegee.hasPayInput && !b.cheating() && !b.self.ex_checkPayCons()) {
+        if(b.delegee.blk$hasPayInput && !b.cheating() && !b.self.ex_checkPayCons()) {
             b.efficiency = 0.0;
         };
     };
@@ -140,7 +155,7 @@
      * @return {void}
      */
     function comp_displayBars(b, tb) {
-        if(b.delegee.hasPayOutput) {
+        if(b.delegee.blk$hasPayOutput) {
             tb.add(new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-pay-cap-amt", (b.delegee.payAmtTotal / b.block.delegee.payAmtCap).perc(0))),
                 prov(() => GLB_color.items),
@@ -237,6 +252,25 @@
                     payOutputSideFracMode: SideFracModes.FRONT,
 
 
+                    /* <------------------------------ internal ------------------------------> */
+
+
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_BLK_payloadBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    hasPayInput: true,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_BLK_payloadBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    hasPayOutput: true,
+
+
                 };
             },
 
@@ -282,20 +316,6 @@
                     /* <------------------------------ internal ------------------------------> */
 
 
-                    /**
-                     * `INTERNAL`
-                     * @memberof INTF_B_payloadBlock
-                     * @instance
-                     * @type {boolean}
-                     */
-                    hasPayInput: false,
-                    /**
-                     * `INTERNAL`
-                     * @memberof INTF_B_payloadBlock
-                     * @instance
-                     * @type {boolean}
-                     */
-                    hasPayOutput: false,
                     /**
                      * `INTERNAL`: Total payload room used.
                      * @memberof INTF_B_payloadBlock
@@ -359,6 +379,20 @@
                      * @type {number}
                      */
                     payDumpIncre: 0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {boolean|TmpStateTag}
+                     */
+                    blk$hasPayInput: TmpStateTag.needReplace,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {boolean|TmpStateTag}
+                     */
+                    blk$hasPayOutput: TmpStateTag.needReplace,
 
 
                 };
@@ -367,35 +401,51 @@
 
             onProximityUpdate: function() {
                 comp_onProximityUpdate(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             pickedUp: function() {
                 comp_pickedUp(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             updateTile: function() {
                 comp_updateTile(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             updateEfficiencyMultiplier: function() {
                 comp_updateEfficiencyMultiplier(this);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             shouldConsume: function() {
-                return !this.delegee.hasPayOutput || this.delegee.payAmtTotalAfterProd <= this.block.delegee.payAmtCap;
+                return !this.delegee.blk$hasPayOutput || this.delegee.payAmtTotalAfterProd <= this.block.delegee.payAmtCap;
             }
             .setProp({
+                skipCondition: skipCondition,
                 boolMode: "and",
             }),
 
 
             displayBars: function(tb) {
                 comp_displayBars(this, tb);
-            },
+            }
+            .setProp({
+                skipCondition: skipCondition,
+            }),
 
 
             /**
@@ -409,6 +459,7 @@
             }
             .setProp({
                 noSuper: true,
+                skipCondition: skipCondition,
             }),
 
 

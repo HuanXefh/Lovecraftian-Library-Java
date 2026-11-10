@@ -268,7 +268,12 @@
 
             updateTile: function() {
                 comp_updateTile(this);
-            },
+            }
+            .setProp({
+                skipCondition: function(obj) {
+                    return obj.typeData != null && obj.typeData.delegee.skipFacilityMethod;
+                },
+            }),
 
 
         }),

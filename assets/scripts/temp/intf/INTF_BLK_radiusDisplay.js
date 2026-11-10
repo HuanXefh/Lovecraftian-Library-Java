@@ -44,7 +44,7 @@
      * @return {void}
      */
     function comp_draw(b) {
-        if(!b.isPayload() && b.block.delegee.useP3dRange && SLCCheck.checkPosHoveredRect(b.x, b.y, 0, b.block.size)) {
+        if(!b.isPayload() && SLCCheck.checkPosHoveredRect(b.x, b.y, 0, b.block.size)) {
             processZ(GLB_var.layer.p3dRange);
             SLCDrawP3d.cylinderFade(b.x, b.y, 1.0, b.block.delegee.blkRad, b.block.self.ex_getBlkRadColor(true));
             processZ();
@@ -58,9 +58,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        if(!b.block.delegee.useP3dRange) {
-            SLCDrawf.circleSelect(b, b.block.delegee.blkRad, true, b.block.self.ex_getBlkRadColor(true));
-        };
+        SLCDrawf.circleSelect(b, b.block.delegee.blkRad, true, b.block.self.ex_getBlkRadColor(true));
     };
 
 
@@ -141,12 +139,22 @@
 
             draw: function() {
                 comp_draw(this);
-            },
+            }
+            .setProp({
+                skipCondition: function(obj) {
+                    return obj.typeData != null && !obj.typeData.delegee.useP3dRange;
+                },
+            }),
 
 
             drawSelect: function() {
                 comp_drawSelect(this);
-            },
+            }
+            .setProp({
+                skipCondition: function(obj) {
+                    return obj.typeData != null && obj.typeData.delegee.useP3dRange;
+                },
+            }),
 
 
         }),

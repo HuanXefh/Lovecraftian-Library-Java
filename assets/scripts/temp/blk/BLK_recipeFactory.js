@@ -74,10 +74,6 @@
                 ).add();
             }).row();
         }));
-
-        if(!MDL_recipe.checkAnyPayOutput(blk.delegee.rcMdl)) {
-            stats.remove(fetchStat("lovec", "blk0fac-payroom"));
-        };
     };
 
 

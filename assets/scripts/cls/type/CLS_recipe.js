@@ -1551,7 +1551,7 @@
             i,
             iCap;
 
-        if(b.delegee.hasPayInput) {
+        if(b.delegee.blk$hasPayInput) {
             i = 0;
             iCap = this.payi.iCap();
             while(i < iCap) {
@@ -1559,7 +1559,7 @@
                 i += 2;
             };
         };
-        if(b.delegee.hasPayOutput) {
+        if(b.delegee.blk$hasPayOutput) {
             i = 0;
             iCap = this.payo.iCap();
             while(i < iCap) {
