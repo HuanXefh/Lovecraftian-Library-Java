@@ -30,15 +30,12 @@
 
         MDL_event.onDraw(() => {
             if(!Vars.state.isGame() || (!Vars.state.isEditor() && !GLB_param.SHOULD_DRAW_SCANNER_RESULT)) return;
-
-            processZ(GLB_var.layer.dporeRevealed, 4);
-            Draw.alpha(0.65);
-            blk.delegee.depthDrawnMap.each((t, cond) => {
-                if(!cond || !SLCCheck.checkPosVisible(t.worldx(), t.worldy(), 8.0)) return;
-                Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx(), t.worldy());
-            });
-            Draw.color();
-            processZ(null, 4);
+            SLCDrawf.depthOverlay(blk.delegee.depthDrawnMap, blk);
+        });
+        MDL_event.onOverlayChange((t, ovPrev, ov) => {
+            if(ovPrev === blk && ov !== blk) {
+                blk.delegee.depthDrawnMap.put(t, false);
+            };
         });
     };
 

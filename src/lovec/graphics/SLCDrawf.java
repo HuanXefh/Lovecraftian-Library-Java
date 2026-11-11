@@ -15,10 +15,8 @@ import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
-import lovec.utils.SLCPos;
-import lovec.utils.SLCScript;
-import lovec.utils.SLCScriptUtil;
-import lovec.utils.SLCVersionResolver;
+import lovec.annotation.LCFromScript;
+import lovec.utils.*;
 import lovec.utils.extend.SLCNativeArray;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -59,19 +57,19 @@ public class SLCDrawf {
     };
     private static final Seq<Tile> tmpTSeq = new Seq<>();
 
-    private static float
-        shapeLay,
-        mineBeamLay,
-        bulFlameLay,
-        randOvLay;
+    @LCFromScript(source = "GLB_var", name = "layer.shape")
+    public static float shapeLay;
+    @LCFromScript(source = "GLB_var", name = "layer.mineBeam")
+    public static float mineBeamLay;
+    @LCFromScript(source = "GLB_var", name = "layer.bulFlame")
+    public static float bulFlameLay;
+    @LCFromScript(source = "GLB_var", name = "layer.randOv")
+    public static float randOvLay;
+    @LCFromScript(source = "GLB_var", name = "layer.dporeRevealed")
+    public static float dporeLay;
 
 
     public static void init() {
-        shapeLay = Layer.effect + SLCScript.toFloat(SLCScript.search(GLB_var, "layer", "offDraw"));
-        mineBeamLay = SLCScript.toFloat(SLCScript.search(GLB_var, "layer", "mineBeam"));
-        bulFlameLay = SLCScript.toFloat(SLCScript.search(GLB_var, "layer", "bulFlame"));
-        randOvLay = SLCScript.toFloat(SLCScript.search(GLB_var, "layer", "randOv"));
-
         if(!Vars.headless) {
             arrowReg = Core.atlas.find("bridge-arrow");
             heatRegs = new TextureRegion[16];
@@ -1551,6 +1549,22 @@ public class SLCDrawf {
             0f, 1f, Color.white, 1f, randOvLay
         );
         return true;
+    };
+
+
+    /**
+     * Draws depth overlay.
+     */
+    public static void depthOverlay(ObjectMap<Tile, Boolean> drawnMap, Block blk) {
+        SLCDraw.processZ(dporeLay, SLCDraw.GLOW_REGION_Z_IND);
+        Draw.alpha(0.65f);
+        drawnMap.each((t, cond) -> {
+            if(cond && SLCCheck.checkPosVisible(t.worldx(), t.worldy(), 8f)) {
+                Draw.rect(blk.variantRegions[Mathf.floor(Mathf.randomSeed(t.pos(), 0f, Mathf.maxZero(blk.variantRegions.length - 1) + 0.99f))], t.worldx(), t.worldy());
+            };
+        });
+        Draw.color();
+        SLCDraw.processZ(-1, SLCDraw.GLOW_REGION_Z_IND);
     };
 
 

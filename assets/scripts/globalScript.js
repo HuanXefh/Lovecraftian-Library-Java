@@ -59,6 +59,7 @@
     __annoProcData__ = ObjectMap.of(
         "LCFromScript", [
             "SLCVersionResolver",
+            "SLCDrawf",
             "SLCPal",
             "SLCScriptUtil",
         ],

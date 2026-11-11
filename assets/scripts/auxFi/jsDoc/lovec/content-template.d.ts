@@ -10,7 +10,7 @@ interface TemplateFunction {
     (...args: Array<Object>): any;
 
     /** If true, `this.super$xxx` will be skipped. */
-    nosuper?: boolean;
+    noSuper?: boolean;
     /** If true, `this.super$xxx` will be inserted. Used only in post-build modification. */
     addSuper?: boolean;
     /** If true, previous methods will be ignored. */
@@ -19,13 +19,13 @@ interface TemplateFunction {
     insert?: boolean;
     /** Whether this method is skipped in method mixing. */
     skipCondition?: FFunction<ExtendObject, boolean>|null;
-    /** If true, this method becomes fixed and won't mix with methods defined later. */
+    /** If true, this method becomes fixed and won't mix with methods defined later at all. */
     final?: boolean;
     /** For boolean operation with the previous method. <br> `VALS`: "none", "and", "or". */
     boolMode?: string;
     /** `boolMode` for `this.super$xxx`. */
     superBoolMode?: string;
-    /** Handles mixing of returned values. <br> `VALS`: "object", "array", merger function. */
+    /** Handles mixing of returned values. <br> `VALS`: "object", "array", "add", "sub", "mul", "div", "min", "max", merger function. */
     mergeMode?: string|TemplateFunctionResultMerger;
     /** Argument length of the final Java method. Required if there's any argument. */
     argLen?: number;
@@ -53,7 +53,20 @@ type ExtendParamObject = {
 /** Object used to build {@link ExtendObject}. Contains properties defined by the parent Java class. */
 type ExtendMetaObject = Object
 /** Object used in `extend`. */
-type ExtendObject = Object
+type ExtendObject = {
+    /** Expected parent as Java class. */
+    tempParent: Class<?>|null;
+    /** Name of template that builds this object. */
+    tempName: String|null;
+    /** Name of target content. Null if anonymous. */
+    tempTarget: String|null;
+    /** The related type object, e.g. block type for buildings. */
+    typeData: Object|null;
+    /** Suffix for all new methods. */
+    tempFunPrefix: string;
+    /** Template tags. */
+    tempTags: Array<string>;
+}
 
 
 /**

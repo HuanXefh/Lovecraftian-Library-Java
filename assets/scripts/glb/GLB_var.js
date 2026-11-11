@@ -93,6 +93,7 @@
     exports.layer = {
         offDraw: 6.11,
         offDrawOver: 26.11,
+        shape: 116.11,
         effFlr: 14.11,
         effBase: 69.11,
         effHigh: 116.41,

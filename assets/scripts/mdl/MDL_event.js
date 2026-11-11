@@ -263,10 +263,46 @@
         if(id != null) thisFun.ids.push(id);
 
         Events.on(TapEvent, ev => {
-            if(ev.player === Vars.player && ev.tile != null) scr(ev.tile);
+            if(ev.player === Vars.player && ev.tile != null) {
+                scr(ev.tile);
+            };
         });
     };
     exports.onTileTap = onTileTap;
+
+
+    /**
+     * Called whenever floor at some tile is changed.
+     * @param {C3Function<Tile, Floor, Floor>} scr
+     * @param {number|string|unset} [id]
+     * @return {void}
+     */
+    const onFloorChange = function thisFun(scr, id) {
+        if(id != null && thisFun.ids.includes(id)) return;
+        if(id != null) thisFun.ids.push(id);
+
+        Events.on(TileFloorChangeEvent, ev => {
+            scr(ev.tile, ev.previous, ev.floor);
+        });
+    };
+    exports.onFloorChange = onFloorChange;
+
+
+    /**
+     * Called whenever overlay at some tile is changed.
+     * @param {C3Function<Tile, Floor, Floor>} scr
+     * @param {number|string|unset} [id]
+     * @return {void}
+     */
+    const onOverlayChange = function thisFun(scr, id) {
+        if(id != null && thisFun.ids.includes(id)) return;
+        if(id != null) thisFun.ids.push(id);
+
+        Events.on(TileOverlayChangeEvent, ev => {
+            scr(ev.tile, ev.previous, ev.overlay);
+        });
+    };
+    exports.onOverlayChange = onOverlayChange;
 
 
     /**
