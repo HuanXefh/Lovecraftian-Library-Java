@@ -194,9 +194,7 @@
      * @return {boolean}
      */
     function comp_acceptItem(b, b_f, item) {
-        return b.block.delegee.noFuelInput ?
-            b.items != null :
-            b.items != null && b.items.get(item) < b.getMaximumAccepted(item) && (b.delegee.fuelSel != null ? item === b.delegee.fuelSel : MDL_fuel.checkFuelInput(b.block, item));
+        return b.items != null && b.items.get(item) < b.getMaximumAccepted(item) && (b.delegee.fuelSel != null ? item === b.delegee.fuelSel : MDL_fuel.checkFuelInput(b.block, item));
     };
 
 
@@ -208,9 +206,7 @@
      * @return {boolean}
      */
     function comp_acceptLiquid(b, b_f, liq) {
-        return b.block.delegee.noFuelInput ?
-            b.liquids != null :
-            b.liquids != null && b.liquids.get(liq) < b.block.liquidCapacity && (b.delegee.fuelSel != null ? liq === b.delegee.fuelSel : MDL_fuel.checkFuelInput(b.block, liq));
+        return b.liquids != null && b.liquids.get(liq) < b.block.liquidCapacity && (b.delegee.fuelSel != null ? liq === b.delegee.fuelSel : MDL_fuel.checkFuelInput(b.block, liq));
     };
 
 
@@ -537,8 +533,11 @@
                 return comp_acceptItem(this, b_f, item);
             }
             .setProp({
+                skipCondition: function(obj) {
+                    return this.typeData != null && this.typeData.delegee.noFuelInput;
+                },
                 mergeMode: function(valPrev, val) {
-                    return this.block.delegee.noFuelInput || this.block.delegee.andOperForFuelAccept ?
+                    return this.block.delegee.andOperForFuelAccept ?
                         val && valPrev :
                         val || valPrev;
                 },
@@ -549,8 +548,11 @@
                 return comp_acceptLiquid(this, b_f, liq);
             }
             .setProp({
+                skipCondition: function(obj) {
+                    return this.typeData != null && this.typeData.delegee.noFuelInput;
+                },
                 mergeMode: function(valPrev, val) {
-                    return this.block.delegee.noFuelInput || this.block.delegee.andOperForFuelAccept ?
+                    return this.block.delegee.andOperForFuelAccept ?
                         val && valPrev :
                         val || valPrev;
                 },
