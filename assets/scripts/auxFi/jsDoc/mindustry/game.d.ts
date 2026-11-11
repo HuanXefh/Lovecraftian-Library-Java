@@ -191,7 +191,8 @@ interface SectorComplete extends UnlockCondition {}
 
 
 /** mindustry.game.objectives.MapObjectives */
-declare class MapObjectives implements Iterable<MapObjectives.MapObjective>, Eachable<MapObjectives.MapObjective> {}
+declare class MapObjectives implements Iterable<MapObjective>, Eachable<MapObjective> {}
+interface MapObjectives extends Iterable<MapObjective>, Eachable<MapObjective> {}
 /** mindustry.game.objectives.MapObjective */
 declare class MapObjective implements AllowSerialization {}
 interface MapObjective extends AllowSerialization {}
@@ -249,5 +250,5 @@ declare class TextureHolder implements Json.JsonSerializable {
 }
 interface TextureHolder extends Json.JsonSerializable {}
 /** mindustry.game.markers.MapMarkers */
-declare class MapMarkers implements Iterable<MapObjectives.ObjectiveMarker> {}
-interface MapMarkers extends Iterable<MapObjectives.ObjectiveMarker> {}
+declare class MapMarkers implements Iterable<ObjectiveMarker> {}
+interface MapMarkers extends Iterable<ObjectiveMarker> {}

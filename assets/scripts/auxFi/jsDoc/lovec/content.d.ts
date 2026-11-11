@@ -1,3 +1,7 @@
+import { BCrop } from "../../../temp/blk/BLK_crop";
+import { UNITLootUnit } from "../../../temp/unit/UNIT_lootUnit";
+
+
 /** See {@link BLK_baseBlock}. */
 type JSONConfigObject = Object
 /** Starts with "CONFIG: ". See {@link BLK_baseBlock}. */

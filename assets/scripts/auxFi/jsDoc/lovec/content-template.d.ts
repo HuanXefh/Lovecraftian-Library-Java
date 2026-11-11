@@ -34,7 +34,7 @@ interface TemplateFunction {
      * Content template where this method is added.
      * @internal
      */
-    tempFrom?: Object;
+    tempFrom?: ContentTemplate;
     /**
      * Target method name.
      * @internal
@@ -55,7 +55,7 @@ type ExtendMetaObject = Object
 /** Object used in `extend`. */
 type ExtendObject = {
     /** Expected parent as Java class. */
-    tempParent: Class<?>|null;
+    tempParent: Class<Object>|null;
     /** Name of template that builds this object. */
     tempName: String|null;
     /** Name of target content. Null if anonymous. */

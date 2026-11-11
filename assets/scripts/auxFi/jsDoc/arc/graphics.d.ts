@@ -1,5 +1,22 @@
 /** arc.graphics.Camera */
-declare class Camera {}
+declare class Camera {
+    readonly position: Vec2;
+    readonly mat: Mat;
+    readonly inv: Mat;
+    width: number;
+    height: number;
+
+    update(): void
+    resize(viewW: number, viewH: number): void
+    bounds(out: Rect): Rect
+
+    unproject(screenCoords: Vec2): Vec2
+    unproject(screenX: number, screenY: number): Vec2
+    unproject(screenCoords: Vec2, viewX: number, viewY: number, viewW: number, viewH: number): Vec2
+    project(worldCoords: Vec2): Vec2
+    project(worldX: number, worldY: number): Vec2
+    project(worldCoords: Vec2, viewX: number, viewY: number, viewW: number, viewH: number): Vec2
+}
 
 
 /** arc.graphics.blending */
@@ -149,14 +166,34 @@ declare class Color {
     equals(obj: Object): boolean
     cpy(): Color
 }
+/** arc.graphics.Colors */
+declare class Colors {
+    static getColors(): OrderedMap<string, Color>
+    static get(name: string): Color|null
+    static put(name: string, color: Color): Color
+    static reset(): void
+}
 
 
 /** arc.graphics.Mesh */
-declare class Mesh {}
+declare class Mesh implements Disposable {}
+interface Mesh extends Disposable {}
 
 
 /** arc.graphics.Texture */
-declare class Texture extends GLTexture {}
+declare class Texture extends GLTexture {
+    constructor()
+    constructor(internalPath: string)
+    constructor(fi: Fi, useMipMaps?: boolean)
+    constructor(pix: Pixmap, useMipMaps?: boolean)
+
+    load(fi: Fi, useMipMaps: boolean): void
+    load(pix: Pixmap): void
+    load(pix: Pixmap, useMipMaps: boolean, disposePix: boolean): void
+
+    draw(pix: Pixmap): void
+    draw(pix: Pixmap, x: java.lang.Integer, y: java.lang.Integer): void
+}
 /** arc.graphics.TextureFilter */
 declare class TextureFilter {
     static nearest: TextureFilter;
@@ -257,8 +294,30 @@ interface GL20 {}
 interface GL30 extends GL20 {}
 
 
-/** arc.graphics.GLTexture */
-declare class GLTexture implements Disposable {}
-interface GLTexture extends Disposable {}
 /** arc.graphics.Cubemap */
-declare class Cubemap extends GLTexture {}
+declare class Cubemap extends GLTexture {
+    constructor()
+    constructor(base: string)
+    constructor(positiveX: Fi, negativeX: Fi, positiveY: Fi, negativeY: Fi, positiveZ: Fi, negativeZ: Fi, useMipMaps?: boolean)
+    constructor(positiveX: Pixmap, negativeX: Pixmap, positiveY: Pixmap, negativeY: Pixmap, positiveZ: Pixmap, negativeZ: Pixmap, useMipMaps?: boolean)
+
+    load(pixs: Array<Pixmap>, useMipMaps: boolean, disposePix: boolean): void
+}
+declare namespace Cubemap {
+    class CubemapSide {
+        static readonly positiveX: CubemapSide;
+        static readonly negativeX: CubemapSide;
+        static readonly positiveY: CubemapSide;
+        static readonly negativeY: CubemapSide;
+        static readonly positiveZ: CubemapSide;
+        static readonly negativeZ: CubemapSide;
+
+        readonly index: number;
+        readonly glEnum: number;
+        readonly up: Vec3;
+        readonly direction: Vec3;
+
+        getUp(out: Vec3): Vec3
+        getDirection(out: Vec3): Vec3
+    }
+}

@@ -50,6 +50,9 @@ declare namespace java {
         /** java.lang.Class */
         class Class<T> implements java.io.Serializable, java.lang.reflect.GenericDeclaration, java.lang.reflect.Type, java.lang.reflect.AnnotatedElement {}
         interface Class<T> extends java.io.Serializable, java.lang.reflect.GenericDeclaration, java.lang.reflect.Type, java.lang.reflect.AnnotatedElement {}
+        /** java.lang.Enum */
+        class Enum<T extends Enum<T>> implements Comparable<T>, java.io.Serializable {}
+        interface Enum<T extends Enum<T>> extends Comparable<T>, java.io.Serializable {}
 
 
         /** java.lang.Package */

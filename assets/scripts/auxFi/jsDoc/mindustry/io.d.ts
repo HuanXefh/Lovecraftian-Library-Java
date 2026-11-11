@@ -5,6 +5,53 @@ declare namespace SaveFileReader {
 }
 
 
+/**
+ * mindustry.io.Writes
+ * <br> Formerly `arc.util.io.Writes` in v8.
+ */
+declare class Writes implements java.io.Closeable {
+    output: java.io.DataOutput;
+
+    constructor(output: java.io.DataOutput)
+
+    i(int: java.lang.Integer): void
+    b(byte: java.lang.Byte): void
+    b(bytes: Array<java.lang.Byte>, off: number, len: number): void
+    s(short: java.lang.Short): void
+    l(long: java.lang.Long): void
+    f(f: java.lang.Float): void
+    d(double: java.lang.Double): void
+    bool(bool: java.lang.Boolean): void
+    str(str: java.lang.String): void
+}
+interface Writes extends java.io.Closeable {}
+/**
+ * mindustry.io.Reads
+ * <br> Formerly `arc.util.io.Reads` in v8.
+ */
+declare class Reads implements java.io.Closeable {
+    input: java.io.DataInput;
+
+    constructor(output: java.io.DataInput)
+
+    i(): java.lang.Integer
+    b(): java.lang.Byte
+    b(len: number): Array<java.lang.Byte>
+    b(bytes: Array<java.lang.Byte>, off: number, len: number): Array<java.lang.Byte>
+    ub(): java.lang.Integer
+    s(): java.lang.Short
+    us(): java.lang.Integer
+    l(): java.lang.Long
+    f(): java.lang.Float
+    d(): java.lang.Double
+    bool(): java.lang.Boolean
+    str(): java.lang.String
+    str(maxLen: number): java.lang.String
+    skip(amt: number): void
+}
+interface Reads extends java.io.Closeable {}
+
+
 /** mindustry.io.TypeIO */
 declare class TypeIO {
     static readonly nullType: java.lang.Byte;
@@ -87,8 +134,8 @@ declare class TypeIO {
     static readRules(rd: Reads): Rules
     static writeObjectives(wr: Writes, mapObjectives: MapObjectives): void
     static readObjectives(rd: Reads): MapObjectives
-    static writeObjectiveMarker(wr: Writes, marker: MapObjectives.ObjectiveMarker): void
-    static readObjectiveMarker(rd: Reads): MapObjectives.ObjectiveMarker
+    static writeObjectiveMarker(wr: Writes, marker: ObjectiveMarker): void
+    static readObjectiveMarker(rd: Reads): ObjectiveMarker
     static writeVecNullable(wr: Writes, vec: Vec2|null): void
     static readVecNullable(rd: Reads): Vec2|null
     static writeVec2(wr: Writes, vec: Vec2): void

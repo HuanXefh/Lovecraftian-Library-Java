@@ -104,7 +104,7 @@ interface Array<T> {
     toJavaArr<K>(javaCls: Class<K>): JavaArray<K>
     toSeq(): Seq<T>
     toObjSet(): ObjectSet<T>
-    toObjMap(): ObjectMap<Object>
+    toObjMap(): ObjectMap<Object, Object>
 
     hasIns(ins: Object|null): boolean
 

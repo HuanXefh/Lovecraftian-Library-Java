@@ -137,8 +137,8 @@ interface Vector<T extends Vector<T>> {
     nor(): T
     mulAdd(vec: T, scl: number): T
     mulAdd(vec: T, mulVec: T): T
-    dst(vec: T): number
-    dst2(vec: T): number
+    //dst(vec: T): number
+    //dst2(vec: T): number
     lerp(vec: T, a: number): T
     interpolate(vec: T, a: number, interp: Interp): T
     setToRandomDirection(): T

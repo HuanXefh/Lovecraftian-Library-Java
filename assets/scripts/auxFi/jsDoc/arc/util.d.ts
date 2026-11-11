@@ -254,47 +254,6 @@ declare class VoronoiNoise {
 }
 
 
-/** arc.util.io.Writes */
-declare class Writes implements java.io.Closeable {
-    output: java.io.DataOutput;
-
-    constructor(output: java.io.DataOutput)
-
-    i(int: java.lang.Integer): void
-    b(byte: java.lang.Byte): void
-    b(bytes: Array<java.lang.Byte>, off: number, len: number): void
-    s(short: java.lang.Short): void
-    l(long: java.lang.Long): void
-    f(f: java.lang.Float): void
-    d(double: java.lang.Double): void
-    bool(bool: java.lang.Boolean): void
-    str(str: java.lang.String): void
-}
-interface Writes extends java.io.Closeable {}
-/** arc.util.io.Reads */
-declare class Reads implements java.io.Closeable {
-    input: java.io.DataInput;
-
-    constructor(output: java.io.DataInput)
-
-    i(): java.lang.Integer
-    b(): java.lang.Byte
-    b(len: number): Array<java.lang.Byte>
-    b(bytes: Array<java.lang.Byte>, off: number, len: number): Array<java.lang.Byte>
-    ub(): java.lang.Integer
-    s(): java.lang.Short
-    us(): java.lang.Integer
-    l(): java.lang.Long
-    f(): java.lang.Float
-    d(): java.lang.Double
-    bool(): java.lang.Boolean
-    str(): java.lang.String
-    str(maxLen: number): java.lang.String
-    skip(amt: number): void
-}
-interface Reads extends java.io.Closeable {}
-
-
 /** arc.util.serialization.Base64Coder */
 declare class Base64Coder {
     static encodeString(str: string, urlSafe?: boolean): string
@@ -363,7 +322,7 @@ declare namespace Jval {
         /** @deprecated Removed in v9. */
         static formatted: Jformat;
         /** @deprecated Added in v9. */
-        static jsonFormatted: JFormat;
+        static jsonFormatted: Jformat;
         static hjson: Jformat;
     }
     class Jtype {

@@ -25,28 +25,34 @@ declare namespace java {
         interface File extends Serializable, java.lang.Comparable<File> {}
 
 
-        /** java.io.Writer */
-        class Writer implements Appendable, Closeable, Flushable {}
-        interface Writer extends Appendable, Closeable, Flushable {}
         /** java.io.Reader */
         class Reader implements java.lang.Readable, Closeable {}
         interface Reader extends java.lang.Readable, Closeable {}
 
 
-        /** java.io.DataOutput */
-        interface DataOutput {}
+        /** java.io.Writer */
+        class Writer implements Appendable, Closeable, Flushable {}
+        interface Writer extends Appendable, Closeable, Flushable {}
+        /** java.io.PrintWriter */
+        class PrintWriter extends Writer {}
+
+
         /** java.io.DataInput */
         interface DataInput {}
-
-
         /** java.io.InputStream */
         class InputStream implements Closeable {}
         interface InputStream extends Closeable {}
+        /** java.io.ByteArrayInputStream */
+        class ByteArrayInputStream extends InputStream {}
         /** java.io.FilterInputStream */
         class FilterInputStream extends InputStream {}
         /** java.io.DataInputStream */
         class DataInputStream extends FilterInputStream implements DataInput {}
         interface DataInputStream extends InputStream {}
+
+
+        /** java.io.DataOutput */
+        interface DataOutput {}
         /** java.io.OutputStream */
         class OutputStream implements Closeable, Flushable {}
         interface OutputStream extends Closeable, Flushable {}
@@ -55,5 +61,8 @@ declare namespace java {
         /** java.io.DataOutputStream */
         class DataOutputStream extends FilterOutputStream implements DataOutput {}
         interface DataOutputStream extends DataOutput {}
+        /** java.io.PrintStream */
+        class PrintStream extends FilterOutputStream implements Appendable, Closeable {}
+        interface PrintStream extends Appendable, Closeable {}
     }
 }

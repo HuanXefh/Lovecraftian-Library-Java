@@ -9,15 +9,15 @@ type ArgumentType = string|Function|null
 type Plural<T> = T|Array<T>
 type Dynamic<T> = T|(() => T)
 type Tup1<T> = Array<T>
-type Tup2<T1, T2> = Array<T1, T2>
-type Tup3<T1, T2, T3> = Array<T1, T2, T3>
-type Tup4<T1, T2, T3, T4> = Array<T1, T2, T3, T4>
-type Tup5<T1, T2, T3, T4, T5> = Array<T1, T2, T3, T4, T5>
-type Tup6<T1, T2, T3, T4, T5, T6> = Array<T1, T2, T3, T4, T5, T6>
-type Tup7<T1, T2, T3, T4, T5, T6, T7> = Array<T1, T2, T3, T4, T5, T6, T7>
-type Tup8<T1, T2, T3, T4, T5, T6, T7, T8> = Array<T1, T2, T3, T4, T5, T6, T7, T8>
-type Tup9<T1, T2, T3, T4, T5, T6, T7, T8, T9> = Array<T1, T2, T3, T4, T5, T6, T7, T8, T9>
-type Tup10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> = Array<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
+type Tup2<T1, T2> = Array<T1|T2>
+type Tup3<T1, T2, T3> = Array<T1|T2|T3>
+type Tup4<T1, T2, T3, T4> = Array<T1|T2|T3|T4>
+type Tup5<T1, T2, T3, T4, T5> = Array<T1|T2|T3|T4|T5>
+type Tup6<T1, T2, T3, T4, T5, T6> = Array<T1|T2|T3|T4|T5|T6>
+type Tup7<T1, T2, T3, T4, T5, T6, T7> = Array<T1|T2|T3|T4|T5|T6|T7>
+type Tup8<T1, T2, T3, T4, T5, T6, T7, T8> = Array<T1|T2|T3|T4|T5|T6|T7|T8>
+type Tup9<T1, T2, T3, T4, T5, T6, T7, T8, T9> = Array<T1|T2|T3|T4|T5|T6|T7|T8|T9>
+type Tup10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> = Array<T1|T2|T3|T4|T5|T6|T7|T8|T9|T10>
 type C0Function = () => void
 type CFunction<P> = (param1: P) => void
 type C2Function<P1, P2> = (param1: P1, param2: P2) => void

@@ -183,7 +183,7 @@ declare class UnitDrownEvent {
     readonly unit: Unit;
 }
 declare class CoreChangeEvent {
-    core: CoreBlock.coreBuild;
+    core: CoreBlock.CoreBuild;
 }
 declare class BulletCreateEvent {
     bullet: Bullet;
