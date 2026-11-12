@@ -22,6 +22,7 @@
     const PARENT = require("lovec/temp/blk/BLK_baseMiner");
     const INTF_BLK_terrainHandler = require("lovec/temp/intf/INTF_BLK_terrainHandler");
     const INTF_BLK_sameBlockRestrictionHandler = require("lovec/temp/intf/INTF_BLK_sameBlockRestrictionHandler");
+    const INTF_BLK_quadTreeHandler = require("lovec/temp/intf/INTF_BLK_quadTreeHandler");
     const INTF_ENV_unitHider = require("lovec/temp/intf/INTF_ENV_unitHider");
 
 
@@ -339,12 +340,14 @@
          * @extends BLK_baseMiner
          * @extends INTF_BLK_terrainHandler
          * @extends INTF_BLK_sameBlockRestrictionHandler
+         * @extends INTF_BLK_quadTreeHandler
          * @extends INTF_ENV_unitHider
          */
         newClass()
         .extendClass(PARENT[0], "BLK_crop")
         .implement(INTF_BLK_terrainHandler[0])
         .implement(INTF_BLK_sameBlockRestrictionHandler[0])
+        .implement(INTF_BLK_quadTreeHandler[0])
         .implement(INTF_ENV_unitHider)
         .initTemplate()
         .setParent("Wall")
@@ -412,6 +415,15 @@
              * @type {boolean}
              */
             hidable: true,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_crop
+             * @instance
+             * @type {Array<string>}
+             */
+            quadTreeTags: ["crop"],
 
 
             /* <------------------------------ vanilla ------------------------------> */
@@ -601,11 +613,13 @@
          * @extends B_baseMiner
          * @extends INTF_B_terrainHandler
          * @extends INTF_B_sameBlockRestrictionHandler
+         * @extends INTF_B_quadTreeHandler
          */
         newClass()
         .extendClass(PARENT[1], "B_crop")
         .implement(INTF_BLK_terrainHandler[1])
         .implement(INTF_BLK_sameBlockRestrictionHandler[1])
+        .implement(INTF_BLK_quadTreeHandler[1])
         .initTemplate()
         .setParent("Wall.WallBuild")
         .setParam({

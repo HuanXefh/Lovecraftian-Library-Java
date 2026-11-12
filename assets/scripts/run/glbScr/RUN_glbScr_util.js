@@ -674,6 +674,13 @@
     mixTempMethods.tmpArgs = [];
 
 
+    /**
+     * Container object for global methods defined in particular content templates.
+     * @global
+     */
+    SLCTempMethods = {};
+
+
     /* <------------------------------ game ------------------------------> */
 
 
