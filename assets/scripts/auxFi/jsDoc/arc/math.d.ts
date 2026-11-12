@@ -209,7 +209,59 @@ declare class Ray {}
 
 
 /** arc.math.geom.Geometry */
-declare class Geometry {}
+declare class Geometry {
+    static readonly d4: Array<Point2>;
+    static readonly d4c: Array<Point2>;
+    static readonly d4x: Array<java.lang.Integer>;
+    static readonly d4y: Array<java.lang.Integer>;
+    static readonly d8: Array<Point2>;
+    static readonly d8edge: Array<Point2>;
+
+    static circle(tx: number, ty: number, r: number, cons: Intc2): void
+    static circle(tx: number, ty: number, w: number, h: number, r: number, cons: Intc2): void
+    static pixelCircle(ind: number, checker?: Geometry.SolidChecker): Array<Vec2>
+    static regPoly(amt: number, size: number): JavaArray<java.lang.Float>
+
+    static iterateLine(start: number, x1: number, y1: number, x2: number, y2: number, segW: number, cons: Floatc2): number
+    static iteratePolygon(cons: Floatc2, verts: Array<java.lang.Float>): void
+    static iteratePolySegments(verts: Array<java.lang.Float>, cons: Floatc4): void
+
+    static findClosest<T extends Position>(x: number, y: number, objs: Array<T>): T
+    static findClosest<T extends Position>(x: number, y: number, iterable: Iterable<T>, filter?: Boolf<T>): T
+    static findFurthest<T extends Position>(x: number, y: number, iterable: Iterable<T>, filter?: Boolf<T>): T
+
+    static raycast(tx1: number, ty1: number, tx2: number, ty2: number, caster: Geometry.Raycaster): boolean
+    static raycastRect(x1: number, y1: number, x2: number, y2: number, rect: Rect): Vec2
+    static raycastRect(x1: number, y1: number, x2: number, y2: number, offX: number, offY: number, halfX: number, halfY: number): Vec2
+    static overlap(rect1: Rect, rect2: Rect, isX: boolean): Vec2
+
+    static lowestPositiveRoot(a: number, b: number, c: number): number
+    static colinear(x1: number, y1: number, x2: number, y2: number): boolean
+    static triangleCentroid(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, out: Vec2): Vec2
+    static triangleCircumcenter(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, out: Vec2): Vec2
+    static triangleCircumradius(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): number
+    static triangleQuality(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): number
+    static triangleArea(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number): number
+    static quadrilateralCentroid(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, x4: number, y4: number, out: Vec2): Vec2
+    static polygonCentroid(verts: Array<java.lang.Float>, off: java.lang.Integer, count: java.lang.Integer, out: Vec2): Vec2
+    static polygonArea(verts: Array<java.lang.Float>, off: java.lang.Integer, count: java.lang.Integer): number
+    static ensureCCW(verts: Array<java.lang.Float>): void
+    static ensureCCW(verts: Array<java.lang.Float>, off: java.lang.Integer, count: java.lang.Integer): void
+    static isClockwise(verts: Array<java.lang.Float>, off: java.lang.Integer, count: java.lang.Integer): boolean
+    static toBarycoord(p: Vec2, a: Vec2, b: Vec2, c: Vec2, out: Vec2): Vec2
+    static barycoordInsideTriangle(barycoord: Vec2): boolean
+    static fromBarycoord(barycoord: Vec2, a: Vec2, b: Vec2, c: Vec2, out: Vec2): Vec2
+    static fromBarycoord(barycoord: Vec2, a: number, b: number, c: number): number
+    static vectorsToFloats(vecSeq: Seq<Vec2>): FloatSeq
+}
+declare namespace Geometry {
+    interface Raycaster {
+        accept(tx: number, ty: number): boolean
+    }
+    interface SolidChecker {
+        solid(ind: number, tx: number, ty: number): boolean
+    }
+}
 
 
 /** arc.math.geom.Spring1D */
@@ -219,7 +271,13 @@ declare class Spring2D {}
 
 
 /** arc.math.geom.Path */
-interface Path<T> {}
+interface Path<T> {
+    valueAt(out: T, a: number): T
+    derivativeAt(out: T, a: number): T
+    approximate(val: T): number
+    locate(val: T): number
+    approxLength(sampleAmt: number): number
+}
 /** arc.math.geom.Bezier */
 declare class Bezier<T extends Vector<T>> implements Path<T> {
     static linear<T extends Vector<T>>(out: T, a: number, start: T, end: T, tmp: T): T
@@ -232,17 +290,41 @@ declare class Bezier<T extends Vector<T>> implements Path<T> {
     set(...pons: Array<T>): this
     set(pons: Array<T>, off?: number, len?:number): this
     set(ponSeq: Seq<T>, off?: number, len?: number): this
-    valueAt(out: T, a: number): T
-    derivativeAt(out: T, a: number): T
-    approxLength(sampleAmt: number): number
 }
 interface Bezier<T extends Vector<T>> extends Path<T> {}
 
 
 /** arc.math.geom.QuadTree */
-declare class QuadTree<T extends QuadTree.QuadTreeObject> {}
+declare class QuadTree<T extends QuadTree.QuadTreeObject> {
+    bounds: Rect;
+    objects: Seq<T>;
+    botLeft: QuadTree<T>;
+    botRight: QuadTree<T>;
+    topLeft: QuadTree<T>;
+    topRight: QuadTree<T>;
+    leaf: boolean;
+    totalObjects: number;
+
+    constructor(bounds: Rect)
+
+    insert(obj: T): void
+    fill(objSeq: Seq<T>): void
+    remove(obj: T): boolean
+    clear(): void
+
+    getObjects(out: Seq<T>): void
+    intersect(x: number, y: number, w: number, h: number, cons: _Cons<T>): void
+    intersect(x: number, y: number, w: number, h: number, boolf: _Boolf<T>): void
+    intersect(rect: Rect, cons: Cons<T>): void
+    intersect(x: number, y: number, w: number, h: number, out: Seq<T>): void
+    intersect(rect: Rect, out: Seq<T>): void
+    find(x: number, y: number, w: number, h: number, boolf: Boolf<T>): T
+    any(x: number, y: number, w: number, h: number): boolean
+}
 declare namespace QuadTree {
-    interface QuadTreeObject {}
+    interface QuadTreeObject {
+        hitbox(out: Rect): void
+    }
 }
 /** arc.math.geom.IntQuadTree */
 declare class IntQuadTree {}
