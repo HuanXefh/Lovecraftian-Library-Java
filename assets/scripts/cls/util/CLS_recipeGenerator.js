@@ -170,6 +170,10 @@
 
         let tmpArr = raw.deepCpy();
         thisFun.convertFrac.apply(this, [tmpArr, baseAmt, isContinuous, pTarget]);
+        if(tmpArr.length % (isContinuous ? 2 : 3) !== 0) {
+            tmpArr.printEach();
+            throw new Error("Malformed raw recipe data array!");
+        };
         tmpArr.forEachRow(isContinuous ? 2 : 3, (target, amt, p) => {
             MDL_recipe.parseRcIoRow(arr, target, amt, isContinuous ? null : p, null, false, pTarget);
         }, true);

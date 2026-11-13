@@ -71,7 +71,7 @@
 
 
     MDL_event.onLoad(() => {
-        console.log("[LOVEC] ${1} objects built with content template.".format(buildTaskAmt.color(GLB_color.accent)));
+        console.log("[LOVEC] ${1} objects in total built with content template during client load.".format(buildTaskAmt.color(GLB_color.accent)));
     });
 
 
@@ -485,6 +485,8 @@
      * @return {ExtendObject}
      */
     CLS_contentTemplate.build = function(paramObj, baseObj) {
+        // noinspection JSValidateTypes
+        /** @type {ExtendObject} */
         let obj = baseObj != null ? baseObj : {};
         let parent = this.getParent();
         if(parent == null) throw new Error("Content template has null parent: " + this.clsName);

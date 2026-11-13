@@ -72,6 +72,8 @@
     MDL_file = require("lovec/mdl/MDL_file");
     require("lovec/run/RUN_classExposure");
     /** @global */
+    CLS_recipeRawDataProcessor = require("lovec/cls/util/CLS_recipeRawDataProcessor");
+    /** @global */
     MDL_net = require("lovec/mdl/MDL_net");
     /** @global */
     DB_block = require("lovec/db/DB_block");

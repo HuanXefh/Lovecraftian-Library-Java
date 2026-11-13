@@ -1116,6 +1116,13 @@ const db = {
             gas: [],
 
 
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            evaporation: [],
+
+
         },
 
 
