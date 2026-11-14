@@ -1118,7 +1118,12 @@ const db = {
 
             /**
              * @type {RecipeRawData2Array}
-             * @lovecAutoRecipe
+             */
+            concentration: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
              */
             evaporation: [],
 

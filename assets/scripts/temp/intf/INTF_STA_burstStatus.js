@@ -123,7 +123,7 @@
                  * `PARAM`: Called when this status effect bursts.
                  * @memberof INTF_STA_burstStatus
                  * @instance
-                 * @type {CFunction<Unit>|null}
+                 * @type {Cons<Unit>|null}
                  * @default null
                  */
                 burstScr: null,

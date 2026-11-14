@@ -283,6 +283,7 @@
         crafter: 10,
         recipeFail: 15,
         unit: 20,
+        unitStatus: 21,
         ability: 30,
         corrosion: 40,
         clogging: 41,

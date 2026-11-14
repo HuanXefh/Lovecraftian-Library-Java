@@ -87,11 +87,13 @@ const db = {
          */
         robotOnly: [
 
+            "loveclab-sta-embrittled",
             "loveclab-sta-haste",
 
             "loveclab-sta0liq-sea-water-corrosion",
             "loveclab-sta0liq-brine-corrosion",
             "loveclab-sta0liq-waste-corrosion",
+            "loveclab-sta0liq-mercury-corrosion",
 
             "loveclab-sta0death-explosion-mark",
 

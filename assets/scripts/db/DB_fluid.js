@@ -121,6 +121,10 @@ const db = {
 
 
             /** @type {Array<LiquidGn>} */
+            mercuric: [],
+
+
+            /** @type {Array<LiquidGn>} */
             oxidative: [],
 
 
@@ -520,6 +524,7 @@ const db = {
                 "ammoniacal", 8.0,
                 "chloric", 6.0,
                 "nitrate", 6.0,
+                "mercuric", 3.5,
                 "acetylene", 1.0,
 
             ],
@@ -532,6 +537,7 @@ const db = {
             lead: [
 
                 "nitrate", 6.0,
+                "mercuric", 3.5,
                 "oxidative", 4.5,
 
             ],
@@ -610,6 +616,7 @@ const db = {
             aluminum: [
 
                 "chloric", 4.0,
+                "mercuric", 10.0,
 
             ],
 

@@ -1152,8 +1152,8 @@
                     thisFun.addStat(
                         tb3, !this.pol.fEqual(0.0),
                         fetchStat("lovec", "blk-pol").localized(),
-                        (this.pol > 0.0 ? "+" : "-") + Math.abs(this.pol),
-                        fetchStatUnit("lovec", "polunits").localized(),
+                        ((this.pol > 0.0 ? "+" : "-") + Math.abs(this.pol)).color(this.pol > 0.0 ? GLB_color.remove : GLB_color.heal),
+                        fetchStatUnit("lovec", "polunits").localized().color(this.pol > 0.0 ? GLB_color.remove : GLB_color.heal),
                     );
                     thisFun.addStat(
                         tb3, this.erekirHeatReq > 0.0,
