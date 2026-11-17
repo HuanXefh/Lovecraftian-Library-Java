@@ -48,8 +48,6 @@
     exports.testIntfNosuperWarning = new CLS_settingTerm("test-intf-nosuper-warning", useScl => Core.settings.getBool("lovec-test-intf-nosuper-warning", false)).setDialM("lovec", "debug", tb => tb.checkPref("lovec-test-intf-nosuper-warning", false));
     exports.testShowErrorChara = new CLS_settingTerm("test-show-error-chara", useScl => Core.settings.getBool("lovec-test-show-error-chara", false)).setDialM("lovec", "debug", tb => tb.checkPref("lovec-test-show-error-chara", false));
     exports.testErrorShader = new CLS_settingTerm("test0error-shader", useScl => Core.settings.getBool("lovec-test0error-shader", false)).setDialM("lovec", "debug", tb => tb.checkPref("lovec-test0error-shader", false));
-    exports.loadOreDict = new CLS_settingTerm("load-ore-dict", useScl => Core.settings.getBool("lovec-load-ore-dict", false)).setDialM("lovec", "debug", tb => tb.checkPref("lovec-load-ore-dict", false));
-    exports.loadOreDictDef = new CLS_settingTerm("load-ore-dict-def", useScl => Core.settings.getBool("lovec-load-ore-dict-def", true)).setDialM("lovec", "debug", tb => tb.checkPref("lovec-load-ore-dict-def", true));
 
 
     /* visual */

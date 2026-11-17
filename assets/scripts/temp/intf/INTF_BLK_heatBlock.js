@@ -286,7 +286,7 @@
             if(
                 ob != null
                     && (!b.block.rotate || b.relativeTo(ob) === b.rotation)
-                    && !ob.block.delegee.skipHeatFetch
+                    && !tryJsProp(ob.block, "skipHeatFetch", true)
                     && (ob.ex_handleExtHeat != null || ob.block.consumesLiquid(GLB_varGen.auxHeat))
             ) {
                 b.delegee.heatSupplyTargets.push(ob);

@@ -160,7 +160,6 @@
 
     newStat("lovec", "spec-faction");
     newStat("lovec", "spec-facfami");
-    newStat("lovec", "spec-oredict");
     newStat("lovec", "spec-fromto");
     newStat("lovec", "spec-info");
     newStat("lovec", "spec-dialflow");

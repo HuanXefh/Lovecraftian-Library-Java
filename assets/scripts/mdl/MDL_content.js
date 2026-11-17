@@ -83,7 +83,7 @@
      * @return {UnlockableContent|null}
      */
     function searchCt(ct_gn, mode, suppressWarning) {
-        if(ct_gn.unlocked != null) return global.lovecUtil.db.oreDict.get(ct_gn, ct_gn);
+        if(ct_gn.unlocked != null) return ct_gn;
 
         let ct = null;
         if(mode != null) {
@@ -99,7 +99,7 @@
         if(ct == null && !suppressWarning) {
             SLCLogHandler.log("noContentFoundWithMode", ct_gn, mode);
         };
-        return ct == null ? null : global.lovecUtil.db.oreDict.get(ct, ct);
+        return ct == null ? null : ct;
     };
 
 

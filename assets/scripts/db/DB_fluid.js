@@ -521,10 +521,10 @@ const db = {
              */
             copper: [
 
-                "ammoniacal", 8.0,
-                "chloric", 6.0,
-                "nitrate", 6.0,
-                "mercuric", 3.5,
+                "ammoniacal", 5.0,
+                "chloric", 3.0,
+                "nitrate", 3.0,
+                "mercuric", 2.5,
                 "acetylene", 1.0,
 
             ],
@@ -536,9 +536,9 @@ const db = {
              */
             lead: [
 
-                "nitrate", 6.0,
-                "mercuric", 3.5,
-                "oxidative", 4.5,
+                "nitrate", 5.0,
+                "mercuric", 2.5,
+                "oxidative", 4.0,
 
             ],
 
@@ -549,7 +549,7 @@ const db = {
              */
             iron: [
 
-                "nitrate", 5.0,
+                "nitrate", 4.0,
                 "oxidative", 0.7,
 
             ],
@@ -572,7 +572,7 @@ const db = {
              */
             stainless: [
 
-                "chloric", 2.5,
+                "chloric", 2.0,
 
             ],
 
@@ -604,7 +604,7 @@ const db = {
              */
             glass: [
 
-                "fluoric", 12.5,
+                "fluoric", 6.5,
 
             ],
 
@@ -615,8 +615,8 @@ const db = {
              */
             aluminum: [
 
-                "chloric", 4.0,
-                "mercuric", 10.0,
+                "chloric", 3.0,
+                "mercuric", 5.5,
 
             ],
 
@@ -634,9 +634,9 @@ const db = {
              */
             rubber: [
 
-                "fluoric", 7.5,
-                "nitrate", 6.0,
-                "oxidative", 4.5,
+                "fluoric", 3.5,
+                "nitrate", 4.5,
+                "oxidative", 3.5,
 
             ],
 

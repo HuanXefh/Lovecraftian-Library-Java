@@ -143,8 +143,6 @@
         db: {
 
 
-            /** @type {ObjectMap<Resource, Resource>} */
-            oreDict: new ObjectMap(),
             rs: {
                 /** @type {Object<string, number>} */
                 hardness: readAuxJsonData({}, "hardness"),
