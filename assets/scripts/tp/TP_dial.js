@@ -757,7 +757,7 @@
          */
         ex_shouldBreak(ct, lastCt) {
             return ct.getContentType() !== lastCt.getContentType()
-                || (ct.ex_getFluid != null && lastCt.ex_getFluid == null)
+                || (ct.ex_getFluid != null && lastCt.ex_getFluid == null) || (ct.ex_getFluid == null && lastCt.ex_getFluid != null)
                 || (MDL_cond.isAuxiliaryFluid(ct) && !MDL_cond.isAuxiliaryFluid(lastCt));
         },
 
@@ -789,7 +789,7 @@
                     j = -1;
                     tb.row();
                     MDL_table.br(tb);
-                    GLB_varGen.rcDictCts.forEachFast(ct => {
+                    GLB_varGen.rcDictCts.filter(ct => !ct.isHidden()).forEachFast(ct => {
                         if(lastCt != null && this.self.ex_shouldBreak(ct, lastCt)) {
                             j = -1;
                             tb.row();

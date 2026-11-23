@@ -102,7 +102,7 @@
         SLCDrawf.light(
             b.x, b.y, b.delegee.lightWarmup,
             b.block.delegee.lightRad * b.delegee.lightWarmup * 0.6,
-            b.block.size, SLCDrawf.lightColor,
+            b.block.size, SLCPal.lightDef,
             b.block.delegee.lightA * Interp.pow3In.apply(b.delegee.lightWarmup),
         );
     };

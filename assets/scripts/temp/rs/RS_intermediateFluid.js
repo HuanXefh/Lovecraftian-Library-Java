@@ -30,6 +30,10 @@
         liq.delegee.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS));
 
         liq.self.ex_generateIntmdName();
+
+        if(liq.delegee.intmdParent != null) {
+            liq.delegee.floatOnWater = liq.delegee.intmdParent.floatOnWater;
+        };
     };
 
 
@@ -106,6 +110,20 @@
          * @default null
          */
         recolorRegStr: null,
+
+
+        /* <------------------------------ internal ------------------------------> */
+
+
+        /**
+         * `INTERNAL`: Follows parent.
+         * <br> `REALIZED`
+         * @override
+         * @memberof RS_intermediateFluid
+         * @instance
+         * @type {boolean}
+         */
+        floatOnWater: false,
 
 
         /* <------------------------------ vanilla ------------------------------> */

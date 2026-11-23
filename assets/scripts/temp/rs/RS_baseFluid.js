@@ -16,6 +16,16 @@
     const PARENT = require("lovec/temp/rs/RS_baseResource");
 
 
+    /* <------------------------------ auxiliary ------------------------------> */
+
+
+    /**
+     * @private
+     * @type {Array<Liquid>}
+     */
+    let waterLiqs = null;
+
+
     /* <------------------------------ component ------------------------------ */
 
 
@@ -52,6 +62,26 @@
         liq.delegee.eleGrp = MDL_flow.getEleGrp(liq);
         liq.delegee.fTags = MDL_flow.getFTags(liq);
         liq.delegee.corPow = MDL_flow.getCorPow(liq);
+
+        if(!liq.gas) {
+            MDL_event.onLoadDelay(3.0, () => {
+                GLB_varGen.allLiqs.forEachFast(oliq => {
+                    if(oliq !== liq && oliq.delegee != null && oliq.delegee.dens >= liq.delegee.dens) {
+                        liq.canStayOn.add(oliq);
+                    };
+                }, true);
+                if(liq.delegee.floatOnWater) {
+                    if(waterLiqs == null) {
+                        waterLiqs = GLB_varGen.allLiqs.filter(oliq => MDL_flow.getDens(oliq).fEqual(1.0) && MDL_cond.isAqueousLiquid(oliq));
+                    };
+                    waterLiqs.forEachFast(oliq => {
+                        if(oliq !== liq) {
+                            liq.canStayOn.add(oliq);
+                        };
+                    });
+                };
+            });
+        };
     };
 
 
@@ -223,6 +253,16 @@
     .setParent("Liquid")
     .setTags()
     .setParam({
+
+
+        /**
+         * `PARAM`: If true, puddle of this fluid will always float on water (and similar fluids).
+         * @memberof RS_baseFluid
+         * @instance
+         * @type {boolean}
+         * @default false
+         */
+        floatOnWater: false,
 
 
         /* <------------------------------ internal ------------------------------> */

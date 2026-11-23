@@ -257,7 +257,7 @@
             } else {
                 if(GLB_timer.sec) {
                     dynaPol *= 0.984;
-                    lingerPol = Mathf.maxZero(lingerPol - 0.05);
+                    lingerPol = Mathf.maxZero(lingerPol - 0.2);
                 };
                 if(GLB_timer.paramLarge) {
                     GLB_save.set("dynamic-pollution", dynaPol);

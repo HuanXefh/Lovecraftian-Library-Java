@@ -142,13 +142,27 @@
 
         /**
          * All fluids.
-         * @type {Array<Item>}
+         * @type {Array<Liquid>}
          */
         exports.allFlds = Vars.content.liquids().toArray().cpy();
 
 
         /**
-         * All items and liquids.
+         * All liquids.
+         * @type {Array<Liquid>}
+         */
+        exports.allLiqs = module.exports.allFlds.filter(liq => !liq.gas && !MDL_cond.isAuxiliaryFluid(liq));
+
+
+        /**
+         * All gases.
+         * @type {Array<Liquid>}
+         */
+        exports.allGases = module.exports.allFlds.filter(liq => liq.gas && !MDL_cond.isAuxiliaryFluid(liq));
+
+
+        /**
+         * All items and fluids.
          * @type {Array<Resource>}
          */
         exports.allRss = module.exports.allItems.concat(module.exports.allFlds);
