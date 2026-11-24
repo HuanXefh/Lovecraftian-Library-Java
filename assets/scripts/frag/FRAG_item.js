@@ -177,7 +177,7 @@
         if(p == null) p = 1.0;
         let amtTrans = amt.randFreq(p);
         if(amtTrans > 0) {
-          BOX_trigger.itemProduce.fire(b, item, amtTrans);
+            BOX_trigger.itemProduce.fire(b, item, amtTrans);
         };
 
         return Vars.net.client() ?
@@ -715,7 +715,7 @@
      * @return {void}
      */
     const takeUnitLoot_global = function(unit, loot, max) {
-      if(!MDL_cond.isLoot(loot)) return;
+        if(!MDL_cond.isLoot(loot)) return;
 
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-unit-take-loot",

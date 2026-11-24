@@ -880,7 +880,7 @@
          * @return {void}
          */
         function throwDebugError() {
-          if(Core.settings.getBool("lovec-test0error-shader", false)) throw new Error("Shader debug");
+            if(Core.settings.getBool("lovec-test0error-shader", false)) throw new Error("Shader debug");
         };
 
 

@@ -144,93 +144,93 @@
     module.exports = [
 
 
-      /**
-       * This block will gain damage and halt if run out of durability.
-       * Durability will be restored when fully repaired.
-       * @class INTF_BLK_durabilityBlock
-       */
-      new CLS_interface("INTF_BLK_durabilityBlock", {
+        /**
+         * This block will gain damage and halt if run out of durability.
+         * Durability will be restored when fully repaired.
+         * @class INTF_BLK_durabilityBlock
+         */
+        new CLS_interface("INTF_BLK_durabilityBlock", {
 
 
-          __paramObjM__: function() {
-              return {
+            __paramObjM__: function() {
+                return {
 
 
-                  /**
-                   * `PARAM`: Default maximum durability in frames. If infinity, durability mechanics is disabled.
-                   * @memberof INTF_BLK_durabilityBlock
-                   * @instance
-                   * @type {number}
-                   * @default Infinity
-                   */
-                  durabCap: Infinity,
-                  /**
-                   * `PARAM`: Multiplier on durability decrease rate.
-                   * @memberof INTF_BLK_durabilityBlock
-                   * @instance
-                   * @type {number}
-                   * @default 1.0
-                   */
-                  durabDecMtp: 1.0,
-                  /**
-                   * `PARAM`: Damage dealt as fraction of maximum health when run out of durability.
-                   * @memberof INTF_BLK_durabilityBlock
-                   * @instance
-                   * @type {number}
-                   * @default 0.75
-                   */
-                  durabDmgFrac: 0.75,
-                  /**
-                   * `PARAM`: If true, damage dealt by durability outage won't kill the building.
-                   * @memberof INTF_BLK_durabilityBlock
-                   * @instance
-                   * @type {boolean}
-                   * @default true
-                   */
-                  noDurabDmgKill: true,
-                  /**
-                   * `PARAM`: Minimum fraction of durability cap restored upon being repaired.
-                   * @memberof INTF_BLK_durabilityBlock
-                   * @instance
-                   * @type {number}
-                   * @default 0.5
-                   */
-                  durabRegenFracMin: 0.5,
-                  /**
-                   * `PARAM`: Maximum fraction of durability cap restored upon being repaired.
-                   * @memberof INTF_BLK_durabilityBlock
-                   * @instance
-                   * @type {number}
-                   * @default 1.0
-                   */
-                  durabRegenFracMax: 1.0,
-                  /**
-                   * `PARAM`: Integer offset of the need-repairing text in `b.drawSelect`.
-                   * @memberof INTF_BLK_durabilityBlock
-                   * @instance
-                   * @number {number}
-                   * @default 0
-                   */
-                  durabTextOffTy: 0,
+                    /**
+                     * `PARAM`: Default maximum durability in frames. If infinity, durability mechanics is disabled.
+                     * @memberof INTF_BLK_durabilityBlock
+                     * @instance
+                     * @type {number}
+                     * @default Infinity
+                     */
+                    durabCap: Infinity,
+                    /**
+                     * `PARAM`: Multiplier on durability decrease rate.
+                     * @memberof INTF_BLK_durabilityBlock
+                     * @instance
+                     * @type {number}
+                     * @default 1.0
+                     */
+                    durabDecMtp: 1.0,
+                    /**
+                     * `PARAM`: Damage dealt as fraction of maximum health when run out of durability.
+                     * @memberof INTF_BLK_durabilityBlock
+                     * @instance
+                     * @type {number}
+                     * @default 0.75
+                     */
+                    durabDmgFrac: 0.75,
+                    /**
+                     * `PARAM`: If true, damage dealt by durability outage won't kill the building.
+                     * @memberof INTF_BLK_durabilityBlock
+                     * @instance
+                     * @type {boolean}
+                     * @default true
+                     */
+                    noDurabDmgKill: true,
+                    /**
+                     * `PARAM`: Minimum fraction of durability cap restored upon being repaired.
+                     * @memberof INTF_BLK_durabilityBlock
+                     * @instance
+                     * @type {number}
+                     * @default 0.5
+                     */
+                    durabRegenFracMin: 0.5,
+                    /**
+                     * `PARAM`: Maximum fraction of durability cap restored upon being repaired.
+                     * @memberof INTF_BLK_durabilityBlock
+                     * @instance
+                     * @type {number}
+                     * @default 1.0
+                     */
+                    durabRegenFracMax: 1.0,
+                    /**
+                     * `PARAM`: Integer offset of the need-repairing text in `b.drawSelect`.
+                     * @memberof INTF_BLK_durabilityBlock
+                     * @instance
+                     * @number {number}
+                     * @default 0
+                     */
+                    durabTextOffTy: 0,
 
 
-              };
-          },
+                };
+            },
 
 
-          init: function() {
-              comp_init(this);
-          },
+            init: function() {
+                comp_init(this);
+            },
 
 
-          setStats: function(stats) {
-              comp_setStats(this, getCtStats(this, stats));
-          },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-          setBars: function() {
-              comp_setBars(this);
-          },
+            setBars: function() {
+                comp_setBars(this);
+            },
 
 
         }),

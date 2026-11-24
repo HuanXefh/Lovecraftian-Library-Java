@@ -497,7 +497,7 @@
      * @return {void}
      */
     const regisRc_terrainDynamicDrill = function(blk, terItemMapMap) {
-      if(!ENABLED) return;
+        if(!ENABLED) return;
 
         MDL_event.onLoad(() => {
             terItemMapMap.each((nameItem, terItemMap) => {

@@ -56,10 +56,10 @@
     if(!Vars.headless) {
         MDL_event.onUpdate(() => {
 
-          unitPlayer = Vars.player.unit();
-          tMouse = SLCPos.getTileMouse();
+            unitPlayer = Vars.player.unit();
+            tMouse = SLCPos.getTileMouse();
 
-          updateKeybind(unitPlayer, tMouse);
+            updateKeybind(unitPlayer, tMouse);
 
         });
     };

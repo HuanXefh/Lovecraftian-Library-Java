@@ -389,23 +389,23 @@
      * @return {void}
      */
     const writeCsv = function(fi, arr, ord, append) {
-      if(fi == null) return;
+        if(fi == null) return;
 
-      let
-          str = "",
-          i = 0,
-          iCap = arr.iCap();
+        let
+            str = "",
+            i = 0,
+            iCap = arr.iCap();
 
-      while(i < iCap) {
-          str += String(arr[i]);
-          str += ",";
-          if((i + 1) % ord === 0) {
-              str += String.fromCharCode(13) + String.fromCharCode(10);
-          };
-          i++;
-      };
+        while(i < iCap) {
+            str += String(arr[i]);
+            str += ",";
+            if((i + 1) % ord === 0) {
+                str += String.fromCharCode(13) + String.fromCharCode(10);
+            };
+            i++;
+        };
 
-      fi.writeString(str, Boolean(append));
+        fi.writeString(str, Boolean(append));
     };
     exports.writeCsv = writeCsv;
 

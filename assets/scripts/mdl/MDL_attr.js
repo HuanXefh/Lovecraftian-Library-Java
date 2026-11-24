@@ -53,20 +53,20 @@
      */
     const getAttr = function(attr_gn, toAttr) {
         return toAttr ?
-          (
-              attr_gn instanceof Attribute ?
-                  attr_gn :
-                  typeof attr_gn === "string" && Attribute.exists(attr_gn) ?
-                      Attribute.get(attr_gn) :
-                      TP_attr.attr_placeholder
-          ) :
-          (
-              attr_gn instanceof Attribute ?
-                  attr_gn.toString() :
-                  typeof attr_gn === "string" && Attribute.exists(attr_gn) ?
-                      attr_gn :
-                      "lovec-attr-placeholder"
-          );
+            (
+                attr_gn instanceof Attribute ?
+                    attr_gn :
+                    typeof attr_gn === "string" && Attribute.exists(attr_gn) ?
+                        Attribute.get(attr_gn) :
+                        TP_attr.attr_placeholder
+            ) :
+            (
+                attr_gn instanceof Attribute ?
+                    attr_gn.toString() :
+                    typeof attr_gn === "string" && Attribute.exists(attr_gn) ?
+                        attr_gn :
+                        "lovec-attr-placeholder"
+            );
     };
     exports.getAttr = getAttr;
 

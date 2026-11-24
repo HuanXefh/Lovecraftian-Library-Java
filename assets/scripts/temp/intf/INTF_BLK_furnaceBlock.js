@@ -159,7 +159,7 @@
         };
 
         // Update furnace efficiency
-          b.delegee.furnEffc = b.cheating() ?
+        b.delegee.furnEffc = b.cheating() ?
             1.0 :
             Mathf.clamp(Math.min(
                 Math.pow(b.delegee.tempCur / b.self.ex_getHeatTarget(), 1.5),

@@ -325,7 +325,7 @@
                 comp_ex_postUpdateEfficiencyMultiplier(this);
             }
             .setProp({
-              noSuper: true,
+                noSuper: true,
             }),
 
 

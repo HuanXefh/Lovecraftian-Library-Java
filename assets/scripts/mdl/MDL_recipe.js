@@ -112,9 +112,9 @@
      * @return {RecipeBase}
      */
     const getRcBase = function(rcMdl) {
-      return rcMdl == null ?
-        Object.air :
-        tryVal(rcMdl.rc.base, Object.air);
+        return rcMdl == null ?
+            Object.air :
+            tryVal(rcMdl.rc.base, Object.air);
     };
     exports.getRcBase = getRcBase;
 
@@ -580,28 +580,28 @@
      * @return {Array<string>}
      */
     const getCategs = function(rcMdl) {
-      let arr = [];
+        let arr = [];
 
-      let
-          rcLi = getRcLi(rcMdl),
-          i = 0,
-          iCap = rcLi.iCap(),
-          categ;
+        let
+            rcLi = getRcLi(rcMdl),
+            i = 0,
+            iCap = rcLi.iCap(),
+            categ;
 
-      while(i < iCap) {
-          categ = tryVal(rcLi[i + 1]["category"], "uncategorized");
-          if(categ != null && !arr.includes(categ)) {
-              arr.push(categ);
-          };
-          i += 2;
-      };
-      // Make "uncategorized" appear at the last
-      if(arr.includes("uncategorized")) {
-          arr.pull("uncategorized");
-          arr.push("uncategorized");
-      };
+        while(i < iCap) {
+            categ = tryVal(rcLi[i + 1]["category"], "uncategorized");
+            if(categ != null && !arr.includes(categ)) {
+                arr.push(categ);
+            };
+            i += 2;
+        };
+        // Make "uncategorized" appear at the last
+        if(arr.includes("uncategorized")) {
+            arr.pull("uncategorized");
+            arr.push("uncategorized");
+        };
 
-      return arr;
+        return arr;
     };
     exports.getCategs = getCategs;
 

@@ -115,16 +115,16 @@
      */
     const getRandRegsF = function(name) {
         return function() {
-          let arr = [];
-          if(Vars.headless) return arr;
+            let arr = [];
+            if(Vars.headless) return arr;
 
-          let i = 0;
-          while(Core.atlas.has(name + (i + 1))) {
-              arr.push(Core.atlas.find(name + (i + 1)));
-              i++;
-          };
+            let i = 0;
+            while(Core.atlas.has(name + (i + 1))) {
+                arr.push(Core.atlas.find(name + (i + 1)));
+                i++;
+            };
 
-          return arr;
+            return arr;
         };
     };
     exports.getRandRegsF = getRandRegsF;

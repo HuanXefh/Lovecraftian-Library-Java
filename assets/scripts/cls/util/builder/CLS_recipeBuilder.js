@@ -54,7 +54,6 @@
         } else {
             builder.builderObj[nameProp] = builder.builderObj[nameProp].concat(arr);
         };
-
         return builder;
     };
 
@@ -99,8 +98,7 @@
      */
     CLS_recipeBuilder.prototype.setReqOpt = function(bool) {
         this.builderObj.reqOpt = tryVal(bool, false);
-
-      return this;
+        return this;
     };
 
 
@@ -155,8 +153,7 @@
      */
     CLS_recipeBuilder.prototype.setFailP = function(frac) {
         this.builderObj.failP = tryVal(frac, 0.0);
-
-      return this;
+        return this;
     };
 
 

@@ -260,7 +260,7 @@
     function comp_ex_removePlanBlks(blk, plan) {
         let
             i = 0,
-              iCap = plan.iCap();
+            iCap = plan.iCap();
         while(i < iCap) {
             plan[i + 1].setBlock(Blocks.air);
             i += 3;

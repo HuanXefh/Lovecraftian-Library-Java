@@ -326,7 +326,7 @@
 
             shouldConsume: function() {
                 if(GLB_timer.sec) {
-                  this.delegee.lastCanHeal = this.delegee.lastHealTarget != null && MDL_cond.canHeal(this.delegee.lastHealTarget);
+                    this.delegee.lastCanHeal = this.delegee.lastHealTarget != null && MDL_cond.canHeal(this.delegee.lastHealTarget);
                 };
                 return this.delegee.lastCanHeal;
             }

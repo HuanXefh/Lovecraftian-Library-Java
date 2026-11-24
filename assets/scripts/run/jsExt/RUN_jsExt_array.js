@@ -55,9 +55,9 @@
      * @return {number}
      */
     Array.prototype.calcIndexFrac = function(ele, useInd) {
-      return useInd == null ?
-        SLCNativeArray.calcIndexFrac(this, ele) :
-        SLCNativeArray.calcIndexFrac(this, ele, useInd);
+        return useInd == null ?
+            SLCNativeArray.calcIndexFrac(this, ele) :
+            SLCNativeArray.calcIndexFrac(this, ele, useInd);
     };
 
 

@@ -343,8 +343,8 @@
             };
         } else {
             color.equals(GLB_color.heal) ?
-            unit.healTime = 1.0 :
-            unit.hitTime = 1.0;
+                unit.healTime = 1.0 :
+                unit.hitTime = 1.0;
         };
     }
     .setAnno("effect");

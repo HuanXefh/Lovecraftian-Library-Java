@@ -54,14 +54,14 @@
      * @return {JavaArray<java.lang.Integer>}
      */
     function comp_ex_createLinkVals(blk) {
-      let
-          arr = [],
-          i = 1;
-      while(i < blk.delegee.pumpSize) {
-          arr.push(i, 0, 1);
-          i++;
-      };
-      return arr.toJavaArr(JAVA.int.TYPE);
+        let
+            arr = [],
+            i = 1;
+        while(i < blk.delegee.pumpSize) {
+            arr.push(i, 0, 1);
+            i++;
+        };
+        return arr.toJavaArr(JAVA.int.TYPE);
     };
 
 

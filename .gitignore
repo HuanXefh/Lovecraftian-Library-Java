@@ -1,5 +1,6 @@
 *.bkp
 ~$*
+/.agent/
 /.todo/
 /node_modules/
 /doc_files/

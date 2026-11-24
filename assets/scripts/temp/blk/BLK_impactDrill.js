@@ -114,7 +114,7 @@
                 // No super
             }
             .setProp({
-              noSuper: true,
+                noSuper: true,
             }),
 
 

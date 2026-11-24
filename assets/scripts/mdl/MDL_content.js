@@ -489,7 +489,7 @@
             if(arr1[i + 1] === facFami) {
                 arr.pushNonNull(getCt(arr1[i], ContentGetModes.BLK));
             };
-          i += 2;
+            i += 2;
         };
 
         return arr;

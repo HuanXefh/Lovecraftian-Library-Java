@@ -211,16 +211,16 @@
      */
     const sync = function() {
         try {
-          MDL_net.sendPacket(
-              PacketModes.CLIENT, "lovec-server-lsav-sync",
-              toJsonSafe(lsav),
-              true,
-          );
-          MDL_net.sendPacket(
-              PacketModes.CLIENT, "lovec-server-plsav-sync",
-              toJsonSafe(plsav),
-              true,
-          );
+            MDL_net.sendPacket(
+                PacketModes.CLIENT, "lovec-server-lsav-sync",
+                toJsonSafe(lsav),
+                true,
+            );
+            MDL_net.sendPacket(
+                PacketModes.CLIENT, "lovec-server-plsav-sync",
+                toJsonSafe(plsav),
+                true,
+            );
         } catch(err) {
             console.err("[LOVEC] Failed to sync LSAV: \n" + err);
         };
