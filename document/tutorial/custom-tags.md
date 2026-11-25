@@ -30,6 +30,7 @@ Apart from JSDoc tags, there are comment tags to describe fields and methods in 
 | `NAMEGEN`    | ContentTemplate | Contents created with this template may have generated names.                                        |                               |
 | `SINGLESIZE` | ContentTemplate | Blocks created with this template should have `size: 1`.                                             |                               |
 | `REALIZED`   | -               | Used when this field or method overrides previous value.                                             |                               |
+| `AI`         | -               | Written with assistance from AI agent.                                                               |                               |
 | `BUNDLE`     | -               | Bundle entry related to this field or method.                                                        | `bundleEntry`                 |
 | `FILE`       | -               | File path related to this field or method.                                                           | `filePath`                    |
 | `DB`         | -               | DB JSON file related to this field or method.                                                        | `fileName`                    |

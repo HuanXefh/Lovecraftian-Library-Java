@@ -442,6 +442,39 @@
     exports.achievement = achievement;
 
 
+    /**
+     * Displays all active sector packets.
+     * @type {F0Function<BaseDialog>}
+     */
+    const sectorPackets = () => extend(BaseDialog, MDL_bundle.getTerm("lovec", "sector-packet"), {
+
+
+        /**
+         * @return {void}
+         */
+        ex_show() {
+            resetDial(this);
+
+            // `TABLE`: list
+            if(!Vars.state.isGame()) {
+                MDL_table.textNothing(this.cont);
+            } else {
+                CLS_sectorResourcePacket.display(this.cont);
+            };
+
+            // `TABLE`: buttons
+            MDL_table.br(this.cont);
+            MDL_table.btnClose(this.buttons, this);
+
+            this.show();
+        },
+
+
+    });
+    newDialog("sectorPackets", sectorPackets);
+    exports.sectorPackets = sectorPackets;
+
+
     /* <------------------------------ content ------------------------------> */
 
 
