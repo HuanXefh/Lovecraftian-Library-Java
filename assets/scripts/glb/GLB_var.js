@@ -237,6 +237,8 @@
         lightningDmg: 20.0,
         shortCircuitDmgFrac: 0.12,
         rpmDmgFrac: 0.15,
+        excessTorRodDmg: 3.0,
+        excessTorRodDmgFrac: 0.0003,
         heatDmgMax: 100.0,
         overheatedConversionDmg: 150.0,
 

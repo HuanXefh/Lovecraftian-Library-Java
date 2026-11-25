@@ -449,7 +449,7 @@
              * @return {boolean}
              */
             ex_checkTorTransValid: function(ob) {
-                return tryJsProp(ob, "isInv", false) !== this.isInv;
+                return ob.delegee != null && (ob.delegee.isInv == null || ob.delegee.isInv !== this.isInv);
             }
             .setProp({
                 noSuper: true,

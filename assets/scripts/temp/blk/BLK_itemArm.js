@@ -77,6 +77,9 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
+        if(blk.delegee.moveR > 1) {
+            stats.add(Stat.range, blk.delegee.moveR - 1, StatUnit.blocks);
+        };
         stats.add(Stat.itemsMoved, blk.delegee.moveStackAmt * 60.0 / (blk.delegee.moveTime * 2.0 + blk.delegee.pickCooldown), StatUnit.itemsSecond);
         stats.add(fetchStat("lovec", "blk0item-stackamt"), blk.delegee.moveStackAmt);
     };

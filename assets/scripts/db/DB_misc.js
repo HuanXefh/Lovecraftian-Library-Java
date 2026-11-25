@@ -150,6 +150,11 @@ const db = {
                     };
                 },
 
+                "torque-rod", function(graph) {
+                    let rodProg = graph.getData(0).delegee.rodProg;
+                    graph.each((ob, vert) => ob.delegee.rodProg = rodProg);
+                },
+
             ],
 
 

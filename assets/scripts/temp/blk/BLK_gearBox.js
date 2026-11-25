@@ -64,7 +64,7 @@
     function comp_ex_updateTorTransTargets(b) {
         b.proximity.each(
             ob => MDL_cond.isTransmissionRod(ob.block) ?
-                ob.front() === b :
+                ob.front() === b || ob.back() === b :
                 false,
             ob => b.delegee.torTransTargets.push(ob),
         );
@@ -141,8 +141,8 @@
             /* <------------------------------ vanilla ------------------------------> */
 
 
-            solid: false,
-            underBullets: true,
+            solid: true,
+            underBullets: false,
 
 
         })

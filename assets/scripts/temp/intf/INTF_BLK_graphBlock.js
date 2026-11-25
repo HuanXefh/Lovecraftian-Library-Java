@@ -338,6 +338,7 @@
              * @memberof INTF_B_graphBlock
              * @instance
              * @func
+             * @param {Building} ob
              * @return {boolean}
              */
             ex_isSameGraphType: function(ob) {
@@ -381,6 +382,7 @@
             .setProp({
                 noSuper: true,
                 final: true,
+                argLen: 2,
             }),
 
 

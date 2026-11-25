@@ -59,7 +59,7 @@
     function comp_created(b) {
         BOX_trigger.torqueBlockPlace.fire(b);
         MDL_event.onDelayRun(0.0, () => {
-            BOX_trigger.torqueBlockPlace.addListener(ob => b.delegee.torProg = 0.0);
+            BOX_trigger.torqueBlockLink.addListener(ob => b.delegee.torProg = 0.0);
             BOX_trigger.torqueBlockConfigure.addListener(ob => b.delegee.torProg = 0.0);
         });
 
@@ -82,6 +82,7 @@
      */
     function comp_onProximityUpdate(b) {
         MDL_event.onDelayRun(60.0, () => {
+            BOX_trigger.torqueBlockLink.fire();
             b.self.ex_updateTorFetchTargets();
             b.self.ex_updateTorSupplyTargets();
             b.self.ex_updateTorTransTargets();

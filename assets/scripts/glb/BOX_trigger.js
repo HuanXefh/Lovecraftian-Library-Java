@@ -281,6 +281,14 @@ const BOX_trigger = new CLS_objectBox({
 
 
     /**
+     * Triggered when proximity is actually updated: {@link INTF_BLK_torqueBlock}.
+     * <br> `ARGS`: `Building` - b.
+     * @type {CLS_eventTrigger}
+     */
+    torqueBlockLink: new CLS_eventTrigger("lovec-torque-block-link"),
+
+
+    /**
      * Triggered when block is configured: {@link INTF_BLK_torqueBlock}.
      * <br> `ARGS`: `Building` - b.
      * @type {CLS_eventTrigger}

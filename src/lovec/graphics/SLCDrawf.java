@@ -1158,34 +1158,6 @@ public class SLCDrawf {
 
 
     /**
-     * Variant of {@link #frame} with frame fading transition.
-     */
-    public static void frameFade(float x, float y, TextureRegion[] regs, float prog, float intv, float ang, int offInd, Color color, float a, float z) {
-        if(regs.length == 0) return;
-
-        float a1 = Mathf.mod(prog, intv) / intv;
-        frame(x, y, regs, prog, intv, ang, offInd, color, a * (1f - a1), z);
-        frame(x, y, regs, prog, intv, ang, offInd + 1, color, a * a1, z);
-    };
-    // Overload
-    public static void frameFade(float x, float y, TextureRegion[] regs, float prog, float intv, float ang, int offInd, Color color, float a) {
-        frameFade(x, y, regs, prog, intv, ang, offInd, color, a, -1f);
-    };
-    public static void frameFade(float x, float y, TextureRegion[] regs, float prog, float intv, float ang, int offInd, Color color) {
-        frameFade(x, y, regs, prog, intv, ang, offInd, color, 1f);
-    };
-    public static void frameFade(float x, float y, TextureRegion[] regs, float prog, float intv, float ang, int offInd) {
-        frameFade(x, y, regs, prog, intv, ang, offInd, Color.white);
-    };
-    public static void frameFade(float x, float y, TextureRegion[] regs, float prog, float intv, float ang) {
-        frameFade(x, y, regs, prog, intv, ang, 0);
-    };
-    public static void frameFade(float x, float y, TextureRegion[] regs, float prog, float intv) {
-        frameFade(x, y, regs, prog, intv, 0f);
-    };
-
-
-    /**
      * {@link DrawWeave} but no region used.
      */
     public static void scan(float x, float y, float prog, float warmup, float size, Color color, float a, float z) {

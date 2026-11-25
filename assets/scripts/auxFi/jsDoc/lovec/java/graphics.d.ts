@@ -249,12 +249,6 @@ declare class SLCDrawf {
     static frame(x: number, y: number, regs: Array<TextureRegion>, prog: number, intv: number, ang: number, offInd: number): void
     static frame(x: number, y: number, regs: Array<TextureRegion>, prog: number, intv: number, ang: number): void
     static frame(x: number, y: number, regs: Array<TextureRegion>, prog: number, intv: number): void
-    static frameFade(x: number, y: number, regs: Array<TextureRegion>, prog: number, intv: number, ang: number, offInd: number, color: Color, a: number, z: number): void
-    static frameFade(x: number, y: number, regs: Array<TextureRegion>, prog: number, intv: number, ang: number, offInd: number, color: Color, a: number): void
-    static frameFade(x: number, y: number, regs: Array<TextureRegion>, prog: number, intv: number, ang: number, offInd: number, color: Color): void
-    static frameFade(x: number, y: number, regs: Array<TextureRegion>, prog: number, intv: number, ang: number, offInd: number): void
-    static frameFade(x: number, y: number, regs: Array<TextureRegion>, prog: number, intv: number, ang: number): void
-    static frameFade(x: number, y: number, regs: Array<TextureRegion>, prog: number, intv: number): void
     static scan(x: number, y: number, prog: number, warmup: number, size: number, color: Color, a: number, z: number): void
     static scan(x: number, y: number, prog: number, warmup: number, size: number, color: Color, a: number): void
     static scan(x: number, y: number, prog: number, warmup: number, size: number, color: Color): void

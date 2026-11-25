@@ -21,10 +21,13 @@
 
 
     (function() {
-        let i, iCap, graph;
+        let
+            i,
+            iCap,
+            graph,
+            scr;
         MDL_event.onUpdate(() => {
             if(Vars.state.isPaused()) return;
-
             i = 0;
             iCap = updateQueue.iCap();
             while(i < iCap) {
@@ -33,9 +36,15 @@
                     graph.graphData = {
                         justShrunk: false,
                     };
-                    typeInitMap.get(graph.graphTag, Function.air)(graph);
+                    scr = typeInitMap.get(graph.graphTag);
+                    if(scr != null) {
+                        scr(graph);
+                    };
                 };
-                typeUpdateMap.get(graph.graphTag, Function.air)(graph);
+                scr = typeUpdateMap.get(graph.graphTag);
+                if(scr != null) {
+                    scr(graph);
+                };
                 i++;
             };
             updateQueue.clear();
