@@ -67,10 +67,17 @@ const BOX_trigger = new CLS_objectBox({
 
 
     /**
-     * Triggered when LSAV is loaded.
+     * Triggered after LSAV is loaded.
      * @type {CLS_eventTrigger}
      */
     lsavLoad: new CLS_eventTrigger("lovec-lsav-load"),
+
+
+    /**
+     * Triggered before LSAV is saved.
+     * @type {CLS_eventTrigger}
+     */
+    lsavSave: new CLS_eventTrigger("lovec-lsav-save"),
 
 
     /* <------------------------------ event ------------------------------> */

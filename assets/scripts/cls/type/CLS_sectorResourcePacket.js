@@ -35,6 +35,9 @@
         /** @type {number} */
         this.timeSpent = 0.0;
 
+        /** @type {boolean} */
+        this.handled = false;
+
 
         inProgPackets.push(this);
 
@@ -58,6 +61,12 @@
         if(Vars.state.isPaused() || (global.lovecUtil.prop.debug ? !Vars.state.isGame() : !Vars.state.isCampaign())) return;
         CLS_sectorResourcePacket.update();
     });
+    BOX_trigger.lsavLoad.addGlobalListener(() => {
+        CLS_sectorResourcePacket.readPlsav();
+    });
+    BOX_trigger.lsavSave.addGlobalListener(() => {
+        CLS_sectorResourcePacket.writePlsav();
+    });
 
 
 /*
@@ -68,7 +77,7 @@
 
 
     /**
-     * Updates states of all packets.
+     * Updates state of all packets.
      * @return {void}
      */
     CLS_sectorResourcePacket.update = function() {
@@ -78,7 +87,9 @@
         }, true);
         if(GLB_timer.secTwo) {
             arrivedPackets.forEachFast(packet => {
-                if(packet.to === mapCur) arrivedLocalPackets.push(packet);
+                if(packet.to === mapCur) {
+                    arrivedLocalPackets.push(packet);
+                };
             }, true);
         };
         if(GLB_timer.secTen) {
@@ -86,6 +97,73 @@
                 packet.handle();
             }, true);
         };
+    };
+
+
+    /**
+     * Writes a packet as an object.
+     * @param {Object|unset} contObj
+     * @param {CLS_sectorResourcePacket} packet
+     * @return {Object}
+     */
+    CLS_sectorResourcePacket.writeObj = function(contObj, packet) {
+        let obj = contObj != null ? contObj : {};
+
+        obj.from = packet.from;
+        obj.to = packet.to;
+        obj.data = packet.data;
+        obj.timeReq = packet.timeReq;
+        obj.timeSpent = packet.timeSpent;
+
+        return obj;
+    };
+
+
+    /**
+     * Reads an object and creates a new packet.
+     * @param {Object} obj
+     * @return {CLS_sectorResourcePacket}
+     */
+    CLS_sectorResourcePacket.readObj = function(obj) {
+        let packet = new CLS_sectorResourcePacket(obj.from, obj.to, obj.data, obj.timeReq);
+        packet.timeSpent = obj.timeSpent;
+        return packet;
+    };
+
+
+    /**
+     * Writes all packets into PLSAV.
+     * @return {void}
+     */
+    CLS_sectorResourcePacket.writePlsav = function() {
+        let objs = [];
+        inProgPackets.forEachFast(packet => {
+            if(packet.handled) return;
+            objs.push(packet.writeObj({}));
+        }, true);
+        arrivedPackets.forEachFast(packet => {
+            if(packet.handled) return;
+            objs.push(packet.writeObj({}));
+        }, true);
+        arrivedLocalPackets.forEachFast(packet => {
+            if(packet.handled) return;
+            objs.push(packet.writeObj({}));
+        }, true);
+        GLB_save.set("sector-packet", objs, true);
+    };
+
+
+    /**
+     * Reads packets from PLSAV.
+     * @return {void}
+     */
+    CLS_sectorResourcePacket.readPlsav = function() {
+        inProgPackets.clear();
+        arrivedPackets.clear();
+        arrivedLocalPackets.clear();
+        GLB_save.get("sector-packet", true).forEachFast(obj => {
+            CLS_sectorResourcePacket.readObj(obj);
+        });
     };
 
 
@@ -97,7 +175,7 @@
 
 
     /**
-     * Whether is packet has arrived.
+     * Whether this packet has arrived.
      * @return {boolean}
      */
     CLS_sectorResourcePacket.prototype.isCompleted = function() {
@@ -137,6 +215,7 @@
         if(b == null || !FRAG_item.acceptItem2Arr(b, b, this.data)) return false;
 
         FRAG_item.addItem2Arr(b, b, this.data);
+        this.handled = true;
         Core.app.post(() => {
             this.remove();
         });
@@ -160,6 +239,16 @@
                 };
             };
         };
+    };
+
+
+    /**
+     * Variant of {@link CLS_sectorResourcePacket.writeObj} for instances.
+     * @param {Object|unset} [contObj]
+     * @return {Object}
+     */
+    CLS_sectorResourcePacket.prototype.writeObj = function(contObj) {
+        return CLS_sectorResourcePacket.writeObj(contObj, this);
     };
 
 

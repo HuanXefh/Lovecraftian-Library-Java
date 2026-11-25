@@ -113,6 +113,7 @@
      */
     const saveLsav = function() {
         if(Vars.state.isEditor()) return;
+        BOX_trigger.lsavSave.fire();
         MDL_file.writeJson(MDL_file.getLsav(), lsav);
         MDL_file.writeJson(MDL_file.getPlsav(), plsav);
     }

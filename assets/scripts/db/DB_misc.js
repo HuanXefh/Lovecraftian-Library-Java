@@ -528,8 +528,8 @@ const db = {
 
         /**
          * Properties that are saved in a LSAV.
-         * <br> `ROW`: header, def, arrMode.
-         * @type {F3Array<string, Object, String|null>}
+         * <br> `ROW`: header, def.
+         * @type {F3Array<string, Object>}
          */
         header: [
 
@@ -561,7 +561,7 @@ const db = {
         /**
          * Properties that are saved in a PLSAV.
          * <br> `ROW`: header, def, arrMode.
-         * @type {F3Array<string, Object, String|null>}
+         * @type {F3Array<string, Object>}
          */
         pHeader: [
 
@@ -569,6 +569,8 @@ const db = {
 
             "global-bits", [],
             "global-bit-hash", [],
+
+            "sector-packet", [],
 
         ],
 
